@@ -7,9 +7,9 @@ function ItemProductList() {
   const { type } = useParams();
   return (
     <div className=' flex justify-center p-7'>
-    {/* <div>ItemProductList {type}</div> */}
-    <ProductCard />
     <Filter />
+    <ProductCard />
+
     </div>
     
   )
