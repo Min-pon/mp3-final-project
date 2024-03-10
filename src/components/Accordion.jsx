@@ -27,7 +27,7 @@ function Accordion({ data, setAccordionOpen, accordionOpen }) {
         </span>
       </button>
       <div
-        className={`overflow-hidden text-sm font-semibold transition duration-300 ease-in-out mt-2 grid ${
+        className={`overflow-hidden text-sm font-semibold transition-all duration-300 ease-in-out mt-2 grid ${
           accordionOpen === data.title
             ? " grid-rows-[1fr] opacity-100 "
             : " grid-rows-[0fr] opacity-0 "
