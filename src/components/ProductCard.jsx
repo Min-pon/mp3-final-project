@@ -22,7 +22,7 @@ function ProductCard() {
         <p className=" mb-2 overflow-hidden text-nowrap text-ellipsis">
           Our versatile crossbody bag combines fashiondfgdfgdfdfg
         </p>
-        <div className=" mb-2"><RatingStar rating={2} /></div>
+        <div className=" mb-2"><RatingStar rating={4} /></div>
         <div className=" flex justify-end">
           <h2 className=" font-bold text-2xl ">THB 1,600</h2>
         </div>

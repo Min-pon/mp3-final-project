@@ -2,7 +2,6 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 function RatingStar({ rating }) {
-  const unStar = 5 - rating;
   const show = Array(rating).fill("");
   const notShow = Array(5 - rating).fill("");
 
