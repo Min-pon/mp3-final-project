@@ -35,7 +35,7 @@ function Accordion({ data, setAccordionOpen, accordionOpen }) {
       >
         <div className=" overflow-hidden border-b flex flex-col gap-2 items-start">
           {data.list.map((list) => (
-            <button className=" p-[10px] ">
+            <button className=" p-[10px] hover:bg-[#F2F2F2] w-full text-left">
               <h5>{list}</h5>
             </button>
           ))}
