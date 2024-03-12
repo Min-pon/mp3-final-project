@@ -1,67 +1,76 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleUp } from "@fortawesome/free-solid-svg-icons";
+import { faCircle, faCircleDot } from "@fortawesome/free-regular-svg-icons";
 
-const filter = () => {
-  const [selectedOption, setSelectedOption] = useState(null);
+const options = [
+  { id: 1, label: "Price - Low to high", by: "asce" },
+  { id: 2, label: "Price - High to low", by: "desc" },
+  { id: 3, label: "Ratings", by: "rating" },
+];
 
-  const options = [
-    { id: 1, label: 'Option 1' },
-    { id: 2, label: 'Option 2' },
-    { id: 3, label: 'Option 3' },
-    // Add more options as needed
-  ];
+function Filter() {
+  const [selectMenu, setSelectMenu] = useState("asce");
+  const [open, setOpen] = useState(false);
 
-  const handleOptionChange = (id) => {
-    setSelectedOption(id);
+  const handleClickDropdown = () => {
+    setOpen((prev) => !prev);
   };
 
   return (
-    <div className="relative inline-block text-left">
-      <div>
-        <span className="rounded-md shadow-sm">
-          <button
-            type="button"
-            className="inline-flex justify-center w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            id="options-menu"
-            aria-haspopup="true"
-            aria-expanded="true"
-          >
-            {selectedOption ? options.find(option => option.id === selectedOption).label : 'Select an option'}
-            <svg
-              className="-mr-1 ml-2 h-5 w-5"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 12a1 1 0 01-.7-.29l-4-4a1 1 0 011.4-1.42L10 10.58l3.3-3.3a1 1 0 011.4 1.42l-4 4a1 1 0 01-.7.3z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </button>
+    <div className={`relative font-poppins flex flex-col gap-1 items-end `}>
+      <button
+        onClick={handleClickDropdown}
+        className={`border px-[10px] w-[124px] h-[54px] py-[7px] flex justify-center items-center font-normal transition-colors duration-300 ease-in-out ${
+          open ? " border-[#C1CD00]" : ""
+        }`}
+      >
+        <span className=" text-base">Sort by</span>
+        <span
+          className={` w-10 h-10 flex items-center justify-center transition-all duration-300 ease-in-out ${
+            open ? "" : " rotate-180"
+          }`}
+        >
+          <FontAwesomeIcon icon={faAngleUp} />
         </span>
-      </div>
+      </button>
+      <div
+        className={`absolute top-[58px] bg-white flex transition-opacity duration-500 ease-in-out ${
+          open ? " opacity-100" : " opacity-0"
+        }`}
+      >
+        {open && (
+          <div className="flex flex-col gap-6 border p-6 ">
+            {options.map((option) => (
+              <div
+                className=" flex gap-4 items-center cursor-pointer hover:scale-x-105 transition-all duration-300 ease-in-out"
+                onClick={() => setSelectMenu(option.by)}
+                key={option.id}
+              >
+                {selectMenu === option.by ? (
+                  <FontAwesomeIcon
+                    icon={faCircleDot}
+                    size="xl"
+                    style={{ color: "#C1CD00" }}
+                    className=" transition-all duration-300 ease-out"
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    icon={faCircle}
+                    size="xl"
+                    style={{ color: "#E1E1E1" }}
+                    className=" transition-all duration-300 ease-out"
+                  />
+                )}
 
-      {/* Dropdown menu, show/hide based on menu state */}
-      <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-        <div className="py-1" role="none">
-          {options.map(option => (
-            <label key={option.id} className="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
-              <input
-                type="radio"
-                name="option"
-                value={option.id}
-                onChange={() => handleOptionChange(option.id)}
-                className="mr-2"
-              />
-              {option.label}
-            </label>
-          ))}
-        </div>
+                <h1 className=" leading-5 text-nowrap">{option.label}</h1>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
-};
+}
 
-export default filter;
+export default Filter;
