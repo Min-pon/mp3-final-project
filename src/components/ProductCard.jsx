@@ -1,11 +1,11 @@
 import React from "react";
 import RatingStar from "./RatingStar";
 
-function ProductCard() {
+function ProductCard({ imageUrl, title, description, rating, price }) {
   return (
     <div className=" w-[340px] h-[524px] xl:w-[370px]">
       <img
-        src="https://images.unsplash.com/photo-1508138221679-760a23a2285b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        src={imageUrl}
         alt=""
         width="370px"
         height="370px"
@@ -17,14 +17,16 @@ function ProductCard() {
       />
       <div className="font-poppins mt-4">
         <h2 className=" mb-2 font-bold text-2xl overflow-hidden text-nowrap text-ellipsis">
-          Pleated Camisole Dress dddsdssd
+          {title}
         </h2>
         <p className=" mb-2 overflow-hidden text-nowrap text-ellipsis">
-          Our versatile crossbody bag combines fashiondfgdfgdfdfg
+          {description}
         </p>
-        <div className=" mb-2"><RatingStar rating={4} /></div>
+        <div className=" mb-2">
+          <RatingStar rating={Number(rating)} />
+        </div>
         <div className=" flex justify-end">
-          <h2 className=" font-bold text-2xl ">THB 1,600</h2>
+          <h2 className=" font-bold text-2xl ">THB {price}</h2>
         </div>
       </div>
     </div>
