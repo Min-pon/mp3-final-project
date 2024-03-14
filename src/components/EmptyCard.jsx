@@ -7,8 +7,8 @@ export default function EmptyCard({}) {
           alt="Empty cart"
         />
       </div>
-      <div>Your cart is empty</div>
-      <p className="text-center">
+      <div className="text-[40px] font-bold">Your cart is empty</div>
+      <p className="text-center text-[18px] font-semibold">
         Looks like you have not added anything to your cart.
         <br /> Go ahead & explore top categories.
       </p>

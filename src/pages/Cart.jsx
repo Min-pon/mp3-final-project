@@ -1,15 +1,20 @@
 import CartItem from "../components/CartItem";
+import EmptyCard from "../components/EmptyCard";
+import SummaryCard from "../components/SummaryCard";
 
 export default function Cart() {
   return (
-    <div>
-      Cart Page
-      <div class="flex flex-row gap-2 w-full p-8 bg-red-500 ...">
-        <div class="grow bg-blue-200 p-4 flex flex-col gap-2">
-          items
-          <CartItem> item 1</CartItem>
+    <div className="mt-[101px] ml-[160px]">
+      <div className="p-[24px]">My cart</div>
+      <div className="flex flex-row items-start mt-[41px] gap-x-10">
+        <div className="p-[24px]">
+          Items
+          {/* <CartItem/> */}
+          <EmptyCard />
         </div>
-        <div class="w-1/4 bg-slate-100 p-4">summary</div>
+        <div>
+          <SummaryCard />
+        </div>
       </div>
     </div>
   );
