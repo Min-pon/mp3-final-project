@@ -1,8 +1,16 @@
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import AdvertisingCard from "../components/AdvertisingCard";
+import useGetAllCollections from "../hooks/collections/useGetAllColllections";
 
 export default function HomePage() {
+  const { collections, loading } = useGetAllCollections();
+  console.log(collections);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
       <NavBar />
