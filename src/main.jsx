@@ -6,23 +6,29 @@ import HomePage from "./pages/Home";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import ItemProductList from "./pages/ItemProductList";
+import Rootlayout from "./layouts/RootLayout";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <HomePage />,
-  },
-  {
-    path: "/item-product-list/:type",
-    element: <ItemProductList />,
-  },
-  {
-    path: "/product-detail",
-    element: <ProductDetail />,
-  },
-  {
-    path: "/cart",
-    element: <Cart />,
+    element: <Rootlayout />,
+    children: [
+      {
+        path: "/",
+        element: <HomePage />,
+      },
+      {
+        path: "/item-product-list/:type",
+        element: <ItemProductList />,
+      },
+      {
+        path: "/product-detail",
+        element: <ProductDetail />,
+      },
+      {
+        path: "/cart",
+        element: <Cart />,
+      },
+    ],
   },
 ]);
 
