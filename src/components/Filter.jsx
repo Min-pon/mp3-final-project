@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleUp } from "@fortawesome/free-solid-svg-icons";
 import { faCircle, faCircleDot } from "@fortawesome/free-regular-svg-icons";
@@ -40,7 +40,7 @@ function Filter() {
         }`}
       >
         {open && (
-          <div className="flex flex-col gap-6 border p-6 ">
+          <div  className="flex flex-col gap-6 border p-6 ">
             {options.map((option) => (
               <div
                 className=" flex gap-4 items-center cursor-pointer hover:scale-x-105 transition-all duration-300 ease-in-out"

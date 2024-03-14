@@ -3,7 +3,7 @@ import RatingStar from "./RatingStar";
 
 function ProductCard({ imageUrl, title, description, rating, price }) {
   return (
-    <div className=" w-[340px] h-[524px] xl:w-[370px]">
+    <div className=" w-[340px] h-[524px] 2xl:w-[370px] ">
       <img
         src={imageUrl}
         alt=""
