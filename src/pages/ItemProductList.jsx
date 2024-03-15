@@ -4,8 +4,7 @@ import { useParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import Filter from "../components/Filter";
 import SideBar from "../components/SideBar";
-import Modal from "../components/Modal";
-import Grid from "@mui/material/Grid";
+
 
 function ItemProductList() {
   const { type } = useParams();
