@@ -13,7 +13,6 @@ export default function HomePage() {
 
   return (
     <div>
-      <NavBar />
       <img
         src="https://cdn.discordapp.com/attachments/1120391488484933705/1216817329879646248/image.png?ex=6601c472&is=65ef4f72&hm=3a5ca2ce373c28180a81197caa2f3b5bdf4693dafe1ccaece6d512dd6617c223&"
         alt="banner"
@@ -58,7 +57,6 @@ export default function HomePage() {
         <p className="text-[32px] font-bold">Featured Product</p>
         <p>Product Card</p>
       </div>
-      <Footer />
     </div>
   );
 }
