@@ -12,7 +12,7 @@ export default function SummaryCard() {
         <span>0.00</span>
       </div>
       <div class="border-t border-secondary-300 my-[24px]"></div>
-      <div class="flex justify-between items-center text-secondary-500">
+      <div class="flex justify-between items-center text-[16px] font-normal text-secondary-500 mb-[16px]">
         <span>Subtotal</span>
         <span>0.00</span>
       </div>
@@ -21,7 +21,7 @@ export default function SummaryCard() {
         <span>0.00</span>
       </div>
       <div class="border-t border-secondary-300 my-[24px]"></div>
-      <div class="flex justify-between items-center mb-[40px] text-[18px] font-semibold text-secondary-500">
+      <div class="flex justify-between items-center text-[18px] font-semibold text-secondary-500 mb-[40px]">
         <span>Total</span>
         <span>0.00</span>
       </div>
