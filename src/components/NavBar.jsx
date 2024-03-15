@@ -18,6 +18,7 @@ export default function NavBar() {
 
   return (
     <>
+    
       {isMobile ? (
         <div className="flex flex-row bg-[#222222] text-white py-[8px] items-center justify-around h-[56px]">
           <div className="flex space-x-2 items-center">
