@@ -4,10 +4,10 @@ import SummaryCard from "../components/SummaryCard";
 
 export default function Cart() {
   return (
-    <div className="mt-[101px] ml-[160px]">
-      <div className="p-[24px]">My cart</div>
+    <div className="mt-[41px] ml-[160px]">
+      <div className="p-[24px] text-[32px] font-bold">My cart</div>
       <div className="flex flex-row items-start mt-[41px] gap-x-10">
-        <div className="p-[24px]">
+        <div className="p-[24px] text-[24px] font-bold">
           Items
           {/* <CartItem/> */}
           <EmptyCard />
