@@ -1,6 +1,25 @@
-import React from "react";
-import RatingStar from "./RatingStar";
+/* eslint-disable react/prop-types */
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+function RatingStar({ rating }) {
+  const shows = Array(rating).fill("");
+  const notShows = Array(5 - rating).fill("");
 
+  return (
+    <div className="flex flex-row ">
+      {shows.map((show, index) => (
+        <div key={index} className=" w-[30px] h-[30px] flex items-center ">
+          <FontAwesomeIcon icon={faStar} style={{ color: "#def81c" }} />
+        </div>
+      ))}
+      {notShows.map((notShow, index) => (
+        <div key={index} className=" w-[30px] h-[30px] flex items-center ">
+          <FontAwesomeIcon icon={faStar} style={{ color: "#E1E1E1" }} />
+        </div>
+      ))}
+    </div>
+  );
+}
 function ProductCard({ imageUrl, title, description, rating, price }) {
   return (
     <div className=" w-[340px] h-[524px] 2xl:w-[370px] ">
