@@ -4,6 +4,7 @@ import { GrBasket } from "react-icons/gr";
 import { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import Drawer from "@mui/material/Drawer";
+import { CartIcon } from "../assets/iconList";
 
 export default function NavBar() {
   const isMobile = useMediaQuery({ query: "(max-width: 376px)" });
@@ -17,6 +18,7 @@ export default function NavBar() {
 
   return (
     <>
+    
       {isMobile ? (
         <div className="flex flex-row bg-[#222222] text-white py-[8px] items-center justify-around h-[56px]">
           <div className="flex space-x-2 items-center">
@@ -58,7 +60,9 @@ export default function NavBar() {
             <p className="text-[18px] font-semibold">WDB</p>
           </div>
           <a href="/cart">
-            <GrBasket size="40px" />
+            {/* <GrBasket size="40px" />
+             */}
+            <CartIcon />
           </a>
         </div>
       ) : (
@@ -74,25 +78,25 @@ export default function NavBar() {
             </div>
             <div className="flex space-x-[24px]">
               <a
-                href="/item-product-list?type=men"
+                href="/item-product-list/type=men"
                 className="text-[16px] font-normal"
               >
                 Men
               </a>
               <a
-                href="/item-product-list?type=women"
+                href="/item-product-list/type=women"
                 className="text-[16px] font-normal"
               >
                 Women
               </a>
               <a
-                href="/item-product-list?type=kids"
+                href="/item-product-list/type=kids"
                 className="text-[16px] font-normal"
               >
                 Kids
               </a>
               <a
-                href="/item-product-list?type=shoes"
+                href="/item-product-list/type=shoes"
                 className="text-[16px] font-normal"
               >
                 Shoes
@@ -106,7 +110,8 @@ export default function NavBar() {
             </div>
           </div>
           <a href="/cart">
-            <GrBasket size="25px" />
+            {/* <GrBasket size="25px" /> */}
+            <CartIcon />
           </a>
         </div>
       )}
