@@ -43,7 +43,7 @@ function Filter() {
     <div ref={filterRef} className={`relative font-poppins flex flex-col gap-1 items-end `}>
       <button
         onClick={handleClickDropdown}
-        className={`border px-[10px] w-[124px] h-[54px] py-[7px] flex justify-center items-center font-normal transition-colors duration-300 ease-in-out ${
+        className={`border px-[10px] w-[124px] h-[54px] py-[7px] flex justify-between items-center font-normal transition-colors duration-300 ease-in-out ${
           open ? " border-[#C1CD00]" : ""
         }`}
       >
