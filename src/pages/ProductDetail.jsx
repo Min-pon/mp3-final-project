@@ -1,10 +1,11 @@
 import ProductInformation from "../components/ProductInformation";
 import FormControl from "@mui/material/FormControl";
+import useGetProductByPermalink from "../hooks/products/useGetProductByPermalink";
 import InputLabel from "@mui/material/InputLabel";
 import Radio from "@mui/material/Radio";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import React from "react";
+import React, { useEffect } from "react";
 import FormLabel from "@mui/material/FormLabel";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -12,32 +13,39 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 
 export default function ProductDetail() {
-  const [data, setData] = React.useState({
-    id: "t7uRtRNRQOhKJHWnWIDY",
-    name: "Boxy Tailored Jacket",
-    skuCode: "C09006",
-    permalink: "shirts-boxy-tailored-jacket",
-    description:
-      "Our wool-blend coat is a winter essential, providing both warmth and style with its tailored silhouette and faux-fur collar.",
-    price: 2990,
-    promotionalPrice: 2990,
-    categories: ["all-ladies", "ladies-shirts"],
-    collection: "",
-    ratings: 2.4,
-    imageUrls: [
-      "https://firebasestorage.googleapis.com/v0/b/wdb-storefront-project-api.appspot.com/o/products%2Ft7uRtRNRQOhKJHWnWIDY%2F_images%2FSknj6SRVaDh94bLTLIS3-stylish-woman-model-in-studio-in-coat-autumn-fash-2023-11-27-04-59-28-utc.png?alt=media&token=961d6211-c471-4ab9-9e6d-6678962648ad",
-      "https://firebasestorage.googleapis.com/v0/b/wdb-storefront-project-api.appspot.com/o/products%2Ft7uRtRNRQOhKJHWnWIDY%2F_images%2FCU2kYXeJmzA5YjQOq8YB-stylish-woman-model-in-studio-in-coat-autumn-fash-2023-11-27-05-36-02-utc.png?alt=media&token=db6aedac-2016-4717-ba26-e157db0d0015",
-      "https://firebasestorage.googleapis.com/v0/b/wdb-storefront-project-api.appspot.com/o/products%2Ft7uRtRNRQOhKJHWnWIDY%2F_images%2FaXfgPNdVfDBZsAL6AeOW-stylish-woman-model-in-studio-in-coat-autumn-fash-2023-11-27-05-18-04-utc.png?alt=media&token=c2a0579e-6f0a-46ec-9dfa-d8471f0574c5",
-      "https://firebasestorage.googleapis.com/v0/b/wdb-storefront-project-api.appspot.com/o/products%2Ft7uRtRNRQOhKJHWnWIDY%2F_images%2FQspmDfWFjlLz1o50Zxgg-stylish-woman-model-in-studio-in-coat-autumn-fash-2023-11-27-05-09-23-utc%20(1).png?alt=media&token=86f53e55-8a91-43f7-9205-dc164d29c354",
-      "https://firebasestorage.googleapis.com/v0/b/wdb-storefront-project-api.appspot.com/o/products%2Ft7uRtRNRQOhKJHWnWIDY%2F_images%2FeovITyMmjEk2Bp7Endwc-stylish-woman-model-in-studio-in-coat-autumn-fash-2023-11-27-05-34-49-utc.png?alt=media&token=27cc230c-ca71-47de-81c5-af7c1611914b",
-    ],
-  });
-
-  const [qty, setQty] = React.useState("");
-
+  const { product, loading, error } = useGetProductByPermalink(
+    "shirts-boxy-tailored-jacket"
+  );
+  const [data, setData] = React.useState(null);
+  const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);
   const [selectedColor, setSelectedColor] = React.useState("Navy");
   const [selectedSize, setSelectedSize] = React.useState("M");
   const [selectquantity, setSelectQuantity] = React.useState(1);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+  console.log("Product:", product);
+  useEffect(() => {
+    if (product) {
+      setData(product);
+    }
+  }, [product]);
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  if (!data) return <div>No product data found</div>;
+
+  // Function to change the main image to the previous one
+  const previousImage = () => {
+    setSelectedImageIndex((prevIndex) =>
+      prevIndex > 0 ? prevIndex - 1 : data.imageUrls.length - 1
+    );
+  };
+
+  // Function to change the main image to the next one
+  const nextImage = () => {
+    setSelectedImageIndex((prevIndex) =>
+      prevIndex < data.imageUrls.length - 1 ? prevIndex + 1 : 0
+    );
+  };
 
   const colors = [
     { name: "Navy", hex: "#000080" },
@@ -49,11 +57,6 @@ export default function ProductDetail() {
 
   const quantities = [1, 2, 3, 4, 5];
 
-  // const [sizes, setSizes] = React.useState([
-  //   { value: "L", label: "L" },
-  //   { value: "XL", label: "XL" },
-  // ]);
-
   const handleChange = (event) => {
     setAge(event.target.value);
   };
@@ -61,22 +64,119 @@ export default function ProductDetail() {
     setColors(event.target.value);
   };
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  //Modal to confirm for adding into Cart
+  const ShoppingCartModal = ({ isOpen, onClose, item }) => {
+    if (!isOpen) return null;
+
+    return (
+      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center p-4">
+        <div className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
+          <div className="bg-gray-100 p-4 flex justify-between items-start">
+            <h3 className="text-lg leading-6 font-medium text-gray-900">
+              Items added to your cart
+            </h3>
+            <button
+              type="button"
+              className="text-gray-400 hover:text-gray-500"
+              onClick={onClose}
+            >
+              <span className="sr-only">Close</span>
+              &#10005;{" "}
+              {/* This is a Unicode multiplication sign used as a close icon */}
+            </button>
+          </div>
+          <div className="p-4">
+            <div className="flex items-start">
+              <div className="flex-shrink-0">
+                <img
+                  className="h-16 w-16 rounded-md object-cover"
+                  src={item.imageUrl}
+                  alt=""
+                />
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-900">{item.name}</p>
+                <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
+                <p className="text-sm text-gray-500">{item.price}</p>
+              </div>
+            </div>
+          </div>
+          <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse">
+            <button
+              type="button"
+              className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 text-base font-medium text-white hover:bg-yellow-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
+              onClick={() => alert("Go to cart")}
+            >
+              View cart
+            </button>
+            <button
+              type="button"
+              className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:w-auto sm:text-sm"
+              onClick={onClose}
+            >
+              Continue shopping
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  if (!data || data === null) return <div>No product data found</div>;
+
   return (
     <div className="bg-white">
       <div className="max-w-[1000px] mx-auto py-10 md:py16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
         <div className="flex flex-row gap-10">
           {/* Image gallery */}
-          <div className="flex flex-col w-1/2 gap-2">
+          {/* <div className="flex flex-col w-1/2 gap-2"> */}
+          <div className="flex flex-col w-full max-w-2xl gap-2">
             {/* Main image */}
-            <div className="w-full  aspect-[1] bg-blue-400 overflow-hidden">
-              <img src={data.imageUrls[0]} class="w-full h-full object-cover" />
+            <div className="relative w-full aspect-[1] overflow-hidden">
+              <img
+                src={data.imageUrls[selectedImageIndex]}
+                alt="Product"
+                className="w-full h-full object-cover"
+              />
+              <button
+                onClick={previousImage}
+                className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white p-2"
+              >
+                &#60;
+              </button>
+              <button
+                onClick={nextImage}
+                className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-2"
+              >
+                &#62;
+              </button>
             </div>
             {/* Thumbnails */}
             <div className="flex gap-2 w-full">
-              {data.imageUrls.slice(1, 5).map((data) => (
-                <div className="bg-gray-200 w-1/4 aspect-[1] overflow-hidden">
-                  <img src={data} class="object-cover" />
-                </div>
+              {data.imageUrls.map((url, index) => (
+                <button
+                  key={index}
+                  className={`w-1/4 aspect-w-1 aspect-h-1 overflow-hidden ${
+                    selectedImageIndex === index ? "ring-2 ring-[#DEF81C]" : ""
+                  }`}
+                  onClick={() => setSelectedImageIndex(index)}
+                >
+                  <img
+                    src={url}
+                    alt={`Thumbnail ${index}`}
+                    className="object-cover"
+                  />
+                </button>
               ))}
             </div>
           </div>
@@ -123,7 +223,7 @@ export default function ProductDetail() {
                         className={`grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none basis-1/${
                           sizes.length
                         } ${
-                          selectedSize === size ? "ring-2 ring-yellow-500" : ""
+                          selectedSize === size ? "ring-2 ring-[#DEF81C]" : ""
                         }`}
                         onClick={() => setSelectedSize(size)}
                       >
@@ -155,15 +255,23 @@ export default function ProductDetail() {
                     </select>
                   </div>
                 </div>
+                {/* Add to cart button */}
                 <div className="mt-10 flex flex-col gap-4">
                   <button
                     type="submit"
                     className="flex justify-center items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-black hover:bg-gray-800"
+                    onClick={openModal}
                   >
                     Add to cart
                   </button>
                 </div>
               </FormControl>
+
+              <ShoppingCartModal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                item={data}
+              />
             </div>
           </div>
         </div>
