@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import Filter from "../components/Filter";
 import SideBar from "../components/SideBar";
-
+import SelectMenu from "../components/Select";
 
 function ItemProductList() {
   const { type } = useParams();
