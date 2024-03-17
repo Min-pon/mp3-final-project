@@ -8,6 +8,8 @@ import React from "react";
 import FormLabel from "@mui/material/FormLabel";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import RadioGroup from "@mui/material/RadioGroup";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 
 export default function ProductDetail() {
   const [data, setData] = React.useState({
@@ -32,14 +34,26 @@ export default function ProductDetail() {
   });
 
   const [qty, setQty] = React.useState("");
-  const [colors, setColors] = React.useState([
-    { value: "Red", label: "Red" },
-    { value: "Green", label: "Blue" },
-  ]);
-  const [sizes, setSizes] = React.useState([
-    { value: "L", label: "L" },
-    { value: "XL", label: "XL" },
-  ]);
+
+  const [selectedColor, setSelectedColor] = React.useState("Navy");
+  const [selectedSize, setSelectedSize] = React.useState("M");
+  const [selectquantity, setSelectQuantity] = React.useState(1);
+
+  const colors = [
+    { name: "Navy", hex: "#000080" },
+    { name: "Orange", hex: "#FFA500" },
+    { name: "Green", hex: "#008000" },
+  ];
+
+  const sizes = ["XS", "S", "M", "L", "XL"];
+
+  const quantities = [1, 2, 3, 4, 5];
+
+  // const [sizes, setSizes] = React.useState([
+  //   { value: "L", label: "L" },
+  //   { value: "XL", label: "XL" },
+  // ]);
+
   const handleChange = (event) => {
     setAge(event.target.value);
   };
@@ -80,46 +94,67 @@ export default function ProductDetail() {
             />
             <div className="flex flex-col gap-2">
               <FormControl>
-                <FormLabel>Color</FormLabel>
-                <RadioGroup row name="row-radio-buttons-group">
-                  {colors.map((data) => (
-                    <FormControlLabel
-                      value={data.value}
-                      control={<Radio />}
-                      label={data.label}
-                    />
-                  ))}
-                </RadioGroup>
-              </FormControl>
-              <FormControl>
-                <FormLabel>Size</FormLabel>
-                <RadioGroup row name="row-radio-buttons-group">
-                  {sizes.map((data) => (
-                    <FormControlLabel
-                      value={data.value}
-                      control={<Radio />}
-                      label={data.label}
-                    />
-                  ))}
-                </RadioGroup>
-              </FormControl>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Qty.</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={qty}
-                  label="qty"
-                  onChange={handleChange}
-                >
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-              </FormControl>
-              <form className="mt-10">
-                {/* Variants and add to cart form */}
-                {/* Sizes would be mapped here */}
+                {/* Color of item */}
+                <div className="mb-4">
+                  <p className="text-lg font-semibold mb-2">Color</p>
+                  <div className="flex space-x-2">
+                    {colors.map((color) => (
+                      <button
+                        key={color.name}
+                        className={`h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-indigo-500 ${
+                          selectedColor === color.name
+                            ? "ring-2 ring-offset-2 ring-indigo-500"
+                            : ""
+                        }`}
+                        style={{ backgroundColor: color.hex }}
+                        onClick={() => setSelectedColor(color.name)}
+                        aria-label={`Select ${color.name}`}
+                      />
+                    ))}
+                  </div>
+                </div>
+                {/* size of item */}
+                <div className="mb-4">
+                  <div className="text-lg font-semibold mb-2">Size</div>
+                  <div className="flex flex-row space-x-2">
+                    {sizes.map((size) => (
+                      <button
+                        key={size}
+                        className={`grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none basis-1/${
+                          sizes.length
+                        } ${
+                          selectedSize === size ? "ring-2 ring-yellow-500" : ""
+                        }`}
+                        onClick={() => setSelectedSize(size)}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                {/* Quantity of item */}
+                <div className="mb-4">
+                  <label
+                    htmlFor="quantity"
+                    className="text-lg font-semibold mb-2 block"
+                  >
+                    Qty
+                  </label>
+                  <div className=" flex">
+                    <select
+                      id="quantity"
+                      className="basis-1/4 block w-full p-2 text-base border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                      value={selectquantity}
+                      onChange={(e) => setSelectQuantity(e.target.value)}
+                    >
+                      {quantities.map((q) => (
+                        <option key={q} value={q}>
+                          {q}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
                 <div className="mt-10 flex flex-col gap-4">
                   <button
                     type="submit"
@@ -128,7 +163,7 @@ export default function ProductDetail() {
                     Add to cart
                   </button>
                 </div>
-              </form>
+              </FormControl>
             </div>
           </div>
         </div>
