@@ -21,7 +21,7 @@ const router = createBrowserRouter([
         element: <ItemProductList />,
       },
       {
-        path: "/product-detail",
+        path: "/product-detail/:permalink",
         element: <ProductDetail />,
       },
       {
