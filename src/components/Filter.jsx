@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleUp } from "@fortawesome/free-solid-svg-icons";
 import { faCircle, faCircleDot } from "@fortawesome/free-regular-svg-icons";
@@ -13,15 +13,37 @@ function Filter() {
   const [selectMenu, setSelectMenu] = useState("asce");
   const [open, setOpen] = useState(false);
 
+  const filterRef = useRef()
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (!filterRef.current.contains(event.target)) {
+        setOpen(false)
+      }
+    };
+
+    if (open) {
+      document.addEventListener('mousedown', handleOutsideClick);
+    } else {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, [open]);
+
+
+
   const handleClickDropdown = () => {
     setOpen((prev) => !prev);
   };
 
   return (
-    <div className={`relative font-poppins flex flex-col gap-1 items-end `}>
+    <div ref={filterRef} className={`relative font-poppins flex flex-col gap-1 items-end `}>
       <button
         onClick={handleClickDropdown}
-        className={`border px-[10px] w-[124px] h-[54px] py-[7px] flex justify-center items-center font-normal transition-colors duration-300 ease-in-out ${
+        className={`border px-[10px] w-[124px] h-[54px] py-[7px] flex justify-between items-center font-normal transition-colors duration-300 ease-in-out ${
           open ? " border-[#C1CD00]" : ""
         }`}
       >
