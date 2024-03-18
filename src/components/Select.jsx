@@ -45,7 +45,7 @@ function SelectMenu() {
       >
         <button
           onClick={handleClickDropdown}
-          className={`border px-[10px] w-[139px] h-[54px] py-[7px] justify-between gap-2 flex items-center text-[16px] font-normal transition-colors duration-300 ease-in-out ${
+          className={`border px-[10px] w-[139px] h-[54px] py-[7px] justify-between gap-2 flex items-center text-secondary text-[16px] font-normal transition-colors duration-300 ease-in-out ${
             open ? " border-[#C1CD00]" : ""
           }`}
         >
