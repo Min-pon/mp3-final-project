@@ -38,14 +38,14 @@ function SelectMenu() {
 
   return (
     <div className=" w-fit">
-      <div className=" mb-2">Qty.</div>
+      {/* <div className=" text-[16px] font-normal text-secondary-700">Qty.</div> */}
       <div
         ref={filterRef}
         className={`relative font-poppins flex flex-col gap-1 items-end `}
       >
         <button
           onClick={handleClickDropdown}
-          className={`border px-[10px] w-[139px] h-[54px] py-[7px] justify-between gap-2 flex items-center font-normal transition-colors duration-300 ease-in-out ${
+          className={`border px-[10px] w-[139px] h-[54px] py-[7px] justify-between gap-2 flex items-center text-[16px] font-normal transition-colors duration-300 ease-in-out ${
             open ? " border-[#C1CD00]" : ""
           }`}
         >
@@ -67,7 +67,7 @@ function SelectMenu() {
             <div className="flex flex-col w-[139px] border ">
               {options.map((option) => (
                 <div
-                  className={`flex p-4 gap-4 items-center cursor-pointer hover:bg-secondary-300 transition-all duration-300 ease-in-out ${
+                  className={`flex p-4 gap-4 items-center text-[16px] font-normal cursor-pointer hover:bg-secondary-300 transition-all duration-300 ease-in-out ${
                     selectMenu === option.by
                       ? " bg-primary-400 hover:bg-primary-700"
                       : ""
