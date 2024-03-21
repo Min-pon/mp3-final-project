@@ -3,6 +3,7 @@ import EmptyCard from "../components/EmptyCard";
 import SummaryCard from "../components/SummaryCard";
 import ProductCardAlsoLike from "../components/ProductCardAlsoLike";
 
+
 export default function Cart() {
   return (
     <div className="bg-secondary-50 overflow-hidden">

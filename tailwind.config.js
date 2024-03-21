@@ -12,7 +12,7 @@ export default {
     fontFamily: fontFamily,
     extend: {
       colors: {
-        primary: "##DEF81C",
+        primary: "#DEF81C",
         "primary-700": "#C1CD00",
         "primary-400": "#DFF547",
         "primary-300": "#E5F96E",
@@ -35,6 +35,7 @@ export default {
         h3: "48px",
         h4: "40px",
         h5: "32px",
+        h6: "24px",
         sub: "18px",
         body: "16px",
         subtitle: "14px",
