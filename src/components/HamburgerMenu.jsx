@@ -76,13 +76,18 @@ function HamburgerMenu({ open, onClose, data }) {
                 {selectedMenu.title?.name}
               </p>
             </div>
-            {selectedMenu.listItem.map((selected) => (
-              <div
-                key={selected.id}
-                className="flex justify-between h-[48px] items-center"
-              >
-                <p className="text-sub font-semibold">{selected.name}</p>
-              </div>
+            {selectedMenu.listItem.map((selected, idx) => (
+              <Link key={selected.id} to={`${
+                idx === 0
+                  ? `/item-product-list/${selectedMenu.title?.name.toLowerCase()}`
+                  : `/item-product-list/${selectedMenu.title?.name.toLowerCase()}?filter=${
+                    selected.permalink
+                    }`
+              }`}>
+                <div className="flex justify-between h-[48px] items-center">
+                  <p className="text-sub font-semibold">{selected.name}</p>
+                </div>
+              </Link>
             ))}
           </>
         ) : (
