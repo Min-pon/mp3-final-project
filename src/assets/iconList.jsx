@@ -114,6 +114,7 @@ function ArrowRightIcon() {
     </svg>
   );
 }
+
 function BinIcon() {
   return (
     <svg

@@ -1,4 +1,5 @@
 import { BinIcon } from "../assets/iconList";
+import SelectMenu from "./Select";
 
 export default function CartItem({}) {
   return (
@@ -17,13 +18,28 @@ export default function CartItem({}) {
               <BinIcon />
             </div>
           </div>
-          <div className="flex flex-row justify-between align-bottom">
-            <div className="flex flex-row justify-between text-[16px] font-normal text-secondary-700">
-              <span>Color</span>
-              <span>Size</span>
-              <span>Qty.</span>
+          <div className="flex flex-row justify-between align-bottomr">
+            <div className="flex flex-row text-[16px] font-normal text-secondary-700">
+              <div className="flex flex-col mr-[16px]">
+                <span>Color</span>
+                <div className="mt-[8px]">
+                  <SelectMenu />
+                </div>
+              </div>
+              <div className="flex flex-col mr-[16px]">
+                <span>Size</span>
+                <div className="mt-[8px]">
+                  <SelectMenu />
+                </div>
+              </div>
+              <div className="flex flex-col">
+                <span>Qty.</span>
+                <div className="mt-[8px]">
+                  <SelectMenu />
+                </div>
+              </div>
             </div>
-            <div className="text-[24px] font-bold">THB 1,700.00</div>
+            <div className="text-[24px] font-bold self-end">THB 1,700.00</div>
           </div>
         </div>
       </div>
