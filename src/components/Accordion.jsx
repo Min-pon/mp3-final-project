@@ -61,14 +61,14 @@ function Accordion({ data, setAccordionOpen, accordionOpen }) {
               }`}
             >
               <div
-                className={`p-[10px] hover:bg-[#F2F2F2] w-full text-left ${
+                className={`p-[10px] hover:bg-[#F2F2F2] w-full text-left transition-colors duration-300 ease-in-out active:bg-primary-700 ${
                   data.title?.name.toLowerCase() === type
                     ? `${
                         paramFilter === list.permalink
-                          ? " bg-primary"
-                          : `${!paramFilter && idx === 0 ? " bg-primary" : ""}`
+                          ? " bg-primary hover:bg-primary"
+                          : `${!paramFilter && idx === 0 ? " bg-primary hover:bg-primary-700" : " "}`
                       }`
-                    : ""
+                    : " "
                 }`}
               >
                 <h5>{list.name}</h5>

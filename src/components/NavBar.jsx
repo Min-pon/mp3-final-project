@@ -32,7 +32,16 @@ export default function NavBar() {
               <button onClick={toggleDrawer(true)}>
                 <RxHamburgerMenu size="23px" />
               </button>
-              <Drawer open={open} onClose={toggleDrawer(false)}>
+              <Drawer
+                sx={{
+                  "& .MuiDrawer-paper": {
+                    borderTopRightRadius: "20px",
+                    borderBottomRightRadius: "20px", 
+                  },
+                }}
+                open={open}
+                onClose={toggleDrawer(false)}
+              >
                 <div className="w-[321px] flex flex-col space-y-[8px] px-[32px] pt-[20px]">
                   <p className="text-sub font-semibold">Home</p>
                   <div className="flex justify-between h-[48px] items-center">
