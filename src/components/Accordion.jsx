@@ -28,7 +28,7 @@ function Accordion({ data, setAccordionOpen, accordionOpen }) {
         className=" py-1 flex justify-between items-center w-full"
       >
         <h4 className="  text-lg font-semibold">
-          {data?.title?.name.toLowerCase()}
+          {data?.title?.name}
         </h4>
         <span
           className={` flex transition-all duration-300 ease-in-out justify-center items-center w-10 h-10 ${
@@ -48,7 +48,7 @@ function Accordion({ data, setAccordionOpen, accordionOpen }) {
         }`}
       >
         <div className=" overflow-hidden border-b flex flex-col gap-2 items-start">
-          {data.list1.map((list, idx) => (
+          {data.listItem.map((list, idx) => (
             <Link
               key={list.id}
               className=" w-full h-full"

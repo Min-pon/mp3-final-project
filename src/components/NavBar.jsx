@@ -11,17 +11,19 @@ import {
 } from "../assets/iconList";
 import useGetAllCategories from "../hooks/categories/useGetAllCategories";
 import { Link, useParams } from "react-router-dom";
+import HamburgerMenu from "./HamburgerMenu";
 
 export default function NavBar() {
   const isMobile = useMediaQuery({ query: "(max-width: 376px)" });
   const { data, loading, error } = useGetAllCategories();
   const { type } = useParams();
+  const [open, setOpen] = useState(false);
 
-  const toggleDrawer = (newOpen) => () => {
-    setOpen(newOpen);
+  const toggleDrawer = () => {
+    setOpen(prev => !prev);
   };
 
-  const [open, setOpen] = useState(false);
+  
 
   return (
     <>
@@ -29,43 +31,10 @@ export default function NavBar() {
         <div className="flex flex-row bg-secondary text-white py-[8px] items-center justify-around h-[56px]">
           <div className="flex space-x-2 items-center">
             <div>
-              <button onClick={toggleDrawer(true)}>
+              <button onClick={toggleDrawer}>
                 <RxHamburgerMenu size="23px" />
               </button>
-              <Drawer
-                sx={{
-                  "& .MuiDrawer-paper": {
-                    borderTopRightRadius: "20px",
-                    borderBottomRightRadius: "20px", 
-                  },
-                }}
-                open={open}
-                onClose={toggleDrawer(false)}
-              >
-                <div className="w-[321px] flex flex-col space-y-[8px] px-[32px] pt-[20px]">
-                  <p className="text-sub font-semibold">Home</p>
-                  <div className="flex justify-between h-[48px] items-center">
-                    <p className="text-[18px] font-semibold">Men</p>
-                    <IoIosArrowForward size={20} />
-                  </div>
-                  <div className="flex justify-between h-[48px] items-center">
-                    <p className="text-sub font-semibold">Women</p>
-                    <IoIosArrowForward size={20} />
-                  </div>
-                  <div className="flex justify-between h-[48px] items-center">
-                    <p className="text-sub font-semibold">Kids</p>
-                    <IoIosArrowForward size={20} />
-                  </div>
-                  <div className="flex justify-between h-[48px] items-center">
-                    <p className="text-sub font-semibold">Shoes</p>
-                    <IoIosArrowForward size={20} />
-                  </div>
-                  <div className="flex justify-between h-[48px] items-center">
-                    <p className="text-sub font-semibold">Accessories</p>
-                    <IoIosArrowForward size={20} />
-                  </div>
-                </div>
-              </Drawer>
+              <HamburgerMenu open={open} data={data} onClose={toggleDrawer} />
             </div>
             <img
               src="https://cdn.discordapp.com/attachments/1120391488484933705/1216750390960328765/image.png?ex=6601861b&is=65ef111b&hm=7871a80e9790583f582f4f0e9c89ca68e2c8324d409580022ddf6632228a3fc5&"

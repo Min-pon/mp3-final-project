@@ -28,7 +28,7 @@ function SideBar() {
           const title = item;
           const list = data.filter((child) => child.parentId === item.id);
           list.sort((a, b) => a.name.localeCompare(b.name));
-          const list1 = [
+          const listItem = [
             {
               name: "All Items",
               permalink: "",
@@ -37,7 +37,7 @@ function SideBar() {
             },
             ...list,
           ];
-          result.push({ title, list1 });
+          result.push({ title, listItem });
         }
       });
 
