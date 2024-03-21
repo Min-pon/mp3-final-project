@@ -5,6 +5,8 @@ import ProductCard from "../components/ProductCard";
 import Filter from "../components/Filter";
 import SideBar from "../components/SideBar";
 import SelectMenu from "../components/Select";
+import AllProducts from "../hooks/products/useGetAllProducts";
+import useGetAllProducts from "../hooks/products/useGetAllProducts";
 
 function ItemProductList() {
   const { type } = useParams();
@@ -13,6 +15,7 @@ function ItemProductList() {
   const { search } = useLocation();
   const queryParams = new URLSearchParams(search);
   const paramValue = queryParams.get("brand");
+  const { allProducts, loading } = useGetAllProducts();
 
   useEffect(() => {
     console.log(paramValue);
@@ -34,41 +37,20 @@ function ItemProductList() {
             <Filter />
           </div>
           <div className="grid gap-10 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1">
-            <ProductCard
-              imageUrl={`https://images.unsplash.com/photo-1508138221679-760a23a2285b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`}
-              title="Pleated Camisole Dress dddsdssd"
-              description="Our versatile crossbody bag combines fashiondfgdfgdfdfg"
-              rating={4}
-              price={`1,600`}
-            />
-            <ProductCard
-              imageUrl={`https://images.unsplash.com/photo-1508138221679-760a23a2285b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`}
-              title="Pleated Camisole Dress dddsdssd"
-              description="Our versatile crossbody bag combines fashiondfgdfgdfdfg"
-              rating={4}
-              price={`1,600`}
-            />
-            <ProductCard
-              imageUrl={`https://images.unsplash.com/photo-1508138221679-760a23a2285b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`}
-              title="Pleated Camisole Dress dddsdssd"
-              description="Our versatile crossbody bag combines fashiondfgdfgdfdfg"
-              rating={4}
-              price={`1,600`}
-            />
-            <ProductCard
-              imageUrl={`https://images.unsplash.com/photo-1508138221679-760a23a2285b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`}
-              title="Pleated Camisole Dress dddsdssd"
-              description="Our versatile crossbody bag combines fashiondfgdfgdfdfg"
-              rating={4}
-              price={`1,600`}
-            />
-            <ProductCard
-              imageUrl={`https://images.unsplash.com/photo-1508138221679-760a23a2285b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`}
-              title="Pleated Camisole Dress dddsdssd"
-              description="Our versatile crossbody bag combines fashiondfgdfgdfdfg"
-              rating={4}
-              price={`1,600`}
-            />
+            {!loading && (
+              <>
+                {allProducts.slice(0, 6).map((product, index) => (
+                  <ProductCard
+                    key={index}
+                    imageUrl={product.imageUrls[0]}
+                    title={product.name}
+                    description={product.description}
+                    rating={4} // Ensure this is dynamic if possible
+                    price={product.promotionalPrice}
+                  />
+                ))}
+              </>
+            )}
           </div>
         </div>
       </div>
