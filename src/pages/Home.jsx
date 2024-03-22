@@ -42,6 +42,10 @@ export default function HomePage() {
       <div className="flex flex-col items-center space-y-[64px] mb-[168px]">
         <p className="text-[32px] font-bold">Featured Product</p>
         <p>Product Card</p>
+        {/* <section>
+          <p>type : {currentType}</p>
+          <button onClick={() => setCurrentType("My type")}>SET</button>
+        </section> */}
       </div>
     </div>
   );
