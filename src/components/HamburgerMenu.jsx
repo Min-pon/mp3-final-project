@@ -2,13 +2,16 @@ import React, { useState, useEffect } from "react";
 import Drawer from "@mui/material/Drawer";
 import { IoIosArrowForward } from "react-icons/io";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 function HamburgerMenu({ open, onClose, data }) {
   const [menu, setMenu] = useState([]);
   const [selectedMenu, setSelectedMenu] = useState(null);
   const [isSelectedMenu, setIsSelectedMenu] = useState(false);
   const navigate = useNavigate();
+  const { type } = useParams();
+  const [params, setParams] = useSearchParams();
+  const [paramFilter, setParamFilter] = useState("");
 
   useEffect(() => {
     function convertData(data) {
@@ -53,6 +56,11 @@ function HamburgerMenu({ open, onClose, data }) {
     navigate("/");
   };
 
+  useEffect(() => {
+    console.log(params.get("filter"));
+    setParamFilter(params.get("filter"));
+  }, [params]);
+
   return (
     <Drawer
       sx={{
@@ -66,8 +74,8 @@ function HamburgerMenu({ open, onClose, data }) {
     >
       <div className="w-[321px] flex flex-col space-y-[8px] px-[32px] pt-[20px]">
         {isSelectedMenu ? (
-          <>
-            <div className="flex justify-between h-[48px] items-center border-b ">
+          <div className=" transition-opacity duration-300 ease-out">
+            <div className="flex gap-6 h-[48px] items-center border-b ">
               <div className=" rotate-180" onClick={handleClickBack}>
                 <IoIosArrowForward size={20} />
               </div>
@@ -84,14 +92,22 @@ function HamburgerMenu({ open, onClose, data }) {
                     selected.permalink
                     }`
               }`}>
-                <div className="flex justify-between h-[48px] items-center">
+                <div className={`flex justify-between h-[48px] items-center transition-colors duration-300 ease-in-out ${
+                  selectedMenu.title?.name.toLowerCase() === type
+                    ? `${
+                        paramFilter === selected.permalink
+                          ? " bg-primary hover:bg-primary"
+                          : `${!paramFilter && idx === 0 ? " bg-primary hover:bg-primary" : " "}`
+                      }`
+                    : " "
+                }`}>
                   <p className="text-sub font-semibold">{selected.name}</p>
                 </div>
               </Link>
             ))}
-          </>
+          </div>
         ) : (
-          <>
+          <div className=" transition-opacity duration-300 ease-in">
             <div
               className="flex justify-between h-[48px] items-center"
               onClick={handleClickHome}
@@ -110,7 +126,7 @@ function HamburgerMenu({ open, onClose, data }) {
                 <IoIosArrowForward size={20} />
               </div>
             ))}
-          </>
+          </div>
         )}
       </div>
     </Drawer>

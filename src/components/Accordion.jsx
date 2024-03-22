@@ -66,7 +66,7 @@ function Accordion({ data, setAccordionOpen, accordionOpen }) {
                     ? `${
                         paramFilter === list.permalink
                           ? " bg-primary hover:bg-primary"
-                          : `${!paramFilter && idx === 0 ? " bg-primary hover:bg-primary-700" : " "}`
+                          : `${!paramFilter && idx === 0 ? " bg-primary hover:bg-primary" : " "}`
                       }`
                     : " "
                 }`}
