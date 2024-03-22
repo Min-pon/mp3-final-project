@@ -3,16 +3,23 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import Drawer from "@mui/material/Drawer";
+import { useStore } from "../hooks/useStore";
 import {
+  CartWithItemIcon,
   EmptyCartIcon,
   FavouriteIcon,
   SearchIcon,
   UserIcon,
 } from "../assets/iconList";
 
-export default function NavBar(type) {
+export default function NavBar() {
   const isMobile = useMediaQuery({ query: "(max-width: 376px)" });
-  // console.log(isMobile);
+
+  const { currentType, setCurrentType, cartId } = useStore((state) => ({
+    currentType: state.currentType,
+    setCurrentType: state.setCurrentType,
+    cartId: state.cartId,
+  }));
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -69,7 +76,13 @@ export default function NavBar(type) {
       ) : (
         <div className="flex flex-row bg-secondary text-white py-[10px] items-center justify-between h-[60px] px-[160px]">
           <div className="flex space-x-0 items-center">
-            <a className="flex items-center space-x-[10px] mr-[40px]" href="/">
+            <a
+              className="flex items-center space-x-[10px] mr-[40px]"
+              href="/"
+              onClick={() => {
+                setCurrentType("");
+              }}
+            >
               <img
                 src="https://cdn.discordapp.com/attachments/1120391488484933705/1216750390960328765/image.png?ex=6601861b&is=65ef111b&hm=7871a80e9790583f582f4f0e9c89ca68e2c8324d409580022ddf6632228a3fc5&"
                 alt="logo"
@@ -78,46 +91,73 @@ export default function NavBar(type) {
               <p className="text-sub font-semibold">WDB</p>
             </a>
             <div className="flex space-x-[24px]">
-              {type == "men" ? (
-                <div
-                  href="/item-product-list/type=men"
-                  className="text-body font-normal text-primary"
-                >
-                  Men
-                </div>
+              {currentType == "men" ? (
+                <div className="text-body font-normal text-primary">Men</div>
               ) : (
                 <a
                   href="/item-product-list/type=men"
+                  onClick={() => {
+                    setCurrentType("men");
+                  }}
                   className="text-body font-normal hover:text-primary-300 active:text-primary"
                 >
                   Men
                 </a>
               )}
-
-              <a
-                href="/item-product-list/type=women"
-                className="text-body font-normal hover:text-primary-300 active:text-primary"
-              >
-                Women
-              </a>
-              <a
-                href="/item-product-list/type=kids"
-                className="text-body font-normal hover:text-primary-300 active:text-primary"
-              >
-                Kids
-              </a>
-              <a
-                href="/item-product-list/type=shoes"
-                className="text-body font-normal hover:text-primary-300 active:text-primary"
-              >
-                Shoes
-              </a>
-              <a
-                href="/item-product-list/type=accessories"
-                className="text-body font-normal hover:text-primary-300 active:text-primary"
-              >
-                Accessories
-              </a>
+              {currentType == "women" ? (
+                <div className="text-body font-normal text-primary">Women</div>
+              ) : (
+                <a
+                  href="/item-product-list/type=women"
+                  onClick={() => {
+                    setCurrentType("women");
+                  }}
+                  className="text-body font-normal hover:text-primary-300 active:text-primary"
+                >
+                  Women
+                </a>
+              )}
+              {currentType == "kids" ? (
+                <div className="text-body font-normal text-primary">Kids</div>
+              ) : (
+                <a
+                  href="/item-product-list/type=kids"
+                  onClick={() => {
+                    setCurrentType("kids");
+                  }}
+                  className="text-body font-normal hover:text-primary-300 active:text-primary"
+                >
+                  Kids
+                </a>
+              )}
+              {currentType == "shoes" ? (
+                <div className="text-body font-normal text-primary">Shoes</div>
+              ) : (
+                <a
+                  href="/item-product-list/type=shoes"
+                  onClick={() => {
+                    setCurrentType("shoes");
+                  }}
+                  className="text-body font-normal hover:text-primary-300 active:text-primary"
+                >
+                  Shoes
+                </a>
+              )}
+              {currentType == "accessories" ? (
+                <div className="text-body font-normal text-primary">
+                  Accessories
+                </div>
+              ) : (
+                <a
+                  href="/item-product-list/type=accessories"
+                  onClick={() => {
+                    setCurrentType("accessories");
+                  }}
+                  className="text-body font-normal hover:text-primary-300 active:text-primary"
+                >
+                  Accessories
+                </a>
+              )}
             </div>
           </div>
           <div className="flex space-x-[4px]">
@@ -131,7 +171,7 @@ export default function NavBar(type) {
               <UserIcon />
             </div>
             <a href="/cart">
-              <EmptyCartIcon />
+              {cartId.length == 0 ? <EmptyCartIcon /> : <CartWithItemIcon />}
             </a>
           </div>
         </div>

@@ -1,14 +1,8 @@
 import AdvertisingCard from "../components/AdvertisingCard";
 import useGetAllCollections from "../hooks/collections/useGetAllColllections";
-// import { useStore } from "../hooks/useStore";
 
 export default function HomePage() {
   const { collections, loading } = useGetAllCollections();
-
-  // const { currentType, setCurrentType } = useStore((state) => ({
-  //   currentType: state.currentType,
-  //   setCurrentType: state.setCurrentType,
-  // }));
 
   if (loading) {
     return <div>Loading...</div>;
