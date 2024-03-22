@@ -5,10 +5,12 @@ import ProductCard from "../components/ProductCard";
 import Filter from "../components/Filter";
 import SideBar from "../components/SideBar";
 import SelectMenu from "../components/Select";
+import { useMediaQuery } from "react-responsive";
 import AllProducts from "../hooks/products/useGetAllProducts";
 import useGetAllProducts from "../hooks/products/useGetAllProducts";
 
 function ItemProductList() {
+  const isMobile = useMediaQuery({ query: "(max-width: 376px)" });
   const { type } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [params, setParams] = useSearchParams();
@@ -24,9 +26,14 @@ function ItemProductList() {
   return (
     <div className="container mx-auto min-h-[83vh] p-4 font-karla">
       <div className="grid grid-cols-5 gap-1">
-        <div className="col-span-1">
-          <SideBar />
-        </div>
+        {isMobile ? (
+          <></>
+        ) : (
+          <div className="col-span-1">
+            <SideBar />
+          </div>
+        )}
+
         <div className="col-span-4 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2 text-lg">
