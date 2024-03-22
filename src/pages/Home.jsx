@@ -1,8 +1,14 @@
 import AdvertisingCard from "../components/AdvertisingCard";
 import useGetAllCollections from "../hooks/collections/useGetAllColllections";
+// import { useStore } from "../hooks/useStore";
 
 export default function HomePage() {
   const { collections, loading } = useGetAllCollections();
+
+  // const { currentType, setCurrentType } = useStore((state) => ({
+  //   currentType: state.currentType,
+  //   setCurrentType: state.setCurrentType,
+  // }));
 
   if (loading) {
     return <div>Loading...</div>;
@@ -42,6 +48,10 @@ export default function HomePage() {
       <div className="flex flex-col items-center space-y-[64px] mb-[168px]">
         <p className="text-[32px] font-bold">Featured Product</p>
         <p>Product Card</p>
+        {/* <section>
+          <p>type : {currentType}</p>
+          <button onClick={() => setCurrentType("My type")}>SET</button>
+        </section> */}
       </div>
     </div>
   );
