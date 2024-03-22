@@ -24,7 +24,7 @@ export default function AdvertisingCard({ imgUrl, header, detail }) {
   return (
     <div
       style={{ backgroundImage: `url(${imgUrl})` }}
-      className="text-white h-[500px] w-[575px] bg-cover bg-center flex flex-col justify-end items-center space-y-[16px] pb-[16px]"
+      className="text-white h-[500px] max-w-[575px] min-w-[400px] bg-cover bg-center flex flex-col justify-end items-center space-y-[16px] pb-[16px] mobile:min-w-full"
     >
       <p className="text-h6 font-bold">{header}</p>
       <p className="text-body font-normal px-[16px] text-center">{detail}</p>
