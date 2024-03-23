@@ -1,15 +1,16 @@
 import AdvertisingCard from "../components/AdvertisingCard";
 import useGetAllCollections from "../hooks/collections/useGetAllColllections";
 import ProductCard from "../components/ProductCard";
-import useGetAllProducts from "../hooks/collections/useGetAllColllections";
+import useGetAllProducts from "../hooks/products/useGetAllProducts";
 
 export default function HomePage() {
   const { collections, loading } = useGetAllCollections();
-  // const { allProducts, loading: loading2 } = useGetAllProducts();
+
+  const { allProducts, loading: loading2 } = useGetAllProducts();
 
   // console.log(allProducts);
 
-  if (loading) {
+  if (loading || loading2) {
     return <div>Loading...</div>;
   }
 
@@ -77,14 +78,14 @@ export default function HomePage() {
       <div className="flex flex-col items-center space-y-[64px] mb-[168px]">
         <p className="text-[32px] font-bold">Featured Product</p>
         <div className="flex space-x-[40px] mobile:flex-col mobile:space-y-[40px] mobile:space-x-0">
-          {productList.map((product, index) => (
+          {allProducts.slice(0, 4).map((product, index) => (
             <ProductCard
               key={index}
-              imageUrl={product.imageUrl}
-              title={product.title}
+              imageUrl={product.imageUrls[0]}
+              title={product.name}
               description={product.description}
-              rating={product.rating}
-              price={product.price}
+              rating={4} // Ensure this is dynamic if possible
+              price={product.promotionalPrice}
             />
           ))}
         </div>
