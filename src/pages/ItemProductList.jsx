@@ -24,41 +24,38 @@ function ItemProductList() {
   }, [search]);
 
   return (
-    <div className="container mx-auto min-h-[83vh] p-4 font-karla">
-      <div className="grid grid-cols-5 gap-1">
-        {isMobile ? (
-          <></>
-        ) : (
-          <div className="col-span-1">
-            <SideBar />
-          </div>
-        )}
+    <div className="flex justify-between mt-[93px] mb-[188px] container mx-auto  2xl:min-w-[1601px] xl:max-w-[1191px] ">
+      {isMobile ? (
+        <></>
+      ) : (
+        <div className=" mt-2">
+          <SideBar />
+        </div>
+      )}
 
-        <div className="col-span-4 space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2 text-lg">
-              <h5 className=" text-[32px] font-poppins font-bold">
-                Woman’s Clothing
-              </h5>
-            </div>
+      <div className="flex-1 max-w-fit">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-2xl font-bold">Product List</h1>
+          <div>
             <Filter />
           </div>
-          <div className="grid gap-10 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1">
-            {!loading && (
-              <>
-                {allProducts.slice(0, 6).map((product, index) => (
-                  <ProductCard
-                    key={index}
-                    imageUrl={product.imageUrls[0]}
-                    title={product.name}
-                    description={product.description}
-                    rating={4} // Ensure this is dynamic if possible
-                    price={product.promotionalPrice}
-                  />
-                ))}
-              </>
-            )}
-          </div>
+        </div>
+
+        <div className="grid 2xl:grid-cols-3 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-10">
+          {!loading && (
+            <>
+              {allProducts.slice(0, 6).map((product, index) => (
+                <ProductCard
+                  key={index}
+                  imageUrl={product.imageUrls[0]}
+                  title={product.name}
+                  description={product.description}
+                  rating={4} // Ensure this is dynamic if possible
+                  price={product.promotionalPrice}
+                />
+              ))}
+            </>
+          )}
         </div>
       </div>
     </div>
