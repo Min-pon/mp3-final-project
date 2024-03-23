@@ -32,11 +32,11 @@ export default function ProductCardAlsoLike() {
     },
   ];
   return (
-    <div className="mt-[80px] ml-[160px] mb-[41px]">
-      <div className="text-[32px] font-semibold mb-[64px]">
+    <div className="mt-10 xl:mt-[80px] mb-10 xl:mb-[41px]">
+      <div className="text-xl xl:text-[32px] font-semibold mb-8 xl:mb-[64px]">
         People also like these
       </div>
-      <div className="flex flex-row gap-10">
+      <div className="flex flex-row space-x-10">
         {productList.map((product, index) => (
           <ProductCard
             key={index}
