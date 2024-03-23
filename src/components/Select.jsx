@@ -37,7 +37,7 @@ function SelectMenu() {
   };
 
   return (
-    <div className=" w-fit">
+    <div className="w-fit mobile:w-full">
       {/* <div className=" text-[16px] font-normal text-secondary-700">Qty.</div> */}
       <div
         ref={filterRef}

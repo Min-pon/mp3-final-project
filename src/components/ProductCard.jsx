@@ -6,7 +6,7 @@ function RatingStar({ rating }) {
   const notShows = Array(5 - rating).fill("");
 
   return (
-    <div className="flex flex-row ">
+    <div className="flex flex-row">
       {shows.map((show, index) => (
         <div key={index} className=" w-[30px] h-[30px] flex items-center ">
           <FontAwesomeIcon icon={faStar} style={{ color: "#def81c" }} />
@@ -22,17 +22,14 @@ function RatingStar({ rating }) {
 }
 function ProductCard({ imageUrl, title, description, rating, price }) {
   return (
-    <div className="container w-[340px] md:w-[370px] h-[524px] ">
+    <div className="container w-[370px] dx:w-[260px] h-full ">
       <img
         src={imageUrl}
         alt=""
-        width="370px"
-        height="370px"
         style={{
-          height: "370px",
-          width: "370px",
           objectFit: "cover",
         }}
+        className="dx:h-[260px] h-[370px] dx:w-[260px] w-[370px]"
       />
       <div className="font-poppins mt-4">
         <h2 className=" mb-2 font-bold text-2xl overflow-hidden text-nowrap text-ellipsis">
@@ -44,7 +41,7 @@ function ProductCard({ imageUrl, title, description, rating, price }) {
         <div className=" mb-2">
           <RatingStar rating={Number(rating)} />
         </div>
-        <div className=" flex justify-end">
+        <div className="flex justify-end">
           <h2 className=" font-bold text-2xl ">THB {price}</h2>
         </div>
       </div>

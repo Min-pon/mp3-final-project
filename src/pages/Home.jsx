@@ -8,9 +8,11 @@ export default function HomePage() {
 
   const { allProducts, loading: loading2 } = useGetAllProducts();
 
-  // console.log(allProducts);
+  // const checkSize = useMediaQuery({ query: "(max-width: 1441px)" });
+  // const featureProductNumber = 4 - checkSize;
 
-  if (loading || loading2) {
+  console.log(allProducts);
+  if (loading2) {
     return <div>Loading...</div>;
   }
 
@@ -64,20 +66,24 @@ export default function HomePage() {
           imgUrl={
             "https://cdn.discordapp.com/attachments/1120391488484933705/1216804605891973182/image.png?ex=6601b899&is=65ef4399&hm=e031710e6cafa5d1754d337276214480bbab4583014d8a8ddeb9251e9904a808&"
           }
-          header={collections[2].items[1].title}
-          detail={collections[2].items[1].description}
+          // header={collections[2].items[1].title}
+          // detail={collections[2].items[1].description}
+          header="test"
+          detail="test"
         />
         <AdvertisingCard
           imgUrl={
             "https://cdn.discordapp.com/attachments/1120391488484933705/1216811257550733342/image.png?ex=6601becb&is=65ef49cb&hm=8a9da389438b40134a137078b45a93c14f689acb2d8c6656c77835421baee310&"
           }
-          header={collections[2].items[1].title}
-          detail={collections[2].items[0].description}
+          // header={collections[2].items[1].title}
+          // detail={collections[2].items[0].description}
+          header="test"
+          detail="test"
         />
       </div>
-      <div className="flex flex-col items-center space-y-[64px] mb-[168px]">
+      <div className="flex flex-col space-y-[64px] mb-[168px] px-[160px] mobile:px-[16px]">
         <p className="text-[32px] font-bold">Featured Product</p>
-        <div className="flex space-x-[40px] mobile:flex-col mobile:space-y-[40px] mobile:space-x-0">
+        <div className="flex justify-wrap space-x-[40px] dx:space-x-[21.8px] mobile:flex-col mobile:space-y-[40px] mobile:space-x-0">
           {allProducts.slice(0, 4).map((product, index) => (
             <ProductCard
               key={index}
