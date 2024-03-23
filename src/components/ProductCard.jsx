@@ -22,14 +22,14 @@ function RatingStar({ rating }) {
 }
 function ProductCard({ imageUrl, title, description, rating, price }) {
   return (
-    <div className="container w-[370px] dx:w-[260px] h-full ">
+    <div className="container w-[370px] dx:w-[260px] h-full mobile:w-full">
       <img
         src={imageUrl}
         alt=""
         style={{
           objectFit: "cover",
         }}
-        className="dx:h-[260px] h-[370px] dx:w-[260px] w-[370px]"
+        className="dx:h-[260px] h-[370px] dx:w-[260px] w-[370px] mobile:w-full mobile:h-full"
       />
       <div className="font-poppins mt-4">
         <h2 className=" mb-2 font-bold text-2xl overflow-hidden text-nowrap text-ellipsis">

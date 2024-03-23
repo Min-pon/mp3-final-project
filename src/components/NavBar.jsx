@@ -14,7 +14,7 @@ import { Link, useParams } from "react-router-dom";
 import HamburgerMenu from "./HamburgerMenu";
 
 export default function NavBar() {
-  const isMobile = useMediaQuery({ query: "(max-width: 376px)" });
+  const isMobile = useMediaQuery({ query: "(max-width: 431px)" });
 
   const { currentType, setCurrentType, cartId } = useStore((state) => ({
     currentType: state.currentType,

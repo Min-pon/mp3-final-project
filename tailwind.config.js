@@ -42,8 +42,8 @@ export default {
         caption: "12px",
       },
       screens: {
-        mobile: { max: "376px" },
-        dx: { max: "1441px" },
+        mobile: { max: "431px" },
+        dx: { max: "1552px" },
       },
     },
   },

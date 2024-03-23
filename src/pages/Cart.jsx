@@ -24,10 +24,10 @@ export default function Cart() {
     <div className="bg-secondary-50 overflow-hidden px-[160px] mobile:px-[16px] mt-[91px]">
       <div className="">
         <div className="pl-[24px] text-[32px] font-bold">My cart</div>
-        <div className="flex flex-row items-start mt-[41px] gap-x-10 mobile:flex-col mobile:gap-y-10">
-          <div className="p-[24px] text-[24px] font-bold bg-white">
+        <div className="flex flex-row items-start mt-[41px] gap-x-10 mobile:flex-col mobile:gap-y-10 mobile:gap-x-0 mobile:gap-0">
+          <div className="p-[24px] text-[24px] font-bold bg-white ">
             {cart.id ? (
-              <div className="w-full">
+              <div className="w-[100%]">
                 {" "}
                 <p>Items</p>
                 <CartItem />
@@ -36,7 +36,7 @@ export default function Cart() {
               <EmptyCard />
             )}
           </div>
-          <div className="w-full">
+          <div className="w-[50%] mobile:w-full">
             <SummaryCard />
           </div>
         </div>

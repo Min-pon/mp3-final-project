@@ -9,7 +9,7 @@ export default function CartItem() {
           <img
             src="https://cdn.discordapp.com/attachments/1208360755007852586/1218240790363639960/image.png?ex=6606f226&is=65f47d26&hm=8937c22fac5697d2efff8c39e0e203d5665d45155214033aff22d1485df15607&"
             alt="Product item"
-            className="w-[209px] mobile:w-full"
+            className="w-full"
           />
         </div>
         <div className="flex flex-col w-full justify-between">
