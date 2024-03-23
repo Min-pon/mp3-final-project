@@ -140,6 +140,37 @@ function BinIcon() {
   );
 }
 
+function HamburgerMenuIcon() {
+  return (
+    <svg
+      width="40"
+      height="40"
+      viewBox="0 0 40 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M9 12L31.6274 12"
+        stroke="#FFFFFF"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M9 20H31.6274"
+        stroke="#FFFFFF"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M9 28H31.6274"
+        stroke="#FFFFFF"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
 export {
   EmptyCartIcon,
   CartWithItemIcon,
@@ -148,4 +179,5 @@ export {
   FavouriteIcon,
   ArrowRightIcon,
   BinIcon,
+  HamburgerMenuIcon,
 };

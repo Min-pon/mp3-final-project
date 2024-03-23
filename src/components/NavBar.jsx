@@ -1,11 +1,11 @@
 import { useMediaQuery } from "react-responsive";
-import { RxHamburgerMenu } from "react-icons/rx";
 import { Fragment, useState } from "react";
 import { useStore } from "../hooks/useStore";
 import {
   CartWithItemIcon,
   EmptyCartIcon,
   FavouriteIcon,
+  HamburgerMenuIcon,
   SearchIcon,
   UserIcon,
 } from "../assets/iconList";
@@ -32,27 +32,36 @@ export default function NavBar() {
   return (
     <div>
       {isMobile ? (
-        <div className="flex flex-row bg-secondary text-white py-[8px] items-center justify-around h-[56px]">
-          <div className="flex space-x-2 items-center">
+        <div className="flex flex-row bg-secondary text-white py-[8px] justify-between h-[56px] pl-[16px] pr-[8px] w-full fixed z-10">
+          <div className="flex space-x-[8px]">
             <div>
               <button onClick={toggleDrawer}>
-                <RxHamburgerMenu size="23px" />
+                <HamburgerMenuIcon />
               </button>
               <HamburgerMenu open={open} data={data} onClose={toggleDrawer} />
             </div>
-            <img
-              src="https://cdn.discordapp.com/attachments/1120391488484933705/1216750390960328765/image.png?ex=6601861b&is=65ef111b&hm=7871a80e9790583f582f4f0e9c89ca68e2c8324d409580022ddf6632228a3fc5&"
-              alt="logo"
-              className="h-[40px]"
-            />
-            <p className="text-sub font-semibold">WDB</p>
+            <Link
+              className="flex items-center space-x-[10px] mr-[40px]"
+              to="/"
+              onClick={() => {
+                setCurrentType("");
+              }}
+            >
+              <img
+                src="https://cdn.discordapp.com/attachments/1120391488484933705/1216750390960328765/image.png?ex=6601861b&is=65ef111b&hm=7871a80e9790583f582f4f0e9c89ca68e2c8324d409580022ddf6632228a3fc5&"
+                alt="logo"
+                className="h-[36px]"
+              />
+              <p className="text-sub font-semibold">WDB</p>
+            </Link>
           </div>
+
           <a href="/cart">
-            <EmptyCartIcon />
+            {cartId.length == 0 ? <EmptyCartIcon /> : <CartWithItemIcon />}
           </a>
         </div>
       ) : (
-        <div className="flex flex-row bg-secondary text-white py-[10px] items-center justify-between h-[60px] px-[160px]">
+        <div className="flex flex-row bg-secondary text-white py-[10px] items-center justify-between h-[60px] px-[160px] w-full fixed z-10">
           <div className="flex space-x-0 items-center">
             <Link
               className="flex items-center space-x-[10px] mr-[40px]"
