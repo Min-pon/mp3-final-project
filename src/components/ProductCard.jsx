@@ -22,7 +22,7 @@ function RatingStar({ rating }) {
 }
 function ProductCard({ imageUrl, title, description, rating, price }) {
   return (
-    <div className="container w-[370px] h-[524px] ">
+    <div className="container w-[340px] md:w-[370px] h-[524px] ">
       <img
         src={imageUrl}
         alt=""
