@@ -4,9 +4,7 @@ import { useParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import Filter from "../components/Filter";
 import SideBar from "../components/SideBar";
-import SelectMenu from "../components/Select";
 import { useMediaQuery } from "react-responsive";
-import AllProducts from "../hooks/products/useGetAllProducts";
 import useGetAllProducts from "../hooks/products/useGetAllProducts";
 
 function ItemProductList() {
@@ -16,12 +14,42 @@ function ItemProductList() {
   const [params, setParams] = useSearchParams();
   const { search } = useLocation();
   const queryParams = new URLSearchParams(search);
-  const paramValue = queryParams.get("brand");
-  const { allProducts, loading } = useGetAllProducts();
+  const paramValue = queryParams.get("filter");
+  const [urlParams, setUrlParams] = useState({ });
+  const [urlFilterParams, setUrlFilterParams] = useState(null);
+  const { allProducts, loading } = useGetAllProducts("/products", urlParams);
+  const [selectMenu, setSelectMenu] = useState("asce");
 
   useEffect(() => {
-    console.log(paramValue);
-  }, [search]);
+    const newParamsQuery = new URLSearchParams(search);
+    newParamsQuery.delete("filter");
+    const objectQueryParams = Object.fromEntries(newParamsQuery);
+    if (type === "collection") {
+      setUrlParams({
+        ...urlParams,
+        sort: "promotionalPrice:asc",
+        ...objectQueryParams,
+        collection: paramValue,
+        categories: "",
+      });
+    } else if (paramValue) {
+      setUrlParams({
+        ...urlParams,
+        sort: "promotionalPrice:asc",
+        ...objectQueryParams,
+        collection: "",
+        categories: paramValue,
+      });
+    } else {
+      setUrlParams({
+        ...urlParams,
+        sort: "promotionalPrice:asc",
+        ...objectQueryParams,
+        collection: "",
+        categories: type,
+      });
+    }
+  }, [search,type]);
 
   return (
     <div className="flex justify-between mt-[93px] mb-[188px] container mx-auto  2xl:min-w-[1601px] xl:max-w-[1191px] ">
