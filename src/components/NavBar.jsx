@@ -2,6 +2,7 @@ import { useMediaQuery } from "react-responsive";
 import { Fragment, useState } from "react";
 import { useStore } from "../hooks/useStore";
 import {
+  LogoIcon,
   CartWithItemIcon,
   EmptyCartIcon,
   FavouriteIcon,
@@ -47,11 +48,7 @@ export default function NavBar() {
                 setCurrentType("");
               }}
             >
-              <img
-                src="https://cdn.discordapp.com/attachments/1120391488484933705/1216750390960328765/image.png?ex=6601861b&is=65ef111b&hm=7871a80e9790583f582f4f0e9c89ca68e2c8324d409580022ddf6632228a3fc5&"
-                alt="logo"
-                className="h-[36px]"
-              />
+              <LogoIcon />
               <p className="text-sub font-semibold">WDB</p>
             </Link>
           </div>
@@ -70,11 +67,7 @@ export default function NavBar() {
                 setCurrentType("");
               }}
             >
-              <img
-                src="https://cdn.discordapp.com/attachments/1120391488484933705/1216750390960328765/image.png?ex=6601861b&is=65ef111b&hm=7871a80e9790583f582f4f0e9c89ca68e2c8324d409580022ddf6632228a3fc5&"
-                alt="logo"
-                className="h-[37px]"
-              />
+              <LogoIcon />
               <p className="text-sub font-semibold">WDB</p>
             </Link>
             <div className="flex space-x-[24px]">
