@@ -2,45 +2,94 @@ import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleUp } from "@fortawesome/free-solid-svg-icons";
 import { faCircle, faCircleDot } from "@fortawesome/free-regular-svg-icons";
+import {
+  Link,
+  useSearchParams,
+  useLocation,
+  useParams,
+  useNavigate
+} from "react-router-dom";
 
 const options = [
-  { id: 1, label: "Price - Low to high", by: "asce" },
-  { id: 2, label: "Price - High to low", by: "desc" },
-  { id: 3, label: "Ratings", by: "rating" },
+  {
+    id: 1,
+    label: "Price - Low to high",
+    by: "asce",
+    sort: "promotionalPrice:asc",
+  },
+  {
+    id: 2,
+    label: "Price - High to low",
+    by: "desc",
+    sort: "promotionalPrice:desc",
+  },
+  { id: 3, label: "Ratings", by: "rating", sort: "ratings:desc" },
 ];
 
 function Filter() {
-  const [selectMenu, setSelectMenu] = useState("asce");
-  const [open, setOpen] = useState(false);
+  const { search } = useLocation();
+  const queryParams = new URLSearchParams(search);
+  const { type } = useParams();
+  const paramValue = queryParams.get("filter");
+  const paramSort = queryParams.get("sort");
+  const navigate = useNavigate();
 
-  const filterRef = useRef()
+  
+
+  const [open, setOpen] = useState(false);
+  const [params, setParams] = useSearchParams();
+  const [selectMenu, setSelectMenu] = useState({});
+
+  const filterRef = useRef();
+
+  useEffect(() => {
+    setSelectMenu(options[0]);
+  }, [type, paramValue]);
+
+  useEffect(() => {
+    // console.log(paramSort)
+    if(paramSort){
+      setSelectMenu(options.find(option => paramSort === option.sort))
+    }
+  }, []);
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
       if (!filterRef.current.contains(event.target)) {
-        setOpen(false)
+        setOpen(false);
       }
     };
 
     if (open) {
-      document.addEventListener('mousedown', handleOutsideClick);
+      document.addEventListener("mousedown", handleOutsideClick);
     } else {
-      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener("mousedown", handleOutsideClick);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [open]);
 
-
+  const handleSelect = (selected) => {
+    setSelectMenu(selected);
+    setParams((prevParams) => {
+      const newParams = new URLSearchParams(prevParams);
+      newParams.set("sort", selected.sort);
+      return newParams;
+    });
+    // setParams({ ...params, sort: selected });
+  };
 
   const handleClickDropdown = () => {
     setOpen((prev) => !prev);
   };
 
   return (
-    <div ref={filterRef} className={`relative font-poppins flex flex-col gap-1 items-end `}>
+    <div
+      ref={filterRef}
+      className={`relative font-poppins flex flex-col gap-1 items-end `}
+    >
       <button
         onClick={handleClickDropdown}
         className={`border px-[10px] w-[124px] h-[54px] py-[7px] flex justify-between items-center font-normal transition-colors duration-300 ease-in-out ${
@@ -66,10 +115,10 @@ function Filter() {
             {options.map((option) => (
               <div
                 className=" flex gap-4 items-center cursor-pointer hover:scale-x-105 transition-all duration-300 ease-in-out"
-                onClick={() => setSelectMenu(option.by)}
+                onClick={() => handleSelect(option)}
                 key={option.id}
               >
-                {selectMenu === option.by ? (
+                {selectMenu.by === option.by ? (
                   <FontAwesomeIcon
                     icon={faCircleDot}
                     size="xl"

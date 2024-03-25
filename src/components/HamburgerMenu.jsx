@@ -4,7 +4,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
-function HamburgerMenu({ open, onClose, data }) {
+function HamburgerMenu({ open, onClose, data, collections }) {
   const [menu, setMenu] = useState([]);
   const [selectedMenu, setSelectedMenu] = useState(null);
   const [isSelectedMenu, setIsSelectedMenu] = useState(false);
@@ -12,6 +12,10 @@ function HamburgerMenu({ open, onClose, data }) {
   const { type } = useParams();
   const [params, setParams] = useSearchParams();
   const [paramFilter, setParamFilter] = useState("");
+  const [collectionsState, setCollectionsState] = useState({
+    title: { name: "Collection" },
+    listItem: [],
+  });
 
   useEffect(() => {
     function convertData(data) {
@@ -41,6 +45,10 @@ function HamburgerMenu({ open, onClose, data }) {
     }
   }, [data]);
 
+  useEffect(() => {
+    setListArray(collections);
+  }, [collections]);
+
   const handleMainMenuClick = (category) => {
     setSelectedMenu(category);
     setIsSelectedMenu(true);
@@ -54,6 +62,13 @@ function HamburgerMenu({ open, onClose, data }) {
   const handleClickHome = () => {
     onClose();
     navigate("/");
+  };
+
+  const setListArray = (array) => {
+    setCollectionsState((prevState) => ({
+      ...prevState,
+      listItem: array,
+    }));
   };
 
   useEffect(() => {
@@ -85,22 +100,29 @@ function HamburgerMenu({ open, onClose, data }) {
               </p>
             </div>
             {selectedMenu.listItem.map((selected, idx) => (
-              <Link key={selected.id} to={`${
-                idx === 0
-                  ? `/item-product-list/${selectedMenu.title?.name.toLowerCase()}`
-                  : `/item-product-list/${selectedMenu.title?.name.toLowerCase()}?filter=${
-                    selected.permalink
-                    }`
-              }`}>
-                <div className={`flex justify-between h-[48px] items-center transition-colors duration-300 ease-in-out ${
-                  selectedMenu.title?.name.toLowerCase() === type
-                    ? `${
-                        paramFilter === selected.permalink
-                          ? " bg-primary hover:bg-primary"
-                          : `${!paramFilter && idx === 0 ? " bg-primary hover:bg-primary" : " "}`
-                      }`
-                    : " "
-                }`}>
+              <Link
+                key={selected.id}
+                to={`${
+                  !selected.permalink
+                    ? `/item-product-list/${selectedMenu.title?.permalink}`
+                    : `/item-product-list/${selectedMenu.title?.permalink}?filter=${selected.permalink}`
+                }`}
+              >
+                <div
+                  className={`flex justify-between h-[48px] items-center transition-colors duration-300 ease-in-out ${
+                    selectedMenu.title?.permalink === type
+                      ? `${
+                          paramFilter === selected.permalink
+                            ? " bg-primary hover:bg-primary"
+                            : `${
+                                !paramFilter && idx === 0
+                                  ? " bg-primary hover:bg-primary"
+                                  : " "
+                              }`
+                        }`
+                      : " "
+                  }`}
+                >
                   <p className="text-sub font-semibold">{selected.name}</p>
                 </div>
               </Link>
@@ -126,6 +148,15 @@ function HamburgerMenu({ open, onClose, data }) {
                 <IoIosArrowForward size={20} />
               </div>
             ))}
+            <div
+              className="flex justify-between h-[48px] items-center cursor-pointer"
+              onClick={() => handleMainMenuClick(collectionsState)}
+            >
+              <p className="text-[18px] font-semibold">
+                {collectionsState.title?.name}
+              </p>
+              <IoIosArrowForward size={20} />
+            </div>
           </div>
         )}
       </div>

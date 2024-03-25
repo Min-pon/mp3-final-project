@@ -11,14 +11,20 @@ function Accordion({ data, setAccordionOpen, accordionOpen }) {
   const { type } = useParams();
 
   useEffect(() => {
-    console.log(params.get("filter"));
     setParamFilter(params.get("filter"));
   }, [params]);
 
   const handleClick = () => {
-    if (accordionOpen === data.title?.name.toLowerCase()) {
+    if (accordionOpen === data.title?.permalink) {
       setAccordionOpen("");
-    } else setAccordionOpen(data.title?.name.toLowerCase());
+    } else setAccordionOpen(data.title?.permalink);
+  };
+
+  const handleSetParams = (list) => {
+    // params.set("sort", list.permalink);
+    // history.push({ search: params.toString() });
+
+    setParams({sort : list.permalink})
   };
 
   return (
@@ -27,14 +33,10 @@ function Accordion({ data, setAccordionOpen, accordionOpen }) {
         onClick={handleClick}
         className=" py-1 flex justify-between items-center w-full"
       >
-        <h4 className="  text-lg font-semibold">
-          {data?.title?.name}
-        </h4>
+        <h4 className="  text-lg font-semibold">{data?.title?.name}</h4>
         <span
           className={` flex transition-all duration-300 ease-in-out justify-center items-center w-10 h-10 ${
-            accordionOpen === data?.title?.name.toLowerCase()
-              ? ""
-              : "rotate-180"
+            accordionOpen === data?.title?.permalink ? "" : "rotate-180"
           }`}
         >
           <FontAwesomeIcon icon={faAngleUp} />
@@ -42,7 +44,7 @@ function Accordion({ data, setAccordionOpen, accordionOpen }) {
       </button>
       <div
         className={`overflow-hidden text-sm font-semibold transition-all duration-300 ease-in-out mt-2 grid ${
-          accordionOpen === data.title?.name.toLowerCase()
+          accordionOpen === data.title?.permalink
             ? " grid-rows-[1fr] opacity-100 "
             : " grid-rows-[0fr] opacity-0 "
         }`}
@@ -52,21 +54,26 @@ function Accordion({ data, setAccordionOpen, accordionOpen }) {
             <Link
               key={list.id}
               className=" w-full h-full"
+              // onClick={() => handleSetParams(list)}
               to={`${
-                idx === 0
-                  ? `/item-product-list/${data.title?.name.toLowerCase()}`
-                  : `/item-product-list/${data.title?.name.toLowerCase()}?filter=${
+                !list.permalink
+                  ? `/item-product-list/${data.title?.permalink}`
+                  : `/item-product-list/${data.title?.permalink}?filter=${
                       list.permalink
                     }`
               }`}
             >
               <div
                 className={`p-[10px] hover:bg-[#F2F2F2] w-full text-left transition-colors duration-300 ease-in-out active:bg-primary-700 ${
-                  data.title?.name.toLowerCase() === type
+                  data.title?.permalink === type
                     ? `${
                         paramFilter === list.permalink
                           ? " bg-primary hover:bg-primary"
-                          : `${!paramFilter && idx === 0 ? " bg-primary hover:bg-primary" : " "}`
+                          : `${
+                              !paramFilter && idx === 0
+                                ? " bg-primary hover:bg-primary"
+                                : " "
+                            }`
                       }`
                     : " "
                 }`}
