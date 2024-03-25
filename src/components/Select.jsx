@@ -3,8 +3,21 @@ import { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleUp } from "@fortawesome/free-solid-svg-icons";
 import useGetProductByPermalink from "../hooks/products/useGetProductByPermalink";
+import axios from "axios";
 
-function SelectMenu({ productPermalink, menu, skuCode, selectedValue }) {
+const BASE_URL = import.meta.env.VITE_BASE_API;
+
+function SelectMenu({
+  productPermalink,
+  menu,
+  skuCode,
+  selectedValue,
+  currentSize,
+  currentColor,
+  currentQuantity,
+  cartId,
+  itemId,
+}) {
   const { product, loading } = useGetProductByPermalink(productPermalink);
 
   const [value, setValue] = useState(selectedValue);
@@ -40,7 +53,6 @@ function SelectMenu({ productPermalink, menu, skuCode, selectedValue }) {
   // find color, size, and remains
 
   const uniqueColors = new Set();
-  let currentColor;
   let currentRemains;
 
   product.variants.forEach((item) => {
@@ -68,13 +80,11 @@ function SelectMenu({ productPermalink, menu, skuCode, selectedValue }) {
     quantityList.push({ id, label: id });
   }
 
-  console.log(product.variants);
   const colorList = Array.from(uniqueColors).map((color, index) => ({
     id: index + 1,
     label: color,
   }));
 
-  console.log(colorList);
   let options;
 
   switch (menu) {
@@ -137,9 +147,22 @@ function SelectMenu({ productPermalink, menu, skuCode, selectedValue }) {
                       : ""
                   }`}
                   onClick={() => {
-                    setValue(option.label);
                     // update item in existing cart
                     setOpen(false);
+                    setValue(option.label);
+                    // console.log(itemId);
+                    axios
+                      .patch(`${BASE_URL}/carts/${cartId}/items/${itemId}`, {
+                        // skuCode:
+                        //   menu == "color" || menu == "size"
+                        //     ? option.skuCode
+                        //     : skuCode,
+                        quantity:
+                          menu == "quantity" ? option.label : currentQuantity,
+                      })
+                      .then((response) => {
+                        console.log(response);
+                      });
                   }}
                   key={option.id}
                 >

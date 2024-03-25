@@ -5,7 +5,7 @@ const store = persist(
   (set) => ({
     currentType: "",
     userId: "",
-    cartId: "",
+    cartId: "0HrVDEPgTeJhswT42VHs",
     currentProductPermalink: "",
     setCurrentType: (currentType) => set(() => ({ currentType })),
     setUserId: (userId) => set(() => ({ userId })),

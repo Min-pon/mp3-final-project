@@ -6,7 +6,6 @@ import { useStore } from "../hooks/useStore";
 import useGetCartByID from "../hooks/carts/useGetCartByID";
 import ProductCard from "../components/ProductCard";
 import useGetAllProducts from "../hooks/products/useGetAllProducts";
-import useGetProductByPermalink from "../hooks/products/useGetProductByPermalink";
 
 export default function Cart() {
   const { cartId } = useStore((state) => ({
@@ -45,6 +44,8 @@ export default function Cart() {
                     skuCode={item.skuCode}
                     productPermalink={item.productPermalink}
                     quantity={item.quantity}
+                    itemId={item.id}
+                    cartId={"0HrVDEPgTeJhswT42VHs"}
                   />
                 ))}
               </div>

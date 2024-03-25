@@ -3,12 +3,22 @@ import { BinIcon } from "../assets/iconList";
 import SelectMenu from "./Select";
 import useGetProductByPermalink from "../hooks/products/useGetProductByPermalink";
 
-export default function CartItem({ skuCode, productPermalink, quantity }) {
+export default function CartItem({
+  skuCode,
+  productPermalink,
+  quantity,
+  cartId,
+  itemId,
+}) {
   const { product, loading } = useGetProductByPermalink(productPermalink);
 
   if (loading) {
     return <div>loading...</div>;
   }
+
+  console.log(quantity);
+
+  console.log(skuCode, itemId);
 
   let currentColor;
   let currentSize = "-";
@@ -50,6 +60,12 @@ export default function CartItem({ skuCode, productPermalink, quantity }) {
                     menu={"color"}
                     skuCode={skuCode}
                     selectedValue={currentColor}
+                    quantity={quantity}
+                    cartId={cartId}
+                    itemId={itemId}
+                    currentColor={"Black"}
+                    currentQuantity={quantity}
+                    currentSize={"XL"}
                   />
                 </div>
               </div>
@@ -62,6 +78,11 @@ export default function CartItem({ skuCode, productPermalink, quantity }) {
                       menu={"size"}
                       skuCode={skuCode}
                       selectedValue={currentSize}
+                      cartId={"0HrVDEPgTeJhswT42VHs"}
+                      itemId={itemId}
+                      currentColor={"Black"}
+                      currentQuantity={quantity}
+                      currentSize={"XL"}
                     />
                   </div>
                 </div>
@@ -73,6 +94,12 @@ export default function CartItem({ skuCode, productPermalink, quantity }) {
                       menu={"quantity"}
                       skuCode={skuCode}
                       selectedValue={quantity}
+                      quantity={quantity}
+                      cartId={"0HrVDEPgTeJhswT42VHs"}
+                      itemId={itemId}
+                      currentColor={"Black"}
+                      currentQuantity={quantity}
+                      currentSize={"XL"}
                     />
                   </div>
                 </div>
