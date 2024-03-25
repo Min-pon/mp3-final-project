@@ -76,7 +76,9 @@ function SelectMenu({
 
   const quantityList = new Array();
 
-  for (let id = 1; id <= currentRemains; id++) {
+  let maxQuantity = currentRemains > 4 ? 4 : currentRemains;
+
+  for (let id = 1; id <= maxQuantity; id++) {
     quantityList.push({ id, label: id });
   }
 
