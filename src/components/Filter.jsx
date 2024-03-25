@@ -13,34 +13,35 @@ function Filter() {
   const [selectMenu, setSelectMenu] = useState("asce");
   const [open, setOpen] = useState(false);
 
-  const filterRef = useRef()
+  const filterRef = useRef();
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
       if (!filterRef.current.contains(event.target)) {
-        setOpen(false)
+        setOpen(false);
       }
     };
 
     if (open) {
-      document.addEventListener('mousedown', handleOutsideClick);
+      document.addEventListener("mousedown", handleOutsideClick);
     } else {
-      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener("mousedown", handleOutsideClick);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [open]);
-
-
 
   const handleClickDropdown = () => {
     setOpen((prev) => !prev);
   };
 
   return (
-    <div ref={filterRef} className={`relative font-poppins flex flex-col gap-1 items-end `}>
+    <div
+      ref={filterRef}
+      className={`relative font-poppins flex flex-col gap-1 items-end `}
+    >
       <button
         onClick={handleClickDropdown}
         className={`border px-[10px] w-[124px] h-[54px] py-[7px] flex justify-between items-center font-normal transition-colors duration-300 ease-in-out ${

@@ -1,20 +1,41 @@
+/* eslint-disable react/prop-types */
 import { BinIcon } from "../assets/iconList";
 import SelectMenu from "./Select";
+import useGetProductByPermalink from "../hooks/products/useGetProductByPermalink";
 
-export default function CartItem() {
+export default function CartItem({ skuCode, productPermalink, quantity }) {
+  const { product, loading } = useGetProductByPermalink(productPermalink);
+
+  if (loading) {
+    return <div>loading...</div>;
+  }
+
+  let currentColor;
+  let currentSize = "-";
+
+  const variant = product.variants.find((item) => item.skuCode === skuCode);
+
+  if (variant) {
+    currentColor = variant.color;
+  }
+
+  if (variant.size) {
+    currentSize = variant.size;
+  }
+
   return (
     <div className="w-full">
       <div className="flex gap-10 mobile:flex-col">
         <div className="w-full">
           <img
-            src="https://cdn.discordapp.com/attachments/1208360755007852586/1218240790363639960/image.png?ex=6606f226&is=65f47d26&hm=8937c22fac5697d2efff8c39e0e203d5665d45155214033aff22d1485df15607&"
+            src={product.imageUrls[0]}
             alt="Product item"
             className="w-full"
           />
         </div>
         <div className="flex flex-col w-full justify-between">
           <div className="flex flex-row w-full justify-between">
-            <div className="text-[24px] font-bold">Product Name</div>
+            <div className="text-[24px] font-bold">{product.name}</div>
             <div>
               <BinIcon />
             </div>
@@ -24,26 +45,41 @@ export default function CartItem() {
               <div className="flex flex-col mr-[16px]">
                 <span>Color</span>
                 <div className="mt-[8px]">
-                  <SelectMenu />
+                  <SelectMenu
+                    productPermalink={productPermalink}
+                    menu={"color"}
+                    skuCode={skuCode}
+                    selectedValue={currentColor}
+                  />
                 </div>
               </div>
               <div className="flex">
                 <div className="flex flex-col mr-[16px]">
                   <span>Size</span>
                   <div className="mt-[8px]">
-                    <SelectMenu />
+                    <SelectMenu
+                      productPermalink={productPermalink}
+                      menu={"size"}
+                      skuCode={skuCode}
+                      selectedValue={currentSize}
+                    />
                   </div>
                 </div>
                 <div className="flex flex-col">
                   <span>Qty.</span>
                   <div className="mt-[8px]">
-                    <SelectMenu />
+                    <SelectMenu
+                      productPermalink={productPermalink}
+                      menu={"quantity"}
+                      skuCode={skuCode}
+                      selectedValue={quantity}
+                    />
                   </div>
                 </div>
               </div>
             </div>
             <div className="text-[24px] font-bold self-end mobile:mt-[24px]">
-              THB 1,700.00
+              THB {product.promotionalPrice.toFixed(2)}
             </div>
           </div>
         </div>

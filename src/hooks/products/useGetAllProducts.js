@@ -12,7 +12,7 @@ export default function useGetAllProducts(query = "") {
       try {
         const response = await axios.get(`${BASE_URL}/products${query}`);
         setAllProducts(response.data.data);
-        console.log(response.status);
+        // console.log(response.status);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);

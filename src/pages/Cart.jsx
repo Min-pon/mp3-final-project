@@ -6,6 +6,7 @@ import { useStore } from "../hooks/useStore";
 import useGetCartByID from "../hooks/carts/useGetCartByID";
 import ProductCard from "../components/ProductCard";
 import useGetAllProducts from "../hooks/products/useGetAllProducts";
+import useGetProductByPermalink from "../hooks/products/useGetProductByPermalink";
 
 export default function Cart() {
   const { cartId } = useStore((state) => ({
@@ -17,9 +18,17 @@ export default function Cart() {
   // can use cartId when set on product detail page
   const { cart, loading } = useGetCartByID("0HrVDEPgTeJhswT42VHs");
 
+  // console.log(cart);
+
   if (loading || loading2) {
     return <div>loading..</div>;
   }
+
+  // cart.items.forEach((item) => {
+  //   console.log(item.productPermalink);
+  //   console.log(item.quantity);
+  // });
+
   return (
     <div className="bg-secondary-50 overflow-hidden px-[160px] mobile:px-[16px] mt-[91px]">
       <div className="">
@@ -30,7 +39,14 @@ export default function Cart() {
               <div className="w-[100%]">
                 {" "}
                 <p>Items</p>
-                <CartItem />
+                {cart.items.map((item, index) => (
+                  <CartItem
+                    key={index}
+                    skuCode={item.skuCode}
+                    productPermalink={item.productPermalink}
+                    quantity={item.quantity}
+                  />
+                ))}
               </div>
             ) : (
               <EmptyCard />
