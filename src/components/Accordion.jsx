@@ -24,7 +24,23 @@ function Accordion({ data, setAccordionOpen, accordionOpen }) {
     // params.set("sort", list.permalink);
     // history.push({ search: params.toString() });
 
-    setParams({sort : list.permalink})
+    setParams({ sort: list.permalink });
+  };
+
+  const generateLinkUrl = (list) => {
+    let baseUrl = `/item-product-list/${data.title?.permalink}`;
+    let queryParams = [];
+
+    if (!list.permalink) {
+    } else {
+      queryParams.push(`filter=${list.permalink}`);
+    }
+
+    if (queryParams.length > 0) {
+      baseUrl += `?${queryParams.join("&")}`;
+    }
+
+    return baseUrl;
   };
 
   return (
@@ -55,13 +71,7 @@ function Accordion({ data, setAccordionOpen, accordionOpen }) {
               key={list.id}
               className=" w-full h-full"
               // onClick={() => handleSetParams(list)}
-              to={`${
-                !list.permalink
-                  ? `/item-product-list/${data.title?.permalink}`
-                  : `/item-product-list/${data.title?.permalink}?filter=${
-                      list.permalink
-                    }`
-              }`}
+              to={generateLinkUrl(list)}
             >
               <div
                 className={`p-[10px] hover:bg-[#F2F2F2] w-full text-left transition-colors duration-300 ease-in-out active:bg-primary-700 ${

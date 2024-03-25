@@ -43,8 +43,11 @@ function Filter() {
   const filterRef = useRef();
 
   useEffect(() => {
-    setSelectMenu(options[0]);
-  }, [type, paramValue]);
+    if(!paramSort){
+      setSelectMenu(options[0]);
+    }
+    
+  }, [type, paramValue, paramSort]);
 
   useEffect(() => {
     // console.log(paramSort)
