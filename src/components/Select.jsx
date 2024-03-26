@@ -46,46 +46,75 @@ function SelectMenu({
   const handleClickDropdown = () => {
     if (selectedValue != "-") setOpen((prev) => !prev);
   };
-  if (loading) {
-    return <div>loading...</div>;
-  }
 
   // find color, size, and remains
 
   const uniqueColors = new Set();
   let currentRemains;
 
-  product.variants.forEach((item) => {
-    if (item.skuCode == skuCode) {
-      currentColor = item.color;
-      currentRemains = item.remains;
+  if (product != null) {
+    product.variants.forEach((item) => {
+      if (item.skuCode == skuCode) {
+        currentColor = item.color;
+        currentRemains = item.remains;
+      }
+      uniqueColors.add(item.color);
+    });
+  }
+
+  let uniqueColorsWithSkuCode = new Array();
+
+  uniqueColors.forEach((color) => {
+    if (product != null) {
+      let size;
+      let code;
+      product.variants.forEach((item) => {
+        size = item.size;
+        code = item.skuCode;
+        console.log(code);
+        if (item.color == color && item.size >= size) {
+          console.log(item.skuCode);
+          size = item.size;
+          code = item.skuCode;
+        }
+      });
+      console.log(code, color);
+      uniqueColorsWithSkuCode.push({ skuCode: code, color: color });
+      size = "";
+      code = "";
     }
-    uniqueColors.add(item.color);
   });
 
+  console.log(uniqueColorsWithSkuCode);
+
+  // color with max size of this item
+  const colorList = Array.from(uniqueColorsWithSkuCode).map((item, index) => ({
+    id: index + 1,
+    label: item.color,
+    skuCode: item.skuCode,
+  }));
+
+  // size with skuCode (same color)
   const sizeList = new Array();
 
-  product.variants.forEach((item, index) => {
-    if (item.color == currentColor) {
-      sizeList.push({
-        id: index + 1,
-        label: item.size,
-      });
-    }
-  });
+  if (product != null) {
+    product.variants.forEach((item, index) => {
+      if (item.color == currentColor && item.remains != 0) {
+        sizeList.push({
+          id: index + 1,
+          label: item.size,
+          skuCode: item.skuCode,
+        });
+      }
+    });
+  }
 
+  // quantity option
   const quantityList = new Array();
-
   let maxQuantity = currentRemains > 4 ? 4 : currentRemains;
-
   for (let id = 1; id <= maxQuantity; id++) {
     quantityList.push({ id, label: id });
   }
-
-  const colorList = Array.from(uniqueColors).map((color, index) => ({
-    id: index + 1,
-    label: color,
-  }));
 
   let options;
 
@@ -103,11 +132,38 @@ function SelectMenu({
       break;
   }
 
+  if (loading) {
+    return <div>loading...</div>;
+  }
+
+  async function updateItem(option) {
+    try {
+      console.log(option);
+      console.log(option.skuCode, maxQuantity, currentQuantity);
+      const response = await axios.patch(
+        `${BASE_URL}/carts/${cartId}/items/${itemId}`,
+        {
+          skuCode:
+            menu === "color" || menu === "size" ? option.skuCode : skuCode,
+          quantity:
+            menu === "quantity"
+              ? option.label
+              : Math.min(maxQuantity, currentQuantity),
+        }
+      );
+
+      // location.reload();
+
+      console.log(response);
+    } catch (error) {
+      console.error("Error updating item:", error);
+    }
+  }
+
   return (
     <div className="w-fit mobile:w-full">
-      {/* <div className=" text-[16px] font-normal text-secondary-700">Qty.</div> */}
       <div
-        className={`relative font-poppins flex flex-col gap-1 items-end `}
+        className={`relative font-poppins flex flex-col gap-1 items-end`}
         ref={filterRef}
       >
         <button
@@ -152,19 +208,8 @@ function SelectMenu({
                     // update item in existing cart
                     setOpen(false);
                     setValue(option.label);
-                    // console.log(itemId);
-                    axios
-                      .patch(`${BASE_URL}/carts/${cartId}/items/${itemId}`, {
-                        // skuCode:
-                        //   menu == "color" || menu == "size"
-                        //     ? option.skuCode
-                        //     : skuCode,
-                        quantity:
-                          menu == "quantity" ? option.label : currentQuantity,
-                      })
-                      .then((response) => {
-                        console.log(response);
-                      });
+
+                    updateItem(option);
                   }}
                   key={option.id}
                 >
