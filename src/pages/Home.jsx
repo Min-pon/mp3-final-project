@@ -3,12 +3,12 @@ import useGetAllCollections from "../hooks/collections/useGetAllColllections";
 import ProductCard from "../components/ProductCard";
 import useGetAllProducts from "../hooks/products/useGetAllProducts";
 
+const sort = {sort: "ratings:desc"}
+
 export default function HomePage() {
   const { collections, loading } = useGetAllCollections();
+  const { allProducts, loading: loading2 } = useGetAllProducts("products", sort);
 
-  const { allProducts, loading: loading2 } = useGetAllProducts();
-
-  // console.log(allProducts);
 
   if (loading || loading2) {
     return <div>Loading...</div>;
