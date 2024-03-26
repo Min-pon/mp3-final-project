@@ -81,11 +81,7 @@ export default function HomePage() {
           {allProducts.slice(0, 4).map((product, index) => (
             <ProductCard
               key={index}
-              imageUrl={product.imageUrls[0]}
-              title={product.name}
-              description={product.description}
-              rating={4} // Ensure this is dynamic if possible
-              price={product.promotionalPrice}
+              product={product}
             />
           ))}
         </div>

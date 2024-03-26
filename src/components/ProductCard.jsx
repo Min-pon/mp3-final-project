@@ -1,52 +1,118 @@
-/* eslint-disable react/prop-types */
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
-function RatingStar({ rating }) {
-  const shows = Array(rating).fill("");
-  const notShows = Array(5 - rating).fill("");
+import RatingStar from "./RatingStar";
+import { useState, useEffect } from "react";
+import CarouselPage from "./CarouselPage";
+import { useNavigate } from "react-router";
+
+function ProductCard({
+  product
+}) {
+  const ratingMath = Math.round(Number(product.ratings));
+  const [discount, setDiscount] = useState(0);
+  const [isHover, setIsHover] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (product.promotionalPrice < product.price) {
+      const discount = product.price - product.promotionalPrice;
+      const discountPercentage = (discount / product.price) * 100;
+      setDiscount(discountPercentage.toFixed(0));
+    }
+  }, []);
+
+  const handleClick = () => {
+    navigate(`/product-detail/${product.permalink}`);
+  };
 
   return (
-    <div className="flex flex-row ">
-      {shows.map((show, index) => (
-        <div key={index} className=" w-[30px] h-[30px] flex items-center ">
-          <FontAwesomeIcon icon={faStar} style={{ color: "#def81c" }} />
+    <div
+      onMouseOver={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
+      onClick={handleClick}
+      className=" cursor-pointer"
+    >
+      <div
+        className={`container w-[340px] md:w-[370px] h-[524px] relative ${
+          isHover ? " block" : " hidden"
+        }`}
+      >
+        <CarouselPage arr={product.imageUrls} />
+        <div className="font-poppins mt-4">
+          <h2 className=" mb-2 font-bold text-2xl overflow-hidden text-nowrap text-ellipsis">
+            {product.name}
+          </h2>
+          <p className=" mb-2 overflow-hidden text-nowrap text-ellipsis">
+            {product.description}
+          </p>
+          <div className=" mb-2">
+            <RatingStar rating={ratingMath} />
+          </div>
+          <div className=" flex justify-end">
+            {discount ? (
+              <div className=" flex items-center gap-4 ">
+                <p className="line-through text-secondary-700 text-subtitle">
+                  {product.price}
+                </p>
+                <h2 className=" font-bold text-2xl text-danger">
+                  THB {product.promotionalPrice}
+                </h2>
+              </div>
+            ) : (
+              <h2 className=" font-bold text-2xl ">THB {product.price}</h2>
+            )}
+          </div>
         </div>
-      ))}
-      {notShows.map((notShow, index) => (
-        <div key={index} className=" w-[30px] h-[30px] flex items-center ">
-          <FontAwesomeIcon icon={faStar} style={{ color: "#E1E1E1" }} />
+        {discount != 0 && (
+          <div className=" bg-danger absolute top-6 font-normal text-body text-white right-0 px-[10px] py-[7px]">
+            - {discount}%
+          </div>
+        )}
+      </div>
+      <div
+        className={`container w-[340px] md:w-[370px] h-[524px] relative ${
+          isHover ? " hidden" : " block"
+        }`}
+      >
+        <img
+          src={product.imageUrls[1]}
+          alt=""
+          width="370px"
+          height="370px"
+          style={{
+            height: "370px",
+            width: "370px",
+            objectFit: "cover",
+          }}
+        />
+        <div className="font-poppins mt-4">
+          <h2 className=" mb-2 font-bold text-2xl overflow-hidden text-nowrap text-ellipsis">
+            {product.name}
+          </h2>
+          <p className=" mb-2 overflow-hidden text-nowrap text-ellipsis">
+            {product.description}
+          </p>
+          <div className=" mb-2">
+            <RatingStar rating={ratingMath} />
+          </div>
+          <div className=" flex justify-end">
+            {discount ? (
+              <div className=" flex items-center gap-4 ">
+                <p className="line-through text-secondary-700 text-subtitle">
+                  {product.price}
+                </p>
+                <h2 className=" font-bold text-2xl text-danger">
+                  THB {product.promotionalPrice}
+                </h2>
+              </div>
+            ) : (
+              <h2 className=" font-bold text-2xl ">THB {product.price}</h2>
+            )}
+          </div>
         </div>
-      ))}
-    </div>
-  );
-}
-function ProductCard({ imageUrl, title, description, rating, price }) {
-  return (
-    <div className="container w-[340px] md:w-[370px] h-[524px] ">
-      <img
-        src={imageUrl}
-        alt=""
-        width="370px"
-        height="370px"
-        style={{
-          height: "370px",
-          width: "370px",
-          objectFit: "cover",
-        }}
-      />
-      <div className="font-poppins mt-4">
-        <h2 className=" mb-2 font-bold text-2xl overflow-hidden text-nowrap text-ellipsis">
-          {title}
-        </h2>
-        <p className=" mb-2 overflow-hidden text-nowrap text-ellipsis">
-          {description}
-        </p>
-        <div className=" mb-2">
-          <RatingStar rating={Number(rating)} />
-        </div>
-        <div className=" flex justify-end">
-          <h2 className=" font-bold text-2xl ">THB {price}</h2>
-        </div>
+        {discount != 0 && (
+          <div className=" bg-danger absolute top-6 font-normal text-body text-white right-0 px-[10px] py-[7px]">
+            - {discount}%
+          </div>
+        )}
       </div>
     </div>
   );

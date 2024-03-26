@@ -7,13 +7,13 @@ function RatingStar({ rating }) {
 
   return (
     <div className="flex flex-row ">
-      {show.map(() => (
-        <div className=" w-[30px] h-[30px] flex items-center ">
+      {show.map((show, index)  => (
+        <div key={index} className=" w-[30px] h-[30px] flex items-center ">
           <FontAwesomeIcon icon={faStar}  style={{ color: "#def81c" }} />
         </div>
       ))}
-      {notShow.map(() => (
-        <div className=" w-[30px] h-[30px] flex items-center ">
+      {notShow.map((notshow, index)  => (
+        <div key={index} className=" w-[30px] h-[30px] flex items-center ">
           <FontAwesomeIcon icon={faStar} style={{ color: "#E1E1E1" }} />
         </div>
       ))}
