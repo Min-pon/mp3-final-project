@@ -63,8 +63,14 @@ function Filter() {
   const [open, setOpen] = useState(false);
   const [params, setParams] = useSearchParams();
   const [selectMenu, setSelectMenu] = useState({});
+  const [selectMenuMobile, setSelectMenuMobile] = useState({});
+  
 
   const filterRef = useRef();
+
+  useEffect(() => {
+    setSelectMenuMobile(selectMenu)
+  }, [selectMenu]);
 
   useEffect(() => {
     if (!paramSort) {
@@ -107,6 +113,28 @@ function Filter() {
     // setParams({ ...params, sort: selected });
   };
 
+  const handleSelectMobile = (selected) => {
+    setSelectMenuMobile(selected);
+    // setParams((prevParams) => {
+    //   const newParams = new URLSearchParams(prevParams);
+    //   newParams.set("sort", selected.sort);
+    //   return newParams;
+    // });
+    // setParams({ ...params, sort: selected });
+  };
+
+
+
+  const handleReset = () => {
+    setSelectMenu(options[0]);
+    setParams((prevParams) => {
+      const newParams = new URLSearchParams(prevParams);
+      newParams.delete("sort");
+      return newParams;
+    });
+    // setParams({ ...params, sort: selected });
+  };
+
   const handleClickDropdown = () => {
     setOpen((prev) => !prev);
   };
@@ -144,11 +172,11 @@ function Filter() {
               <div className=" flex w-full justify-between text-center">
                 <div className=" text-info cursor-pointer" onClick={toggleDrawer}>Cancel</div>
                 <div className=" text-sub font-semibold">Sort by</div>
-                <div className=" text-info cursor-pointer">Reset</div>
+                <div className=" text-info cursor-pointer" onClick={handleReset}>Reset</div>
               </div>
               <div className="flex flex-col gap-6 mt-8">
                 {options.map((option) => (
-                  <OptionMenuitem option={option} selectMenu={selectMenu} />
+                  <OptionMenuitem option={option} handleSelect={handleSelectMobile} selectMenu={selectMenuMobile} />
                 ))}
               </div>
               <button className=" bg-black text-white py-[17px] w-full mt-6 text-body">
