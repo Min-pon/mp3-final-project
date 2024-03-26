@@ -12,6 +12,7 @@ import {
 import { SortIcon } from "../assets/iconList";
 import { SwipeableDrawer } from "@mui/material";
 import { ChoiceActive, ChoiceDefault, ChoiceHover } from "../assets/iconList";
+import { useMediaQuery } from "react-responsive";
 
 const options = [
   {
@@ -40,10 +41,14 @@ const OptionMenuitem = ({ option, selectMenu, handleSelect }) => {
       onMouseOver={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {selectMenu.by === option.by ? (
-        <ChoiceActive />
-      ) : (
-        <> {isHovered ? <ChoiceHover /> : <ChoiceDefault />}</>
+      {selectMenu && (
+        <>
+          {selectMenu.by === option.by ? (
+            <ChoiceActive />
+          ) : (
+            <> {isHovered ? <ChoiceHover /> : <ChoiceDefault />}</>
+          )}
+        </>
       )}
 
       <h1 className=" leading-5 text-nowrap">{option.label}</h1>
@@ -58,18 +63,17 @@ function Filter() {
   const paramValue = queryParams.get("filter");
   const paramSort = queryParams.get("sort");
   const navigate = useNavigate();
-  const [isMobile, setIsMobile] = useState(true);
-
+  const [openDrawer, setOpenDrawer] = useState(false);
   const [open, setOpen] = useState(false);
   const [params, setParams] = useSearchParams();
   const [selectMenu, setSelectMenu] = useState({});
   const [selectMenuMobile, setSelectMenuMobile] = useState({});
-  
+  const isMobile = useMediaQuery({ query: "(max-width: 376px)" });
 
   const filterRef = useRef();
 
   useEffect(() => {
-    setSelectMenuMobile(selectMenu)
+    setSelectMenuMobile(selectMenu);
   }, [selectMenu]);
 
   useEffect(() => {
@@ -115,18 +119,20 @@ function Filter() {
 
   const handleSelectMobile = (selected) => {
     setSelectMenuMobile(selected);
-    // setParams((prevParams) => {
-    //   const newParams = new URLSearchParams(prevParams);
-    //   newParams.set("sort", selected.sort);
-    //   return newParams;
-    // });
-    // setParams({ ...params, sort: selected });
   };
 
-
+  const handleApply = () => {
+    setSelectMenu(selectMenuMobile);
+    setParams((prevParams) => {
+      const newParams = new URLSearchParams(prevParams);
+      newParams.set("sort", selectMenuMobile.sort);
+      return newParams;
+    });
+  };
 
   const handleReset = () => {
     setSelectMenu(options[0]);
+    setSelectMenuMobile(options[0]);
     setParams((prevParams) => {
       const newParams = new URLSearchParams(prevParams);
       newParams.delete("sort");
@@ -139,16 +145,20 @@ function Filter() {
     setOpen((prev) => !prev);
   };
 
-  const toggleDrawer = () => {
-    setOpen((prev) => !prev);
+  const toggleDrawerMobile = () => {
+    setOpenDrawer((prev) => !prev);
   };
+
+  useEffect(() => {
+    setSelectMenuMobile(selectMenu);
+  }, [openDrawer]);
 
   return (
     <div className="">
       {isMobile ? (
         <div>
           <button
-            onClick={handleClickDropdown}
+            onClick={toggleDrawerMobile}
             className={` gap-2 flex h-[40px] justify-between items-center font-normal`}
           >
             <span className=" text-sub font-semibold">Sort by</span>
@@ -164,22 +174,39 @@ function Filter() {
               },
             }}
             anchor="bottom"
-            onClose={toggleDrawer}
-            onOpen={toggleDrawer}
-            open={open}
+            onClose={toggleDrawerMobile}
+            onOpen={toggleDrawerMobile}
+            open={openDrawer}
           >
             <div className=" mt-8 px-4 mb-[22px]">
               <div className=" flex w-full justify-between text-center">
-                <div className=" text-info cursor-pointer" onClick={toggleDrawer}>Cancel</div>
+                <div
+                  className=" text-info cursor-pointer"
+                  onClick={toggleDrawerMobile}
+                >
+                  Cancel
+                </div>
                 <div className=" text-sub font-semibold">Sort by</div>
-                <div className=" text-info cursor-pointer" onClick={handleReset}>Reset</div>
+                <div
+                  className=" text-info cursor-pointer"
+                  onClick={handleReset}
+                >
+                  Reset
+                </div>
               </div>
               <div className="flex flex-col gap-6 mt-8">
                 {options.map((option) => (
-                  <OptionMenuitem option={option} handleSelect={handleSelectMobile} selectMenu={selectMenuMobile} />
+                  <OptionMenuitem
+                    option={option}
+                    handleSelect={handleSelectMobile}
+                    selectMenu={selectMenuMobile}
+                  />
                 ))}
               </div>
-              <button className=" bg-black text-white py-[17px] w-full mt-6 text-body">
+              <button
+                className=" bg-black text-white py-[17px] w-full mt-6 text-body"
+                onClick={handleApply}
+              >
                 Apply
               </button>
             </div>
@@ -213,7 +240,11 @@ function Filter() {
             {open && (
               <div className="flex flex-col gap-6 border p-6 ">
                 {options.map((option) => (
-                  <OptionMenuitem option={option} handleSelect={handleSelect} selectMenu={selectMenu} />
+                  <OptionMenuitem
+                    option={option}
+                    handleSelect={handleSelect}
+                    selectMenu={selectMenu}
+                  />
                 ))}
               </div>
             )}
