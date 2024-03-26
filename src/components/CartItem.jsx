@@ -206,7 +206,7 @@ export default function CartItem({
     }
   });
 
-  console.log(uniqueColorsWithSkuCode);
+  // console.log(uniqueColorsWithSkuCode);
 
   // color with max size of this item
   const colorList = Array.from(uniqueColorsWithSkuCode).map((item, index) => ({
@@ -237,8 +237,8 @@ export default function CartItem({
     quantityList.push({ id, label: id });
   }
 
-  console.log(quantity);
-  console.log(skuCode, itemId);
+  // console.log(quantity);
+  // console.log(skuCode, itemId);
 
   async function deleteItem(cartId, itemId) {
     try {
@@ -287,7 +287,7 @@ export default function CartItem({
               <img
                 src={product.imageUrls[0]}
                 alt="Product item"
-                className="w-full"
+                className="w-[200px] h-[200px]"
               />
             </div>
             <div className="flex flex-col w-full justify-between">

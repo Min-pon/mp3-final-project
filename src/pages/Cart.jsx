@@ -6,27 +6,27 @@ import { useStore } from "../hooks/useStore";
 import useGetCartByID from "../hooks/carts/useGetCartByID";
 import ProductCard from "../components/ProductCard";
 import useGetAllProducts from "../hooks/products/useGetAllProducts";
+import useGetProductByPermalink from "../hooks/products/useGetProductByPermalink";
 
 export default function Cart() {
-  const { cartId } = useStore((state) => ({
-    cartId: state.cartId,
-  }));
+  const { cartId, totalItems, setTotalItems, setCartItems } = useStore(
+    (state) => ({
+      cartId: state.cartId,
+      totalItems: state.totalItems,
+      setTotalItems: state.setTotalItems,
+      setCartItems: state.setCartItems,
+    })
+  );
 
   const { allProducts, loading: loading2 } = useGetAllProducts();
-
-  // can use cartId when set on product detail page
-  const { cart, loading } = useGetCartByID("0HrVDEPgTeJhswT42VHs");
+  const { cart, loading } = useGetCartByID(cartId);
 
   // console.log(cart);
-
   if (loading || loading2) {
     return <div>loading..</div>;
   }
 
-  // cart.items.forEach((item) => {
-  //   console.log(item.productPermalink);
-  //   console.log(item.quantity);
-  // });
+  // setCartItems(cart.items);
 
   return (
     <div className="bg-secondary-50 overflow-hidden px-[160px] mobile:px-[16px] mt-[91px]">
@@ -36,7 +36,6 @@ export default function Cart() {
           <div className="p-[24px] text-[24px] font-bold bg-white ">
             {cart.id ? (
               <div className="w-[100%]">
-                {" "}
                 <p>Items</p>
                 {cart.items.map((item, index) => (
                   <CartItem
@@ -53,8 +52,8 @@ export default function Cart() {
               <EmptyCard />
             )}
           </div>
-          <div className="w-[50%] mobile:w-full">
-            <SummaryCard />
+          <div className="w-[616px] mobile:w-full">
+            <SummaryCard cart={cart} allProducts={allProducts} />
           </div>
         </div>
       </div>
