@@ -59,11 +59,11 @@ function ItemProductList() {
       )}
 
       <div className="flex-1 max-w-fit">
-        <div className="flex justify-between items-center mb-8">
+        <div className={`flex items-center mb-8 ${isMobile ? " flex-col justify-normal":"justify-between "}`}>
           <h1 className="text-2xl font-bold">
             {paramValue ? paramValue : type}
           </h1>
-          <div>
+          <div className={`${isMobile ? "flex w-full justify-end": "" }`}>
             <Filter />
           </div>
         </div>

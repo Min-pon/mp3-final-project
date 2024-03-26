@@ -11,10 +11,12 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import RadioGroup from "@mui/material/RadioGroup";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import { useParams } from "react-router";
 
 export default function ProductDetail() {
+  const {permalink} = useParams()
   const { product, loading, error } = useGetProductByPermalink(
-    "shirts-boxy-tailored-jacket"
+    permalink
   );
   const [data, setData] = React.useState(null);
   const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);

@@ -37,12 +37,12 @@ export default function ProductCardAlsoLike() {
         People also like these
       </div>
       <div className="flex flex-row gap-10">
-        {productList.map((product, index) => (
+        {/* {productList.map((product, index) => (
           <ProductCard
             key={index}
             product={product}
           />
-        ))}
+        ))} */}
       </div>
     </div>
   );
