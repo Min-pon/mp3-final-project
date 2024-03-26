@@ -1,44 +1,47 @@
 import RatingStar from "./RatingStar";
 import { useState, useEffect } from "react";
 import CarouselPage from "./CarouselPage";
+import { useNavigate } from "react-router";
 
 function ProductCard({
-  imageUrl,
-  title,
-  description,
-  rating,
-  price,
-  promotionalPrice,
+  product
 }) {
-  const ratingMath = Math.round(Number(rating));
+  const ratingMath = Math.round(Number(product.ratings));
   const [discount, setDiscount] = useState(0);
   const [isHover, setIsHover] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (promotionalPrice < price) {
-      const discount = price - promotionalPrice;
-      const discountPercentage = (discount / price) * 100;
+    if (product.promotionalPrice < product.price) {
+      const discount = product.price - product.promotionalPrice;
+      const discountPercentage = (discount / product.price) * 100;
       setDiscount(discountPercentage.toFixed(0));
     }
   }, []);
+
+  const handleClick = () => {
+    navigate(`/product-detail/${product.permalink}`);
+  };
 
   return (
     <div
       onMouseOver={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
+      onClick={handleClick}
+      className=" cursor-pointer"
     >
       <div
         className={`container w-[340px] md:w-[370px] h-[524px] relative ${
           isHover ? " block" : " hidden"
         }`}
       >
-        <CarouselPage arr={imageUrl} />
+        <CarouselPage arr={product.imageUrls} />
         <div className="font-poppins mt-4">
           <h2 className=" mb-2 font-bold text-2xl overflow-hidden text-nowrap text-ellipsis">
-            {title}
+            {product.name}
           </h2>
           <p className=" mb-2 overflow-hidden text-nowrap text-ellipsis">
-            {description}
+            {product.description}
           </p>
           <div className=" mb-2">
             <RatingStar rating={ratingMath} />
@@ -47,14 +50,14 @@ function ProductCard({
             {discount ? (
               <div className=" flex items-center gap-4 ">
                 <p className="line-through text-secondary-700 text-subtitle">
-                  {price}
+                  {product.price}
                 </p>
                 <h2 className=" font-bold text-2xl text-danger">
-                  THB {promotionalPrice}
+                  THB {product.promotionalPrice}
                 </h2>
               </div>
             ) : (
-              <h2 className=" font-bold text-2xl ">THB {price}</h2>
+              <h2 className=" font-bold text-2xl ">THB {product.price}</h2>
             )}
           </div>
         </div>
@@ -70,7 +73,7 @@ function ProductCard({
         }`}
       >
         <img
-          src={imageUrl[1]}
+          src={product.imageUrls[1]}
           alt=""
           width="370px"
           height="370px"
@@ -82,10 +85,10 @@ function ProductCard({
         />
         <div className="font-poppins mt-4">
           <h2 className=" mb-2 font-bold text-2xl overflow-hidden text-nowrap text-ellipsis">
-            {title}
+            {product.name}
           </h2>
           <p className=" mb-2 overflow-hidden text-nowrap text-ellipsis">
-            {description}
+            {product.description}
           </p>
           <div className=" mb-2">
             <RatingStar rating={ratingMath} />
@@ -94,14 +97,14 @@ function ProductCard({
             {discount ? (
               <div className=" flex items-center gap-4 ">
                 <p className="line-through text-secondary-700 text-subtitle">
-                  {price}
+                  {product.price}
                 </p>
                 <h2 className=" font-bold text-2xl text-danger">
-                  THB {promotionalPrice}
+                  THB {product.promotionalPrice}
                 </h2>
               </div>
             ) : (
-              <h2 className=" font-bold text-2xl ">THB {price}</h2>
+              <h2 className=" font-bold text-2xl ">THB {product.price}</h2>
             )}
           </div>
         </div>

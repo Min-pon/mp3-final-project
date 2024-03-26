@@ -32,8 +32,9 @@ function CarouselPage({ arr }) {
         <img
           key={idx}
           style={{
-            objectFit: "contain",
-            // scale: "0.98",
+            objectFit: "cover",
+            
+            scale: "0.93",
 
             transform: "translateY(-3.7%)",
             transition: "all 3s",

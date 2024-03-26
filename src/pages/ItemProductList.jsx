@@ -45,15 +45,7 @@ function ItemProductList() {
           {!loading && (
             <>
               {allProducts.slice(0, 20).map((product, index) => (
-                <ProductCard
-                  key={index}
-                  imageUrl={product.imageUrls}
-                  title={product.name}
-                  description={product.description}
-                  rating={product.ratings} // Ensure this is dynamic if possible
-                  price={product.price}
-                  promotionalPrice={product.promotionalPrice}
-                />
+                <ProductCard key={index} product={product} />
               ))}
             </>
           )}
