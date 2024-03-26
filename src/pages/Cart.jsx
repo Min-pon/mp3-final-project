@@ -60,19 +60,26 @@ export default function Cart() {
         </div>
       </div>
       <div className="flex flex-col space-y-[64px] mb-[168px]  mobile:px-[16px]">
-        <p className="text-[32px] font-bold">Featured Product</p>
-        <div className="flex justify-wrap space-x-[40px] dx:space-x-[21.8px] mobile:flex-col mobile:space-y-[40px] mobile:space-x-0">
-          {allProducts.slice(0, 4).map((product, index) => (
-            <ProductCard
-              key={index}
-              imageUrl={product.imageUrls[0]}
-              title={product.name}
-              description={product.description}
-              rating={4} // Ensure this is dynamic if possible
-              price={product.promotionalPrice}
-            />
-          ))}
-        </div>
+        {cart.id ? (
+          <></>
+        ) : (
+          <>
+            {" "}
+            <p className="text-[32px] font-bold">Featured Product</p>
+            <div className="flex justify-wrap space-x-[40px] dx:space-x-[21.8px] mobile:flex-col mobile:space-y-[40px] mobile:space-x-0">
+              {allProducts.slice(0, 4).map((product, index) => (
+                <ProductCard
+                  key={index}
+                  imageUrl={product.imageUrls[0]}
+                  title={product.name}
+                  description={product.description}
+                  rating={4} // Ensure this is dynamic if possible
+                  price={product.promotionalPrice}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
