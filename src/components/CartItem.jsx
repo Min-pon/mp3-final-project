@@ -2,6 +2,9 @@
 import { BinIcon } from "../assets/iconList";
 import SelectMenu from "./Select";
 import useGetProductByPermalink from "../hooks/products/useGetProductByPermalink";
+import axios from "axios";
+
+const BASE_URL = import.meta.env.VITE_BASE_API;
 
 export default function CartItem({
   skuCode,
@@ -33,6 +36,20 @@ export default function CartItem({
     currentSize = variant.size;
   }
 
+  async function deleteItem(cartId, itemId) {
+    try {
+      const response = await axios.delete(
+        `${BASE_URL}/carts/${cartId}/items/${itemId}`
+      );
+
+      location.reload();
+
+      console.log(response);
+    } catch (error) {
+      console.error("Error delete item:", error);
+    }
+  }
+
   return (
     <div className="w-full">
       <div className="flex gap-10 mobile:flex-col">
@@ -46,7 +63,11 @@ export default function CartItem({
         <div className="flex flex-col w-full justify-between">
           <div className="flex flex-row w-full justify-between">
             <div className="text-[24px] font-bold">{product.name}</div>
-            <div>
+            <div
+              onClick={() => {
+                deleteItem(cartId, itemId);
+              }}
+            >
               <BinIcon />
             </div>
           </div>
