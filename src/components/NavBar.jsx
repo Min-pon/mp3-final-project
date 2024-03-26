@@ -2,6 +2,7 @@ import { useMediaQuery } from "react-responsive";
 import { Fragment, useState } from "react";
 import { useStore } from "../hooks/useStore";
 import {
+  LogoIcon,
   CartWithItemIcon,
   EmptyCartIcon,
   FavouriteIcon,
@@ -14,7 +15,7 @@ import { Link, useParams } from "react-router-dom";
 import HamburgerMenu from "./HamburgerMenu";
 
 export default function NavBar() {
-  const isMobile = useMediaQuery({ query: "(max-width: 376px)" });
+  const isMobile = useMediaQuery({ query: "(max-width: 431px)" });
 
   const { currentType, setCurrentType, cartId } = useStore((state) => ({
     currentType: state.currentType,
@@ -32,7 +33,7 @@ export default function NavBar() {
   return (
     <div>
       {isMobile ? (
-        <div className="flex flex-row bg-secondary text-white py-[8px] justify-between h-[56px] pl-[16px] pr-[8px] w-full fixed z-10">
+        <div className="flex flex-row bg-secondary text-white py-[8px] justify-between h-[56px] pl-[16px] pr-[8px] w-full fixed z-10 top-0">
           <div className="flex space-x-[8px]">
             <div>
               <button onClick={toggleDrawer}>
@@ -47,11 +48,7 @@ export default function NavBar() {
                 setCurrentType("");
               }}
             >
-              <img
-                src="https://cdn.discordapp.com/attachments/1120391488484933705/1216750390960328765/image.png?ex=6601861b&is=65ef111b&hm=7871a80e9790583f582f4f0e9c89ca68e2c8324d409580022ddf6632228a3fc5&"
-                alt="logo"
-                className="h-[36px]"
-              />
+              <LogoIcon />
               <p className="text-sub font-semibold">WDB</p>
             </Link>
           </div>
@@ -61,7 +58,7 @@ export default function NavBar() {
           </a>
         </div>
       ) : (
-        <div className="flex flex-row bg-secondary text-white py-[10px] items-center justify-between h-[60px] px-[160px] w-full fixed z-10">
+        <div className="flex flex-row bg-secondary text-white py-[10px] items-center justify-between h-[60px] px-[160px] w-full fixed z-10 top-0">
           <div className="flex space-x-0 items-center">
             <Link
               className="flex items-center space-x-[10px] mr-[40px]"
@@ -70,11 +67,7 @@ export default function NavBar() {
                 setCurrentType("");
               }}
             >
-              <img
-                src="https://cdn.discordapp.com/attachments/1120391488484933705/1216750390960328765/image.png?ex=6601861b&is=65ef111b&hm=7871a80e9790583f582f4f0e9c89ca68e2c8324d409580022ddf6632228a3fc5&"
-                alt="logo"
-                className="h-[37px]"
-              />
+              <LogoIcon />
               <p className="text-sub font-semibold">WDB</p>
             </Link>
             <div className="flex space-x-[24px]">

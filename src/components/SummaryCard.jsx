@@ -1,6 +1,6 @@
 export default function SummaryCard() {
   return (
-    <div className="w-[616px] h-[440px] p-[24px] mb-[24px] bg-white">
+    <div className="w-full p-[24px] mb-[24px] bg-white">
       <div className="flex justify-between items-center mb-[24px]">
         <span className="text-[24px] font-bold">Summary</span>
         <span className="text-[18px] font-semibold text-secondary-700">

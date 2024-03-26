@@ -34,7 +34,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="w-[500px] mobile:w-auto mobile:flex-col mobile:items-center">
-          <p className="text-h5 font-bold mobile:text-h6 mb-[24px] text-center">
+          <p className="text-h5 font-bold mobile:text-h6 mb-[24px] mobile:text-center">
             Customer services
           </p>
 

@@ -24,7 +24,7 @@ function ItemProductList() {
   }, [search]);
 
   return (
-    <div className="flex justify-between mt-[93px] mb-[188px] container mx-auto  2xl:min-w-[1601px] xl:max-w-[1191px] ">
+    <div className="flex justify-between mt-[93px] mb-[188px] container mx-auto 2xl:min-w-[1601px] xl:max-w-[1191px] ">
       {isMobile ? (
         <></>
       ) : (
@@ -41,7 +41,7 @@ function ItemProductList() {
           </div>
         </div>
 
-        <div className="grid 2xl:grid-cols-3 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-10">
+        <div className="grid 2xl:grid-cols-3 dx:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-10">
           {!loading && (
             <>
               {allProducts.slice(0, 6).map((product, index) => (

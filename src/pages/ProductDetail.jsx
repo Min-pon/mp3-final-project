@@ -11,11 +11,16 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import RadioGroup from "@mui/material/RadioGroup";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import useGetAllProducts from "../hooks/products/useGetAllProducts";
+import ProductCard from "../components/ProductCard";
 
 export default function ProductDetail() {
   const { product, loading, error } = useGetProductByPermalink(
     "shirts-boxy-tailored-jacket"
   );
+
+  const { allProducts, loading: loading2 } = useGetAllProducts();
+
   const [data, setData] = React.useState(null);
   const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);
   const [selectedColor, setSelectedColor] = React.useState("Navy");
@@ -135,18 +140,18 @@ export default function ProductDetail() {
   if (!data || data === null) return <div>No product data found</div>;
 
   return (
-    <div className="bg-white">
-      <div className="max-w-[1000px] mx-auto py-10 md:py16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-        <div className="flex flex-row gap-10">
+    <div className="bg-white ">
+      <div className=" py-10 md:py16 sm:py-24 px-[160px]">
+        <div className="flex flex-row justify-between gap-[40px] mb-[145px]">
           {/* Image gallery */}
           {/* <div className="flex flex-col w-1/2 gap-2"> */}
-          <div className="flex flex-col w-full max-w-2xl gap-2">
+          <div className="flex flex-col w-[780px] dx-[600px] gap-2">
             {/* Main image */}
-            <div className="relative w-full aspect-[1] overflow-hidden">
+            <div className="relative w-[780px] h-[780px] dx:h-[600px] dx:w-[600px] overflow-hidden">
               <img
                 src={data.imageUrls[selectedImageIndex]}
                 alt="Product"
-                className="w-full h-full object-cover"
+                className="w-[780px] h-[780px] dx:h-[600px] dx:w-[600px] object-cover"
               />
               <button
                 onClick={previousImage}
@@ -162,7 +167,7 @@ export default function ProductDetail() {
               </button>
             </div>
             {/* Thumbnails */}
-            <div className="flex gap-2 w-full">
+            <div className="flex gap-[10px] w-full">
               {data.imageUrls.map((url, index) => (
                 <button
                   key={index}
@@ -174,7 +179,7 @@ export default function ProductDetail() {
                   <img
                     src={url}
                     alt={`Thumbnail ${index}`}
-                    className="object-cover"
+                    className="object-cover  h-[172px] w-full"
                   />
                 </button>
               ))}
@@ -273,6 +278,21 @@ export default function ProductDetail() {
                 item={data}
               />
             </div>
+          </div>
+        </div>
+        <div className="flex flex-col space-y-[64px] mb-[168px] mobile:px-[16px]">
+          <p className="text-[32px] font-bold">People also like these</p>
+          <div className="flex justify-wrap space-x-[40px] dx:space-x-[21.8px] mobile:flex-col mobile:space-y-[40px] mobile:space-x-0">
+            {allProducts.slice(0, 4).map((product, index) => (
+              <ProductCard
+                key={index}
+                imageUrl={product.imageUrls[0]}
+                title={product.name}
+                description={product.description}
+                rating={4} // Ensure this is dynamic if possible
+                price={product.promotionalPrice}
+              />
+            ))}
           </div>
         </div>
       </div>
