@@ -5,6 +5,7 @@ import { faAngleUp } from "@fortawesome/free-solid-svg-icons";
 import useGetProductByPermalink from "../hooks/products/useGetProductByPermalink";
 import axios from "axios";
 import { BinIcon } from "../assets/iconList";
+import { useStore } from "../hooks/useStore";
 
 const BASE_URL = import.meta.env.VITE_BASE_API;
 
@@ -143,6 +144,10 @@ export default function CartItem({
 }) {
   const { product, loading } = useGetProductByPermalink(productPermalink);
 
+  const { setIsUpdatedCart } = useStore((state) => ({
+    setIsUpdatedCart: state.setIsUpdatedCart,
+  }));
+
   const [isDeleted, setIsDeleted] = useState(false);
 
   if (loading) {
@@ -267,7 +272,7 @@ export default function CartItem({
               : Math.min(maxQuantity, currentQuantity),
         }
       );
-
+      setIsUpdatedCart(false);
       // location.reload();
 
       console.log(response);
@@ -283,7 +288,7 @@ export default function CartItem({
       ) : (
         <div className="w-full">
           <div className="flex gap-10 mobile:flex-col">
-            <div className="w-full">
+            <div className="">
               <img
                 src={product.imageUrls[0]}
                 alt="Product item"
@@ -297,6 +302,7 @@ export default function CartItem({
                   onClick={() => {
                     deleteItem(cartId, itemId);
                     setIsDeleted(true);
+                    setIsUpdatedCart(false);
                   }}
                 >
                   <BinIcon />
@@ -361,7 +367,7 @@ export default function CartItem({
                   </div>
                 </div>
                 <div className="text-[24px] font-bold self-end mobile:mt-[24px]">
-                  THB {product.promotionalPrice.toFixed(2)}
+                  THB {(product.promotionalPrice * quantity).toFixed(2)}
                 </div>
               </div>
             </div>

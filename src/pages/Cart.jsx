@@ -37,16 +37,18 @@ export default function Cart() {
             {cart.id ? (
               <div className="w-[100%]">
                 <p>Items</p>
-                {cart.items.map((item, index) => (
-                  <CartItem
-                    key={index}
-                    skuCode={item.skuCode}
-                    productPermalink={item.productPermalink}
-                    quantity={item.quantity}
-                    itemId={item.id}
-                    cartId={"0HrVDEPgTeJhswT42VHs"}
-                  />
-                ))}
+                <div className="flex flex-col space-y-[24px]">
+                  {cart.items.map((item, index) => (
+                    <CartItem
+                      key={index}
+                      skuCode={item.skuCode}
+                      productPermalink={item.productPermalink}
+                      quantity={item.quantity}
+                      itemId={item.id}
+                      cartId={"0HrVDEPgTeJhswT42VHs"}
+                    />
+                  ))}
+                </div>
               </div>
             ) : (
               <EmptyCard />

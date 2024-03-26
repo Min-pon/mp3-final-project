@@ -5,11 +5,20 @@ import { useNavigate } from "react-router-dom";
 
 export default function SummaryCard({ cart, allProducts }) {
   const navigate = useNavigate();
-  const { cartId, totalItems, cartItems, setCartItems } = useStore((state) => ({
+  const {
+    cartId,
+    totalItems,
+    cartItems,
+    setCartItems,
+    isUpdatedCart,
+    setIsUpdatedCart,
+  } = useStore((state) => ({
     cartId: state.cartId,
     totalItems: state.totalItems,
     cartItems: state.cartItems,
     setCartItems: state.setCartItems,
+    isUpdatedCart: state.isUpdatedCart,
+    setIsUpdatedCart: state.setIsUpdatedCart,
   }));
 
   useEffect(() => {
@@ -17,6 +26,8 @@ export default function SummaryCard({ cart, allProducts }) {
     let updatedCartItem = [...cartItems];
     const checkedState = JSON.parse(localStorage.getItem("wdb-state"));
     // console.log(checkedState.state.cartItems);
+
+    // at first
     if (checkedState.state.cartItems.length == 0) {
       cart.items.forEach((item) => {
         // console.log("test", item.id);
@@ -28,8 +39,14 @@ export default function SummaryCard({ cart, allProducts }) {
         updatedCartItem.push({ ...productItem[0], quantity: item.quantity });
       });
       setCartItems(updatedCartItem);
+      setIsUpdatedCart(true);
     }
-  }, []);
+
+    // check update
+    if (!isUpdatedCart) {
+      let updatedCartItem = [];
+    }
+  }, [isUpdatedCart]);
 
   const subTotal = cartItems
     .map((item) => item.price * item.quantity)
@@ -55,7 +72,9 @@ export default function SummaryCard({ cart, allProducts }) {
                 <span>
                   {item.name} {item.quantity > 1 ? `x ${item.quantity}` : ""}
                 </span>
-                <span>{item.promotionalPrice.toFixed(2)}</span>
+                <span>
+                  {(item.promotionalPrice * item.quantity).toFixed(2)}
+                </span>
               </div>
             ))}
           </>

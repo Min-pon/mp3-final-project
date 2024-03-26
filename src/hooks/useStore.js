@@ -9,6 +9,7 @@ const store = persist(
     currentProductPermalink: "",
     totalItems: 0,
     cartItems: [],
+    isUpdatedCart: false,
     setCurrentType: (currentType) => set(() => ({ currentType })),
     setUserId: (userId) => set(() => ({ userId })),
     setCartId: (cartId) => set(() => ({ cartId })),
@@ -16,6 +17,7 @@ const store = persist(
       set(() => currentProductPermalink),
     setTotalItems: (totalItems) => set(() => ({ totalItems })),
     setCartItems: (cartItems) => set(() => ({ cartItems })),
+    setIsUpdatedCart: (isUpdatedCart) => set(() => ({ isUpdatedCart })),
   }),
   { name: "wdb-state" }
 );
