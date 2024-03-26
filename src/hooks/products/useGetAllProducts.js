@@ -3,16 +3,17 @@ import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_BASE_API;
 
-export default function useGetAllProducts(query = "") {
+export default function useGetAllProducts(path, paramsq = {}) {
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAllProducts = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/products${query}`);
+        const response = await axios.get(`${BASE_URL}/products`, {
+          params: paramsq,
+        });
         setAllProducts(response.data.data);
-        // console.log(response.status);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -20,10 +21,10 @@ export default function useGetAllProducts(query = "") {
       }
     };
 
-    if (!allProducts.length) {
+    if (Object.keys(paramsq).length > 0) {
       fetchAllProducts();
     }
-  }, [allProducts]);
+  }, [paramsq]);
 
   return { allProducts, loading };
 }
