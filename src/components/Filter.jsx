@@ -7,8 +7,11 @@ import {
   useSearchParams,
   useLocation,
   useParams,
-  useNavigate
+  useNavigate,
 } from "react-router-dom";
+import { SortIcon } from "../assets/iconList";
+import { SwipeableDrawer } from "@mui/material";
+import { ChoiceActive, ChoiceDefault, ChoiceHover } from "../assets/iconList";
 
 const options = [
   {
@@ -26,6 +29,28 @@ const options = [
   { id: 3, label: "Ratings", by: "rating", sort: "ratings:desc" },
 ];
 
+const OptionMenuitem = ({ option, selectMenu, handleSelect }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div
+      className=" flex gap-4 items-center cursor-pointer transition-all duration-300 ease-in-out"
+      onClick={() => handleSelect(option)}
+      key={option.id}
+      onMouseOver={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {selectMenu.by === option.by ? (
+        <ChoiceActive />
+      ) : (
+        <> {isHovered ? <ChoiceHover /> : <ChoiceDefault />}</>
+      )}
+
+      <h1 className=" leading-5 text-nowrap">{option.label}</h1>
+    </div>
+  );
+};
+
 function Filter() {
   const { search } = useLocation();
   const queryParams = new URLSearchParams(search);
@@ -33,8 +58,7 @@ function Filter() {
   const paramValue = queryParams.get("filter");
   const paramSort = queryParams.get("sort");
   const navigate = useNavigate();
-
-  
+  const [isMobile, setIsMobile] = useState(true);
 
   const [open, setOpen] = useState(false);
   const [params, setParams] = useSearchParams();
@@ -43,16 +67,15 @@ function Filter() {
   const filterRef = useRef();
 
   useEffect(() => {
-    if(!paramSort){
+    if (!paramSort) {
       setSelectMenu(options[0]);
     }
-    
   }, [type, paramValue, paramSort]);
 
   useEffect(() => {
     // console.log(paramSort)
-    if(paramSort){
-      setSelectMenu(options.find(option => paramSort === option.sort))
+    if (paramSort) {
+      setSelectMenu(options.find((option) => paramSort === option.sort));
     }
   }, []);
 
@@ -88,61 +111,87 @@ function Filter() {
     setOpen((prev) => !prev);
   };
 
-  return (
-    <div
-      ref={filterRef}
-      className={`relative font-poppins flex flex-col gap-1 items-end `}
-    >
-      <button
-        onClick={handleClickDropdown}
-        className={`border px-[10px] w-[124px] h-[54px] py-[7px] flex justify-between items-center font-normal transition-colors duration-300 ease-in-out ${
-          open ? " border-[#C1CD00]" : ""
-        }`}
-      >
-        <span className=" text-base">Sort by</span>
-        <span
-          className={` w-10 h-10 flex items-center justify-center transition-all duration-300 ease-in-out ${
-            open ? "" : " rotate-180"
-          }`}
-        >
-          <FontAwesomeIcon icon={faAngleUp} />
-        </span>
-      </button>
-      <div
-        className={`absolute top-[58px] bg-white flex transition-opacity duration-500 ease-in-out ${
-          open ? " opacity-100" : " opacity-0"
-        }`}
-      >
-        {open && (
-          <div className="flex flex-col gap-6 border p-6 ">
-            {options.map((option) => (
-              <div
-                className=" flex gap-4 items-center cursor-pointer hover:scale-x-105 transition-all duration-300 ease-in-out"
-                onClick={() => handleSelect(option)}
-                key={option.id}
-              >
-                {selectMenu.by === option.by ? (
-                  <FontAwesomeIcon
-                    icon={faCircleDot}
-                    size="xl"
-                    style={{ color: "#C1CD00" }}
-                    className=" transition-all duration-300 ease-out"
-                  />
-                ) : (
-                  <FontAwesomeIcon
-                    icon={faCircle}
-                    size="xl"
-                    style={{ color: "#E1E1E1" }}
-                    className=" transition-all duration-300 ease-out"
-                  />
-                )}
+  const toggleDrawer = () => {
+    setOpen((prev) => !prev);
+  };
 
-                <h1 className=" leading-5 text-nowrap">{option.label}</h1>
+  return (
+    <div className="">
+      {isMobile ? (
+        <div>
+          <button
+            onClick={handleClickDropdown}
+            className={` gap-2 flex h-[40px] justify-between items-center font-normal`}
+          >
+            <span className=" text-sub font-semibold">Sort by</span>
+            <span>
+              <SortIcon />
+            </span>
+          </button>
+          <SwipeableDrawer
+            sx={{
+              "& .MuiDrawer-paper": {
+                borderTopRightRadius: "16px",
+                borderTopLeftRadius: "16px",
+              },
+            }}
+            anchor="bottom"
+            onClose={toggleDrawer}
+            onOpen={toggleDrawer}
+            open={open}
+          >
+            <div className=" mt-8 px-4 mb-[22px]">
+              <div className=" flex w-full justify-between text-center">
+                <div className=" text-info cursor-pointer" onClick={toggleDrawer}>Cancel</div>
+                <div className=" text-sub font-semibold">Sort by</div>
+                <div className=" text-info cursor-pointer">Reset</div>
               </div>
-            ))}
+              <div className="flex flex-col gap-6 mt-8">
+                {options.map((option) => (
+                  <OptionMenuitem option={option} selectMenu={selectMenu} />
+                ))}
+              </div>
+              <button className=" bg-black text-white py-[17px] w-full mt-6 text-body">
+                Apply
+              </button>
+            </div>
+          </SwipeableDrawer>
+        </div>
+      ) : (
+        <div
+          ref={filterRef}
+          className={`relative font-poppins flex flex-col gap-1 items-end `}
+        >
+          <button
+            onClick={handleClickDropdown}
+            className={`border px-[10px] w-[124px] h-[54px] py-[7px] flex justify-between items-center font-normal transition-colors duration-300 ease-in-out ${
+              open ? " border-[#C1CD00]" : ""
+            }`}
+          >
+            <span className=" text-base">Sort by</span>
+            <span
+              className={` w-10 h-10 flex items-center justify-center transition-all duration-300 ease-in-out ${
+                open ? "" : " rotate-180"
+              }`}
+            >
+              <FontAwesomeIcon icon={faAngleUp} />
+            </span>
+          </button>
+          <div
+            className={`absolute top-[58px] bg-white flex transition-opacity duration-500 ease-in-out ${
+              open ? " opacity-100" : " opacity-0"
+            }`}
+          >
+            {open && (
+              <div className="flex flex-col gap-6 border p-6 ">
+                {options.map((option) => (
+                  <OptionMenuitem option={option} handleSelect={handleSelect} selectMenu={selectMenu} />
+                ))}
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

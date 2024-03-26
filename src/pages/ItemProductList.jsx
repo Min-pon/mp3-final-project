@@ -10,15 +10,12 @@ import useGetAllProducts from "../hooks/products/useGetAllProducts";
 function ItemProductList() {
   const isMobile = useMediaQuery({ query: "(max-width: 376px)" });
   const { type } = useParams();
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [params, setParams] = useSearchParams();
   const { search } = useLocation();
   const queryParams = new URLSearchParams(search);
   const paramValue = queryParams.get("filter");
-  const [urlParams, setUrlParams] = useState({ });
-  const [urlFilterParams, setUrlFilterParams] = useState(null);
+  const [urlParams, setUrlParams] = useState({});
   const { allProducts, loading } = useGetAllProducts("/products", urlParams);
-  const [selectMenu, setSelectMenu] = useState("asce");
 
   useEffect(() => {
     const newParamsQuery = new URLSearchParams(search);
@@ -49,7 +46,7 @@ function ItemProductList() {
         categories: type,
       });
     }
-  }, [search,type]);
+  }, [search, type]);
 
   return (
     <div className="flex justify-between mt-[93px] mb-[188px] container mx-auto  2xl:min-w-[1601px] xl:max-w-[1191px] ">
@@ -63,7 +60,9 @@ function ItemProductList() {
 
       <div className="flex-1 max-w-fit">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold">Product List</h1>
+          <h1 className="text-2xl font-bold">
+            {paramValue ? paramValue : type}
+          </h1>
           <div>
             <Filter />
           </div>

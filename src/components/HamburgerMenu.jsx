@@ -76,6 +76,14 @@ function HamburgerMenu({ open, onClose, data, collections }) {
     setParamFilter(params.get("filter"));
   }, [params]);
 
+  const generateLinkUrl = (selected) => {
+    const base = `/item-product-list/${selectedMenu.title?.permalink}`;
+    const filterParam = selected.permalink
+      ? `?filter=${selected.permalink}`
+      : "";
+    return base + filterParam;
+  };
+
   return (
     <Drawer
       sx={{
@@ -100,14 +108,7 @@ function HamburgerMenu({ open, onClose, data, collections }) {
               </p>
             </div>
             {selectedMenu.listItem.map((selected, idx) => (
-              <Link
-                key={selected.id}
-                to={`${
-                  !selected.permalink
-                    ? `/item-product-list/${selectedMenu.title?.permalink}`
-                    : `/item-product-list/${selectedMenu.title?.permalink}?filter=${selected.permalink}`
-                }`}
-              >
+              <Link key={selected.id} to={generateLinkUrl(selected)}>
                 <div
                   className={`flex justify-between h-[48px] items-center transition-colors duration-300 ease-in-out ${
                     selectedMenu.title?.permalink === type
