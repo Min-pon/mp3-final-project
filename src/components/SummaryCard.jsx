@@ -7,22 +7,22 @@ export default function SummaryCard({ cart, allProducts }) {
   const navigate = useNavigate();
   const {
     cartId,
-    totalItems,
     cartItems,
     setCartItems,
     isUpdatedCart,
     setIsUpdatedCart,
+    cartItemFromUpdateAPI,
   } = useStore((state) => ({
     cartId: state.cartId,
-    totalItems: state.totalItems,
     cartItems: state.cartItems,
     setCartItems: state.setCartItems,
     isUpdatedCart: state.isUpdatedCart,
     setIsUpdatedCart: state.setIsUpdatedCart,
+    cartItemFromUpdateAPI: state.cartItemFromUpdateAPI,
   }));
 
   useEffect(() => {
-    console.log(cart.items);
+    // console.log(cart.items);
     let updatedCartItem = [...cartItems];
     const checkedState = JSON.parse(localStorage.getItem("wdb-state"));
     // console.log(checkedState.state.cartItems);
@@ -45,8 +45,22 @@ export default function SummaryCard({ cart, allProducts }) {
     // check update
     if (!isUpdatedCart) {
       let updatedCartItem = [];
+      console.log(cartItemFromUpdateAPI);
+      cartItemFromUpdateAPI.forEach((item) => {
+        let productItem = allProducts.filter(
+          (product) => product.permalink == item.productPermalink
+        );
+        updatedCartItem.push({ ...productItem[0], quantity: item.quantity });
+        setCartItems(updatedCartItem);
+        setIsUpdatedCart(true);
+      });
+      setIsUpdatedCart(true);
     }
   }, [isUpdatedCart]);
+
+  const totalItems = cartItems
+    .map((item) => item.quantity)
+    .reduce((acc, curr) => acc + curr, 0);
 
   const subTotal = cartItems
     .map((item) => item.price * item.quantity)
@@ -73,7 +87,10 @@ export default function SummaryCard({ cart, allProducts }) {
                   {item.name} {item.quantity > 1 ? `x ${item.quantity}` : ""}
                 </span>
                 <span>
-                  {(item.promotionalPrice * item.quantity).toFixed(2)}
+                  {new Intl.NumberFormat("en-US", {
+                    style: "decimal",
+                    minimumFractionDigits: 2,
+                  }).format(item.promotionalPrice * item.quantity)}
                 </span>
               </div>
             ))}
@@ -94,7 +111,12 @@ export default function SummaryCard({ cart, allProducts }) {
         }`}
       >
         <span>Subtotal</span>
-        <span>{subTotal.toFixed(2)}</span>
+        <span>
+          {new Intl.NumberFormat("en-US", {
+            style: "decimal",
+            minimumFractionDigits: 2,
+          }).format(subTotal)}
+        </span>
       </div>
       <div
         className={`flex justify-between items-center text-body font-normal ${
@@ -111,7 +133,12 @@ export default function SummaryCard({ cart, allProducts }) {
         }`}
       >
         <span>Total</span>
-        <span>{subTotal.toFixed(2)}</span>
+        <span>
+          {new Intl.NumberFormat("en-US", {
+            style: "decimal",
+            minimumFractionDigits: 2,
+          }).format(subTotal)}
+        </span>
       </div>
       <button
         className={`text-body font-normal  w-full h-[54px] px-[7px] py-[10px] ${
