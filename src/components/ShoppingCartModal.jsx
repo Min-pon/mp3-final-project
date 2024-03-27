@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal, Box } from "@mui/material";
 import { CloseIcon } from "../assets/iconList";
+import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -12,6 +13,12 @@ const style = {
 };
 
 function ShoppingCartModal({ isOpen, onClose, item, qty }) {
+  const navigate = useNavigate();
+
+  const handleViewCart = () => {
+    navigate("/cart");
+  };
+
   return (
     <Modal disableAutoFocus open={isOpen} onClose={onClose}>
       <Box
@@ -51,7 +58,7 @@ function ShoppingCartModal({ isOpen, onClose, item, qty }) {
             <button
               type="button"
               className="w-full justify-center bg-black text-white text-base py-[17px] "
-              onClick={() => alert("Go to cart")}
+              onClick={handleViewCart}
             >
               View cart
             </button>
@@ -64,59 +71,7 @@ function ShoppingCartModal({ isOpen, onClose, item, qty }) {
             </button>
           </div>
         </div>
-        {/* <div className="bg-gray-100 p-4 flex justify-between items-start">
-              <h3 className="text-lg leading-6 font-medium text-gray-900">
-                Items added to your cart
-              </h3>
-              <button
-                type="button"
-                className="text-gray-400 hover:text-gray-500"
-                onClick={onClose}
-              >
-                <span className="sr-only">Close</span>
-                &#10005;{" "}
-              </button>
-            </div>
-            <div className="p-4">
-              <div className="flex items-start">
-                <div className="flex-shrink-0">
-                  <img
-                    className="h-16 w-16 rounded-md object-cover"
-                    src={item.imageUrl}
-                    alt=""
-                  />
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-900">
-                    {item.name}
-                  </p>
-                  <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
-                  <p className="text-sm text-gray-500">{item.price}</p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse">
-              <button
-                type="button"
-                className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 text-base font-medium text-white hover:bg-yellow-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
-                onClick={() => alert("Go to cart")}
-              >
-                View cart
-              </button>
-              <button
-                type="button"
-                className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:w-auto sm:text-sm"
-                onClick={onClose}
-              >
-                Continue shopping
-              </button>
-            </div> */}
-        {/* </div> */}
       </Box>
-
-      {/* <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center p-4"> */}
-
-      {/* </div> */}
     </Modal>
   );
 }

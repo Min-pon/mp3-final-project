@@ -17,12 +17,10 @@ export default function ProductInformation(props) {
   }, []);
 
   return (
-    <div>
-      <div className="text-s tracking-tight text-gray-500">ID : {id}</div>
-      <h1 className="text-3xl font-extrabold tracking-normal text-gray-900">
-        {productName}
-      </h1>
-      <div className="text-m tracking-tight text-gray-500">{description}</div>
+    <div className=" font-bold text-secondary">
+      <div className=" text-2xl tracking-tight  ">ID : {id}</div>
+      <h1 className=" text-5xl tracking-normal ">{productName}</h1>
+      <div className=" text-2xl tracking-tight">{description}</div>
       <div className="mt-3 flex flex-col">
         {discount ? (
           <>
@@ -32,8 +30,8 @@ export default function ProductInformation(props) {
               </p>
             </div>
             <div>
-              <span className="ml-2 text-base text-gray-500">From</span>
-              <span className="ml-2 text-base line-through text-gray-500">
+              <span className="ml-2 text-lg ">From</span>
+              <span className="ml-2 text-lg line-through ">
                 THB {price.toLocaleString()}
               </span>
             </div>
