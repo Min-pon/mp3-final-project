@@ -21,7 +21,6 @@ export default function Cart() {
   const { allProducts, loading: loading2 } = useGetAllProducts();
   const { cart, loading } = useGetCartByID(cartId);
 
-  // console.log(cart);
   if (loading || loading2) {
     return <div>loading..</div>;
   }
@@ -29,7 +28,7 @@ export default function Cart() {
   // setCartItems(cart.items);
 
   return (
-    <div className="bg-secondary-50 overflow-hidden px-[160px] mobile:px-[16px] mt-[91px]">
+    <div className="bg-secondary-50 px-[160px] mobile:px-[16px] mt-[91px]">
       <div className="">
         <div className="pl-[24px] text-[32px] font-bold">My cart</div>
         <div className="flex flex-row items-start mt-[41px] gap-x-10 mobile:flex-col mobile:gap-y-10 mobile:gap-x-0 mobile:gap-0">
