@@ -2,32 +2,34 @@ import ProductInformation from "../components/ProductInformation";
 import FormControl from "@mui/material/FormControl";
 import useGetProductByPermalink from "../hooks/products/useGetProductByPermalink";
 import { useParams } from "react-router-dom";
-import InputLabel from "@mui/material/InputLabel";
-import Radio from "@mui/material/Radio";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import React, { useEffect } from "react";
-import FormLabel from "@mui/material/FormLabel";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import RadioGroup from "@mui/material/RadioGroup";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
+import useAddItemsToCart from "../hooks/carts/useAddItemsToCart";
+import useAddItemsToExistingCart from "../hooks/carts/useAddItemsToExistingCart";
 
 export default function ProductDetail() {
   const [data, setData] = React.useState(null);
   const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);
   const [selectedColor, setSelectedColor] = React.useState(null);
   const [selectedSize, setSelectedSize] = React.useState(null);
-  const [selectquantity, setSelectQuantity] = React.useState(null);
+  const [selectedQuantity, setSelectedQuantity] = React.useState(null);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [cartId, setCartId] = React.useState(null);
   const { permalink } = useParams();
   const colors = [{ name: null, hex: null }];
 
   const sizes = [null];
   const quantities = [null];
-  //const { product, loading, error } = useGetProductByPermalink(permalink);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   const { product, loading, error } = useGetProductByPermalink(
-    "shoes-casual-sandals"
+    "men-accessories-belts"
   );
 
   useEffect(() => {
@@ -35,6 +37,7 @@ export default function ProductDetail() {
       setData(product);
     }
   }, [product]);
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
   if (!data) return <div>No product data found</div>;
@@ -72,12 +75,30 @@ export default function ProductDetail() {
     setColors(event.target.value);
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+  const { addItemToCart } = useAddItemsToCart(openModal);
+  const { addItemsToExistingCart } = useAddItemsToExistingCart({ openModal });
+  // const { addItemToCart, loading: cartLoading, error: cartError } = useAddItemsToCart();
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const handleSubmit = () => {
+    const selectedSku = data.variants.find(
+      (variant) =>
+        variant.color === selectedColor && variant.size === selectedSize
+    ).skuCode;
+    if (selectedSku) {
+      console.log("Add toCart===>", selectedSku);
+      if (cartId) {
+        addItemsToExistingCart({
+          cartId,
+          item: { skuCode: selectedSku, quantity: selectedQuantity },
+        });
+      } else {
+        const res = addItemToCart({
+          skuCode: selectedSku,
+          quantity: selectedQuantity,
+        });
+        setCartId(res);
+      }
+    }
   };
 
   //Modal to confirm for adding into Cart
@@ -280,8 +301,8 @@ export default function ProductDetail() {
                       labelId="quantity-label"
                       id="quantity"
                       className="basis-1/4 block w-full p-2 text-base border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
-                      value={selectquantity}
-                      onChange={(e) => setSelectQuantity(e.target.value)}
+                      value={selectedQuantity}
+                      onChange={(e) => setSelectedQuantity(e.target.value)}
                     >
                       {Array.from({ length: maxQuantity }, (_, i) => i + 1).map(
                         (q) => (
@@ -310,7 +331,7 @@ export default function ProductDetail() {
                   <button
                     type="submit"
                     className="flex justify-center items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-black hover:bg-gray-800"
-                    onClick={openModal}
+                    onClick={handleSubmit}
                   >
                     Add to cart
                   </button>
