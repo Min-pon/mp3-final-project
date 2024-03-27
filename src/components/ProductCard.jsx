@@ -50,14 +50,14 @@ function ProductCard({
             {discount ? (
               <div className=" flex items-center gap-4 ">
                 <p className="line-through text-secondary-700 text-subtitle">
-                  {product.price}
+                  {product.price.toLocaleString()}
                 </p>
                 <h2 className=" font-bold text-2xl text-danger">
-                  THB {product.promotionalPrice}
+                  THB {product.promotionalPrice.toLocaleString()}
                 </h2>
               </div>
             ) : (
-              <h2 className=" font-bold text-2xl ">THB {product.price}</h2>
+              <h2 className=" font-bold text-2xl ">THB {product.price.toLocaleString()}</h2>
             )}
           </div>
         </div>
@@ -97,14 +97,14 @@ function ProductCard({
             {discount ? (
               <div className=" flex items-center gap-4 ">
                 <p className="line-through text-secondary-700 text-subtitle">
-                  {product.price}
+                  {product.price.toLocaleString()}
                 </p>
                 <h2 className=" font-bold text-2xl text-danger">
-                  THB {product.promotionalPrice}
+                  THB {product.promotionalPrice.toLocaleString()}
                 </h2>
               </div>
             ) : (
-              <h2 className=" font-bold text-2xl ">THB {product.price}</h2>
+              <h2 className=" font-bold text-2xl ">THB {product.price.toLocaleString()}</h2>
             )}
           </div>
         </div>

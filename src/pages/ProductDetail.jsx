@@ -1,36 +1,88 @@
 import ProductInformation from "../components/ProductInformation";
 import FormControl from "@mui/material/FormControl";
 import useGetProductByPermalink from "../hooks/products/useGetProductByPermalink";
-import InputLabel from "@mui/material/InputLabel";
-import Radio from "@mui/material/Radio";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import React, { useEffect } from "react";
-import FormLabel from "@mui/material/FormLabel";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import RadioGroup from "@mui/material/RadioGroup";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import { useParams } from "react-router";
+import axios from "axios";
+import { useStore } from "../hooks/useStore";
+import ShoppingCartModal from "../components/ShoppingCartModal";
+// const cartId = "beprGHU79EAunyT3eLJM";
 
 export default function ProductDetail() {
-  const {permalink} = useParams()
-  const { product, loading, error } = useGetProductByPermalink(
-    permalink
-  );
+  const { cartId, setCartId } = useStore();
+  const { permalink } = useParams();
+  const { product, loading, error } = useGetProductByPermalink(permalink);
   const [data, setData] = React.useState(null);
   const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);
-  const [selectedColor, setSelectedColor] = React.useState("Navy");
-  const [selectedSize, setSelectedSize] = React.useState("M");
+  const [selectedColor, setSelectedColor] = React.useState(null);
+  const [selectedSize, setSelectedSize] = React.useState(null);
   const [selectquantity, setSelectQuantity] = React.useState(1);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [productDetail, setProductDetail] = React.useState(false);
+  const [quantities, setQuantities] = React.useState([]);
 
-  console.log("Product:", product);
+  const convertData = () => {
+    const colorVariantsMap = {};
+    product.variants.forEach((variant) => {
+      const { color, colorCode } = variant;
+      if (!colorVariantsMap[color]) {
+        colorVariantsMap[color] = {
+          color,
+          colorCode,
+          variants: [],
+        };
+      }
+      colorVariantsMap[color].variants.push(variant);
+    });
+    const sizeOrder = ["XS", "S", "M", "L", "XL"];
+
+    Object.values(colorVariantsMap).forEach((colorVariant) => {
+      colorVariant.variants.sort(
+        (a, b) => sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size)
+      );
+    });
+    setProductDetail(Object.values(colorVariantsMap));
+    setSelectedColor(Object.values(colorVariantsMap)[0]);
+  };
+
+  const convertArray = (length) => {
+    const myArray = Array.from({ length }, (_, index) => index + 1);
+    setQuantities(myArray);
+  };
+
+  useEffect(() => {
+    console.log(selectedColor);
+    const handleConvertArray = () => {
+      const variant = getSelectedVariant(selectedColor, selectedSize);
+      if (variant) {
+        const { remains } = variant;
+        const shouldConvertRemains = remains < 5;
+        convertArray(shouldConvertRemains ? remains : 5);
+      }
+    };
+
+    if (selectedColor) {
+      handleConvertArray();
+    }
+  }, [selectedColor, selectedSize]);
+
+  const getSelectedVariant = (selectedColor, selectedSize) => {
+    if (!selectedColor || !selectedColor.variants) {
+      return null;
+    }
+
+    const variant = selectedColor.variants[0];
+    return selectedSize || variant;
+  };
+
   useEffect(() => {
     if (product) {
       setData(product);
+      console.log(product);
+      convertData();
     }
   }, [product]);
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
   if (!data) return <div>No product data found</div>;
@@ -49,23 +101,6 @@ export default function ProductDetail() {
     );
   };
 
-  const colors = [
-    { name: "Navy", hex: "#000080" },
-    { name: "Orange", hex: "#FFA500" },
-    { name: "Green", hex: "#008000" },
-  ];
-
-  const sizes = ["XS", "S", "M", "L", "XL"];
-
-  const quantities = [1, 2, 3, 4, 5];
-
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
-  const handleRadioChange = (event) => {
-    setColors(event.target.value);
-  };
-
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -74,62 +109,46 @@ export default function ProductDetail() {
     setIsModalOpen(false);
   };
 
-  //Modal to confirm for adding into Cart
-  const ShoppingCartModal = ({ isOpen, onClose, item }) => {
-    if (!isOpen) return null;
+  const postDataApi = async (data) => {
+    console.log("CartID : ", cartId);
+    let apiUrl = `https://api.storefront.wdb.skooldio.dev/carts/`;
+    if (cartId) {
+      apiUrl += `${cartId}/items`;
+    }
 
-    return (
-      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
-          <div className="bg-gray-100 p-4 flex justify-between items-start">
-            <h3 className="text-lg leading-6 font-medium text-gray-900">
-              Items added to your cart
-            </h3>
-            <button
-              type="button"
-              className="text-gray-400 hover:text-gray-500"
-              onClick={onClose}
-            >
-              <span className="sr-only">Close</span>
-              &#10005;{" "}
-              {/* This is a Unicode multiplication sign used as a close icon */}
-            </button>
-          </div>
-          <div className="p-4">
-            <div className="flex items-start">
-              <div className="flex-shrink-0">
-                <img
-                  className="h-16 w-16 rounded-md object-cover"
-                  src={item.imageUrl}
-                  alt=""
-                />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-900">{item.name}</p>
-                <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
-                <p className="text-sm text-gray-500">{item.price}</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse">
-            <button
-              type="button"
-              className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 text-base font-medium text-white hover:bg-yellow-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
-              onClick={() => alert("Go to cart")}
-            >
-              View cart
-            </button>
-            <button
-              type="button"
-              className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:w-auto sm:text-sm"
-              onClick={onClose}
-            >
-              Continue shopping
-            </button>
-          </div>
-        </div>
-      </div>
-    );
+    try {
+      const response = await axios.post(apiUrl, data);
+      console.log("response ====> ", response.data.id);
+      setCartId(response.data.id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSubmit = async () => {
+    let data;
+
+    if (selectedColor.variants[0].size) {
+      data = {
+        items: [
+          {
+            skuCode: selectedSize.skuCode,
+            quantity: selectquantity,
+          },
+        ],
+      };
+    } else {
+      data = {
+        items: [
+          {
+            skuCode: selectedColor.variants[0].skuCode,
+            quantity: selectquantity,
+          },
+        ],
+      };
+    }
+
+    postDataApi(data);
   };
 
   if (loading) return <div>Loading...</div>;
@@ -152,19 +171,24 @@ export default function ProductDetail() {
               />
               <button
                 onClick={previousImage}
-                className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white p-2"
+                className="absolute left-0 top-1/2 rounded-full w-[70px] aspect-square transform -translate-y-1/2 bg-white p-2"
               >
                 &#60;
               </button>
               <button
                 onClick={nextImage}
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-2"
+                className="absolute right-0 top-1/2 rounded-full w-[70px] aspect-square transform -translate-y-1/2 bg-white p-2"
               >
                 &#62;
               </button>
+              {product.price != product.promotionalPrice && (
+                <div className=" absolute bg-danger right-0 z-30 text-white top-8 text-2xl px-4 py-3">
+                  sale
+                </div>
+              )}
             </div>
             {/* Thumbnails */}
-            <div className="flex gap-2 w-full">
+            <div className="flex gap-2 w-full ">
               {data.imageUrls.map((url, index) => (
                 <button
                   key={index}
@@ -200,40 +224,54 @@ export default function ProductDetail() {
                 <div className="mb-4">
                   <p className="text-lg font-semibold mb-2">Color</p>
                   <div className="flex space-x-2">
-                    {colors.map((color) => (
+                    {productDetail.map((color, idx) => (
                       <button
-                        key={color.name}
+                        key={idx}
                         className={`h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-indigo-500 ${
-                          selectedColor === color.name
+                          selectedColor === color
                             ? "ring-2 ring-offset-2 ring-indigo-500"
                             : ""
                         }`}
-                        style={{ backgroundColor: color.hex }}
-                        onClick={() => setSelectedColor(color.name)}
+                        style={{ backgroundColor: color.colorCode }}
+                        onClick={() => {
+                          if (color !== selectedColor) {
+                            setSelectedColor(color);
+                            setSelectedSize({});
+                            setSelectQuantity(1);
+                          }
+                        }}
                         aria-label={`Select ${color.name}`}
                       />
                     ))}
                   </div>
                 </div>
+
                 {/* size of item */}
-                <div className="mb-4">
-                  <div className="text-lg font-semibold mb-2">Size</div>
-                  <div className="flex flex-row space-x-2">
-                    {sizes.map((size) => (
-                      <button
-                        key={size}
-                        className={`grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none basis-1/${
-                          sizes.length
-                        } ${
-                          selectedSize === size ? "ring-2 ring-[#DEF81C]" : ""
-                        }`}
-                        onClick={() => setSelectedSize(size)}
-                      >
-                        {size}
-                      </button>
-                    ))}
+                {selectedColor.variants[0].size && (
+                  <div className="mb-4">
+                    <div className="text-lg font-semibold mb-2">Size</div>
+                    <div className="flex flex-row space-x-2">
+                      {selectedColor.variants.map((size, idx) => (
+                        <button
+                          key={idx}
+                          className={`grow px-4 py-2 border disabled:border-gray-100 disabled:text-gray-300 disabled:bg-gray-100 border-gray-300 focus:outline-none ${
+                            selectedSize === size ? "ring-2 ring-[#DEF81C]" : ""
+                          }`}
+                          onClick={() => {
+                            if (size !== selectedSize) {
+                              setSelectedSize(size);
+                              setSelectQuantity(1);
+                            }
+                          }}
+                          disabled={size.remains < 1}
+                        >
+                          {size.size}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
+
                 {/* Quantity of item */}
                 <div className="mb-4">
                   <label
@@ -257,12 +295,16 @@ export default function ProductDetail() {
                     </select>
                   </div>
                 </div>
+
                 {/* Add to cart button */}
                 <div className="mt-10 flex flex-col gap-4">
                   <button
                     type="submit"
                     className="flex justify-center items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-black hover:bg-gray-800"
-                    onClick={openModal}
+                    onClick={() => {
+                      openModal();
+                      handleSubmit();
+                    }}
                   >
                     Add to cart
                   </button>
@@ -273,6 +315,7 @@ export default function ProductDetail() {
                 isOpen={isModalOpen}
                 onClose={closeModal}
                 item={data}
+                qty={selectquantity}
               />
             </div>
           </div>
