@@ -1,38 +1,59 @@
 import ProductInformation from "../components/ProductInformation";
 import FormControl from "@mui/material/FormControl";
 import useGetProductByPermalink from "../hooks/products/useGetProductByPermalink";
-import InputLabel from "@mui/material/InputLabel";
-import Radio from "@mui/material/Radio";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
+import { useParams } from "react-router-dom";
 import React, { useEffect } from "react";
-import FormLabel from "@mui/material/FormLabel";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import RadioGroup from "@mui/material/RadioGroup";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
+import useAddItemsToCart from "../hooks/carts/useAddItemsToCart";
+import useAddItemsToExistingCart from "../hooks/carts/useAddItemsToExistingCart";
 
 export default function ProductDetail() {
-  const { product, loading, error } = useGetProductByPermalink(
-    "shirts-boxy-tailored-jacket"
-  );
   const [data, setData] = React.useState(null);
   const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);
-  const [selectedColor, setSelectedColor] = React.useState("Navy");
-  const [selectedSize, setSelectedSize] = React.useState("M");
-  const [selectquantity, setSelectQuantity] = React.useState(1);
+  const [selectedColor, setSelectedColor] = React.useState(null);
+  const [selectedSize, setSelectedSize] = React.useState(null);
+  const [selectedQuantity, setSelectedQuantity] = React.useState(null);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [cartId, setCartId] = React.useState(null);
+  const { permalink } = useParams();
+  const colors = [{ name: null, hex: null }];
 
-  console.log("Product:", product);
+  const sizes = [null];
+  const quantities = [null];
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const { product, loading, error } = useGetProductByPermalink(
+    "men-accessories-belts"
+  );
+
   useEffect(() => {
     if (product) {
       setData(product);
     }
   }, [product]);
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
   if (!data) return <div>No product data found</div>;
 
+  const uniqueColors = Array.from(
+    new Set(product.variants.map((variant) => variant.color))
+  );
+  const uniqueSizes = Array.from(
+    new Set(product.variants.map((variant) => variant.size))
+  );
+
+  const selectedVariant = product.variants.find(
+    (variant) =>
+      variant.color === selectedColor && variant.size === selectedSize
+  );
+  const maxQuantity = selectedVariant ? selectedVariant.remains : 0;
   // Function to change the main image to the previous one
   const previousImage = () => {
     setSelectedImageIndex((prevIndex) =>
@@ -47,16 +68,6 @@ export default function ProductDetail() {
     );
   };
 
-  const colors = [
-    { name: "Navy", hex: "#000080" },
-    { name: "Orange", hex: "#FFA500" },
-    { name: "Green", hex: "#008000" },
-  ];
-
-  const sizes = ["XS", "S", "M", "L", "XL"];
-
-  const quantities = [1, 2, 3, 4, 5];
-
   const handleChange = (event) => {
     setAge(event.target.value);
   };
@@ -64,12 +75,30 @@ export default function ProductDetail() {
     setColors(event.target.value);
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+  const { addItemToCart } = useAddItemsToCart(openModal);
+  const { addItemsToExistingCart } = useAddItemsToExistingCart({ openModal });
+  // const { addItemToCart, loading: cartLoading, error: cartError } = useAddItemsToCart();
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const handleSubmit = () => {
+    const selectedSku = data.variants.find(
+      (variant) =>
+        variant.color === selectedColor && variant.size === selectedSize
+    ).skuCode;
+    if (selectedSku) {
+      console.log("Add toCart===>", selectedSku);
+      if (cartId) {
+        addItemsToExistingCart({
+          cartId,
+          item: { skuCode: selectedSku, quantity: selectedQuantity },
+        });
+      } else {
+        const res = addItemToCart({
+          skuCode: selectedSku,
+          quantity: selectedQuantity,
+        });
+        setCartId(res);
+      }
+    }
   };
 
   //Modal to confirm for adding into Cart
@@ -129,10 +158,6 @@ export default function ProductDetail() {
       </div>
     );
   };
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-  if (!data || data === null) return <div>No product data found</div>;
 
   return (
     <div className="bg-white">
@@ -198,7 +223,25 @@ export default function ProductDetail() {
                 <div className="mb-4">
                   <p className="text-lg font-semibold mb-2">Color</p>
                   <div className="flex space-x-2">
-                    {colors.map((color) => (
+                    {uniqueColors.map((color) => {
+                      const colorVariant = product.variants.find(
+                        (variant) => variant.color === color
+                      );
+                      return (
+                        <button
+                          key={color}
+                          className={`h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-indigo-500 ${
+                            selectedColor === color
+                              ? "ring-2 ring-offset-2 ring-indigo-500"
+                              : ""
+                          }`}
+                          style={{ backgroundColor: colorVariant.colorCode }}
+                          onClick={() => setSelectedColor(color)}
+                          aria-label={`Select ${color}`}
+                        />
+                      );
+                    })}
+                    {/* {colors.map((color) => (
                       <button
                         key={color.name}
                         className={`h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-indigo-500 ${
@@ -210,14 +253,27 @@ export default function ProductDetail() {
                         onClick={() => setSelectedColor(color.name)}
                         aria-label={`Select ${color.name}`}
                       />
-                    ))}
+                    ))} */}
                   </div>
                 </div>
                 {/* size of item */}
                 <div className="mb-4">
                   <div className="text-lg font-semibold mb-2">Size</div>
                   <div className="flex flex-row space-x-2">
-                    {sizes.map((size) => (
+                    {uniqueSizes.map((size) => (
+                      <button
+                        key={size}
+                        className={`grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none basis-1/${
+                          uniqueSizes.length
+                        } ${
+                          selectedSize === size ? "ring-2 ring-[#DEF81C]" : ""
+                        }`}
+                        onClick={() => setSelectedSize(size)}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                    {/* {sizes.map((size) => (
                       <button
                         key={size}
                         className={`grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none basis-1/${
@@ -229,7 +285,7 @@ export default function ProductDetail() {
                       >
                         {size}
                       </button>
-                    ))}
+                    ))} */}
                   </div>
                 </div>
                 {/* Quantity of item */}
@@ -242,6 +298,21 @@ export default function ProductDetail() {
                   </label>
                   <div className=" flex">
                     <select
+                      labelId="quantity-label"
+                      id="quantity"
+                      className="basis-1/4 block w-full p-2 text-base border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                      value={selectedQuantity}
+                      onChange={(e) => setSelectedQuantity(e.target.value)}
+                    >
+                      {Array.from({ length: maxQuantity }, (_, i) => i + 1).map(
+                        (q) => (
+                          <option key={q} value={q}>
+                            {q}
+                          </option>
+                        )
+                      )}
+                    </select>
+                    {/* <select
                       id="quantity"
                       className="basis-1/4 block w-full p-2 text-base border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
                       value={selectquantity}
@@ -252,7 +323,7 @@ export default function ProductDetail() {
                           {q}
                         </option>
                       ))}
-                    </select>
+                    </select> */}
                   </div>
                 </div>
                 {/* Add to cart button */}
@@ -260,7 +331,7 @@ export default function ProductDetail() {
                   <button
                     type="submit"
                     className="flex justify-center items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-black hover:bg-gray-800"
-                    onClick={openModal}
+                    onClick={handleSubmit}
                   >
                     Add to cart
                   </button>
