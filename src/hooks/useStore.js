@@ -10,6 +10,8 @@ const store = persist(
     totalItems: 0,
     cartItems: [],
     isUpdatedCart: false,
+    cartItemFromUpdateAPI: [],
+    itemOptions: [],
     setCurrentType: (currentType) => set(() => ({ currentType })),
     setUserId: (userId) => set(() => ({ userId })),
     setCartId: (cartId) => set(() => ({ cartId })),
@@ -18,7 +20,11 @@ const store = persist(
     setTotalItems: (totalItems) => set(() => ({ totalItems })),
     setCartItems: (cartItems) => set(() => ({ cartItems })),
     setIsUpdatedCart: (isUpdatedCart) => set(() => ({ isUpdatedCart })),
+    setCartItemFromUpdateAPI: (cartItemFromUpdateAPI) =>
+      set(() => ({ cartItemFromUpdateAPI })),
+    setItemOptions: (itemOptions) => set(() => ({ itemOptions })),
   }),
+
   { name: "wdb-state" }
 );
 
