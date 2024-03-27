@@ -20,12 +20,6 @@ export default function useGetCartByID(id) {
         setCart(response.data);
         console.log(response.data);
         setLoading(false);
-        let count = 0;
-
-        response.data.items.forEach((item) => {
-          count += item.quantity;
-        });
-        setTotalItems(count);
         // setCartItems(response.data.items);
       } catch (error) {
         console.error("Error fetching data:", error);
