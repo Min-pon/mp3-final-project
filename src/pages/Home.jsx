@@ -4,7 +4,6 @@ import ProductCard from "../components/ProductCard";
 import useGetAllProducts from "../hooks/products/useGetAllProducts";
 
 const sort = { sort: "ratings:desc" };
-const sort = { sort: "ratings:desc" };
 
 export default function HomePage() {
   const { collections, loading } = useGetAllCollections();
@@ -17,43 +16,12 @@ export default function HomePage() {
     return <div>Loading...</div>;
   }
 
-  const productList = [
-    {
-      imageUrl: `https://images.unsplash.com/photo-1508138221679-760a23a2285b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`,
-      title: "Pleated Camisole Dress dddsdssd",
-      description: "Our versatile crossbody bag combines fashiondfgdfgdfdfg",
-      rating: 4,
-      price: "1,600",
-    },
-    {
-      imageUrl: `https://images.unsplash.com/photo-1508138221679-760a23a2285b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`,
-      title: "Pleated Camisole Dress dddsdssd",
-      description: "Our versatile crossbody bag combines fashiondfgdfgdfdfg",
-      rating: 4,
-      price: "1,600",
-    },
-    {
-      imageUrl: `https://images.unsplash.com/photo-1508138221679-760a23a2285b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`,
-      title: "Pleated Camisole Dress dddsdssd",
-      description: "Our versatile crossbody bag combines fashiondfgdfgdfdfg",
-      rating: 4,
-      price: "1,600",
-    },
-    {
-      imageUrl: `https://images.unsplash.com/photo-1508138221679-760a23a2285b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`,
-      title: "Pleated Camisole Dress dddsdssd",
-      description: "Our versatile crossbody bag combines fashiondfgdfgdfdfg",
-      rating: 4,
-      price: "1,600",
-    },
-  ];
-
   return (
     <div className="pt-[60px]">
       <img
         src="./images/banner.jpg"
         alt="banner"
-        className="mb-[97px] mobile:mb-[32px] h-[420px] mobile:h-full mobile:bg-center w-full bg-center"
+        className="mb-[97px] mobile:mb-[32px] h-[420px] mobile:h-full mobile:bg-center w-full object-cover"
       />
       <div className="flex flex-row space-x-[40px] px-[160px] mb-[126px] mobile:flex-col mobile:px-[16px] mobile:space-x-0  mobile:space-y-[20px]">
         <div className="flex-1 mobile:w-[100%]">

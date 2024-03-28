@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { useStore } from "../hooks/useStore";
 
 export default function Cookies() {
-  const { declineCookie, setClickCookie } = useStore((state) => ({
+  const { clickCookie, setClickCookie } = useStore((state) => ({
     clickCookie: state.clickCookie,
     setClickCookie: state.setClickCookie,
   }));
@@ -51,10 +51,11 @@ export default function Cookies() {
   }, []);
 
   let checkedCookie = getCookie("cookie_consent");
+  console.log(clickCookie);
 
   return (
     <>
-      {checkedCookie == "accepted" || declineCookie ? (
+      {checkedCookie == "accepted" || clickCookie ? (
         <></>
       ) : (
         <div className="fixed inset-x-0 bottom-0">
