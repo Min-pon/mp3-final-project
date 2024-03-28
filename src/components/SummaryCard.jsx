@@ -7,70 +7,73 @@ export default function SummaryCard({ cart, allProducts }) {
   const navigate = useNavigate();
   const {
     cartId,
+    setCartId,
     cartItems,
     setCartItems,
     isUpdatedCart,
     setIsUpdatedCart,
     cartItemFromUpdateAPI,
-    setItemOptions,
   } = useStore((state) => ({
     cartId: state.cartId,
+    setCartId: state.setCartId,
     cartItems: state.cartItems,
     setCartItems: state.setCartItems,
     isUpdatedCart: state.isUpdatedCart,
     setIsUpdatedCart: state.setIsUpdatedCart,
     cartItemFromUpdateAPI: state.cartItemFromUpdateAPI,
-    setItemOptions: state.setItemOptions,
   }));
 
   useEffect(() => {
-    // setCartItems([1, 2, 3]);
-    // console.log(allProducts);
-    // console.log(cart);
-    let updatedCartItem = [...cartItems];
-    console.log(cartItems);
-    const checkedState = JSON.parse(localStorage.getItem("wdb-state"));
-    // console.log(checkedState.state.cartItems);
+    if (cartId.length > 0) {
+      // setCartItems([1, 2, 3]);
+      // console.log(allProducts);
+      // console.log(cart);
+      let updatedCartItem = [...cartItems];
+      console.log(cartItems);
+      const checkedState = JSON.parse(localStorage.getItem("wdb-state"));
+      // console.log(checkedState.state.cartItems);
 
-    // at first
-    if (checkedState.state.cartItems.length == 0) {
-      cart.items.forEach((item) => {
-        // console.log("test", item.id);
-        // console.log(item);
-        let productItem = allProducts.filter(
-          (product) => product.permalink == item.productPermalink
-        );
-        // console.log(productItem[0]);
-        console.log(productItem[0]);
-        updatedCartItem.push({
-          ...productItem[0],
-          quantity: item.quantity,
-          itemId: item.id,
-        });
-      });
-      setCartItems(updatedCartItem);
-      setIsUpdatedCart(true);
-    }
-
-    // check update
-    if (!isUpdatedCart) {
-      let updatedCartItem = [];
-      console.log(cartItemFromUpdateAPI);
-      cartItemFromUpdateAPI.forEach((item) => {
-        let productItem = allProducts.filter(
-          (product) => product.permalink == item.productPermalink
-        );
-        updatedCartItem.push({
-          ...productItem[0],
-          quantity: item.quantity,
-          itemId: item.id,
+      // at first
+      if (checkedState.state.cartItems.length == 0) {
+        cart.items.forEach((item) => {
+          // console.log("test", item.id);
+          // console.log(item);
+          let productItem = allProducts.filter(
+            (product) => product.permalink == item.productPermalink
+          );
+          // console.log(productItem[0]);
+          console.log(productItem[0]);
+          updatedCartItem.push({
+            ...productItem[0],
+            quantity: item.quantity,
+            itemId: item.id,
+          });
         });
         setCartItems(updatedCartItem);
         setIsUpdatedCart(true);
-      });
-      setIsUpdatedCart(true);
+      }
+
+      // check update
+      if (!isUpdatedCart) {
+        let updatedCartItem = [];
+        // console.log(cartItemFromUpdateAPI);
+        cartItemFromUpdateAPI.forEach((item) => {
+          let productItem = allProducts.filter(
+            (product) => product.permalink == item.productPermalink
+          );
+          updatedCartItem.push({
+            ...productItem[0],
+            quantity: item.quantity,
+            itemId: item.id,
+          });
+        });
+        setCartItems(updatedCartItem);
+        setIsUpdatedCart(true);
+      }
     }
   }, [isUpdatedCart]);
+
+  // console.log(allProducts);
 
   const totalItems = cartItems
     .map((item) => item.quantity)
@@ -161,6 +164,10 @@ export default function SummaryCard({ cart, allProducts }) {
             : "bg-secondary-300 text-secondary-500"
         }`}
         disabled={cartId.length == 0}
+        onClick={() => {
+          navigate("/");
+          setCartId("");
+        }}
       >
         Check out
       </button>
@@ -170,7 +177,7 @@ export default function SummaryCard({ cart, allProducts }) {
         }`}
         disabled={cartId.length == 0}
         onClick={() => {
-          navigate("/item-product-list/men");
+          navigate("/item-product-list/all-men");
         }}
       >
         Continue shopping
