@@ -20,7 +20,7 @@ export default function ProductDetail() {
   const [selectedSize, setSelectedSize] = React.useState(null);
   const [selectquantity, setSelectQuantity] = React.useState(1);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [productDetail, setProductDetail] = React.useState(false);
+  const [productDetail, setProductDetail] = React.useState(null);
   const [quantities, setQuantities] = React.useState([]);
 
   useEffect(() => {
@@ -143,9 +143,11 @@ export default function ProductDetail() {
     postDataApi(data);
   };
 
-  if (loading) {return <Loading/>};
-  if (error) return <Loading/>;
-  if (!product || data === null) return <Loading/>;
+  if (loading) {
+    return <Loading />;
+  }
+  if (error) return <Loading />;
+  if (!product || data === null) return <Loading />;
 
   return (
     <div className="bg-white py-24 md:py-24 px-4 xl:px-20 lg:px-20 md:px-20 2xl:px-[160px]">

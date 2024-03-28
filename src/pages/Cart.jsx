@@ -3,13 +3,18 @@ import EmptyCard from "../components/EmptyCard";
 import SummaryCard from "../components/SummaryCard";
 import ProductCardAlsoLike from "../components/ProductCardAlsoLike";
 import { useStore } from "../hooks/useStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useGetCartByID from "../hooks/carts/useGetCartByID";
+import useGetAllProducts from "../hooks/products/useGetAllProducts";
+
+const sort = { sorts: "ratings:desc" };
 
 export default function Cart() {
+  const { allProducts, loadingProduct } = useGetAllProducts("products", sort);
   const { cartId } = useStore((state) => ({
     cartId: state.cartId,
   }));
+  const [dataCart, setDataCart] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -17,9 +22,15 @@ export default function Cart() {
 
   // can use cartId when set on product detail page
 
-  const { cart, loading } = useGetCartByID("0HrVDEPgTeJhswT42VHs");
+  const { cart, loading } = useGetCartByID("GrvEVBtmeCO8KCg7Gpy1");
 
-  if (loading) {
+  useEffect(() => {
+    if (cart) {
+      setDataCart(cart);
+    }
+  }, [cart]);
+
+  if (loading || loadingProduct) {
     return <div>loading..</div>;
   }
   return (
@@ -28,11 +39,14 @@ export default function Cart() {
         <div className="pl-[24px] text-[32px] font-bold">My cart</div>
         <div className="flex flex-row items-start mt-[41px] gap-x-10">
           <div className="p-[24px] text-[24px] font-bold bg-white">
-            {cart.id ? (
+            {dataCart ? (
               <div>
-                {" "}
                 <p>Items</p>
-                <CartItem />
+                {dataCart.items.map((itemCart, idx) => (
+                  <div key={idx} className="">
+                    <CartItem itemCart={itemCart} allProducts={allProducts}/>
+                  </div>
+                ))}
               </div>
             ) : (
               <EmptyCard />

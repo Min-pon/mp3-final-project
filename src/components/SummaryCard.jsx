@@ -7,21 +7,21 @@ export default function SummaryCard() {
           0 items
         </span>
       </div>
-      <div class="flex justify-between items-center text-[16px] font-normal text-secondary-500">
+      <div className="flex justify-between items-center text-[16px] font-normal text-secondary-500">
         <span>No item</span>
         <span>0.00</span>
       </div>
-      <div class="border-t border-secondary-300 my-[24px]"></div>
-      <div class="flex justify-between items-center text-[16px] font-normal text-secondary-500 mb-[16px]">
+      <div className="border-t border-secondary-300 my-[24px]"></div>
+      <div className="flex justify-between items-center text-[16px] font-normal text-secondary-500 mb-[16px]">
         <span>Subtotal</span>
         <span>0.00</span>
       </div>
-      <div class="flex justify-between items-center text-[16px] font-normal text-secondary-500">
+      <div className="flex justify-between items-center text-[16px] font-normal text-secondary-500">
         <span>Shipping fee</span>
         <span>0.00</span>
       </div>
-      <div class="border-t border-secondary-300 my-[24px]"></div>
-      <div class="flex justify-between items-center text-[18px] font-semibold text-secondary-500 mb-[40px]">
+      <div className="border-t border-secondary-300 my-[24px]"></div>
+      <div className="flex justify-between items-center text-[18px] font-semibold text-secondary-500 mb-[40px]">
         <span>Total</span>
         <span>0.00</span>
       </div>
