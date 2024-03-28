@@ -66,7 +66,7 @@ function SideBar({data}) {
   }, [collections]);
 
   return (
-    <div className=" w-[280px]">
+    <div className=" w-[200px] xl:w-[280px]">
       {menu.map((data, idx) => (
         <Accordion
           key={idx}

@@ -10,7 +10,7 @@ import useGetAllCategories from "../hooks/categories/useGetAllCategories";
 import Loading from "./Loading";
 
 function ItemProductList() {
-  const isMobile = useMediaQuery({ query: "(max-width: 376px)" });
+  const isMobile = useMediaQuery({ query: "(max-width: 1025px)" });
   const { type } = useParams();
   const [params, setParams] = useSearchParams();
   const { search } = useLocation();
@@ -36,7 +36,7 @@ function ItemProductList() {
         clearTimeout(timeoutId);
       }, 1000);
     }
-    setLoadingDataProduct(true)
+    setLoadingDataProduct(true);
     const timeoutId = setTimeout(() => {
       setLoadingDataProduct(false);
     }, 1000);
@@ -82,7 +82,7 @@ function ItemProductList() {
   }
 
   return (
-    <div className="flex flex-grow justify-between mt-[93px] mb-[188px] container mx-auto  2xl:min-w-[1601px] xl:max-w-[1191px] ">
+    <div className="flex flex-grow justify-between mt-[93px] w-[340px]  md:w-[720px] lg:w-[940px] 2xl:min-w-[1480px] xl:min-w-[1191px] mb-[188px] container mx-auto 3xl:w-[1601px] ">
       {isMobile ? (
         <></>
       ) : (
@@ -108,7 +108,7 @@ function ItemProductList() {
             </div>
           </div>
 
-          <div className="grid 2xl:grid-cols-3 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-10">
+          <div className="grid 2xl:grid-cols-3 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-10">
             {allProducts.slice(0, 20).map((product, index) => (
               <ProductCard key={index} product={product} />
             ))}

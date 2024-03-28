@@ -14,7 +14,7 @@ import { Link, useParams } from "react-router-dom";
 import HamburgerMenu from "./HamburgerMenu";
 import useGetAllCollections from "../hooks/collections/useGetAllColllections";
 export default function NavBar() {
-  const isMobile = useMediaQuery({ query: "(max-width: 376px)" });
+  const isMobile = useMediaQuery({ query: "(max-width: 1025px)" });
   const [scroll, setScroll] = useState(0);
 
   const handleScroll = () => setScroll(document.documentElement.scrollTop);

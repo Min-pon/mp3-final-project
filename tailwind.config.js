@@ -43,6 +43,7 @@ export default {
       },
       screens: {
         mobile: { max: "376px" },
+        "3xl": {min: "1720px"}
       },
     },
   },

@@ -68,7 +68,7 @@ function ProductCard({
         )}
       </div>
       <div
-        className={`container w-[340px] md:w-[370px] h-[524px] relative ${
+        className={`container w-[340px] lg:w-[340px] xl:w-[370px]  h-[524px] relative ${
           isHover ? " hidden" : " block"
         }`}
       >
