@@ -18,7 +18,7 @@ export default function Cart() {
   // can use cartId when set on product detail page
   const { cart, loading } = useGetCartByID("0HrVDEPgTeJhswT42VHs");
 
-  if (loading || loading2) {
+  if (loading) {
     return <div>loading..</div>;
   }
   return (
