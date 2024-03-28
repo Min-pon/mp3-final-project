@@ -173,7 +173,7 @@ export default function ProductDetail() {
                     className=" flex w-[100px] flex-col justify-center items-center text-center gap-2"
                   >
                     <button
-                      className={` w-[54px] aspect-square rounded-full transition-all duration-200 ease-out  ${
+                      className={` w-[54px] aspect-square rounded-full transition duration-300 ease-out  ${
                         selectedColor === color
                           ? " ring-2 ring-primary"
                           : " border"
@@ -182,7 +182,7 @@ export default function ProductDetail() {
                       onClick={() => {
                         if (color !== selectedColor) {
                           setSelectedColor(color);
-                          setSelectedSize({});
+                          setSelectedSize(null);
                           setSelectQuantity(1);
                         }
                       }}
@@ -197,27 +197,27 @@ export default function ProductDetail() {
             {/* size of item */}
             {selectedColor.variants[0].size && (
               <div className="">
-              <div className="text-lg font-semibold mb-2">Size</div>
-              <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
-                {selectedColor.variants.map((size, idx) => (
-                  <button
-                    key={idx}
-                    className={`grow px-4 py-2 border h-[54px] disabled:border-gray-100 disabled:text-gray-300 disabled:bg-gray-100 border-gray-300 focus:outline-none ${
-                      selectedSize === size ? "ring-2 ring-[#DEF81C]" : ""
-                    }`}
-                    onClick={() => {
-                      if (size !== selectedSize) {
-                        setSelectedSize(size);
-                        setSelectQuantity(1);
-                      }
-                    }}
-                    disabled={size.remains < 1}
-                  >
-                    {size.size}
-                  </button>
-                ))}
+                <div className="text-lg font-semibold mb-2">Size</div>
+                <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
+                  {selectedColor.variants.map((size, idx) => (
+                    <button
+                      key={idx}
+                      className={`grow px-4 py-2 border h-[54px] disabled:border-secondary-300 disabled:text-secondary-500 disabled:bg-secondary-300 border-secondary-300 focus:outline-none ${
+                        selectedSize === size ? "ring-2 ring-[#DEF81C]" : ""
+                      }`}
+                      onClick={() => {
+                        if (size !== selectedSize) {
+                          setSelectedSize(size);
+                          setSelectQuantity(1);
+                        }
+                      }}
+                      disabled={size.remains < 1}
+                    >
+                      {size.size}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
             )}
 
             {/* Quantity of item */}
@@ -248,11 +248,12 @@ export default function ProductDetail() {
             <div className="mt-10 w-full">
               <button
                 type="submit"
-                className="flex justify-center w-full h-[54px] items-center px-8 py-3 border border-transparent text-base font-medium text-white bg-secondary hover:bg-gray-800"
+                className="flex justify-center w-full h-[54px] items-center px-8 py-3 border border-transparent disabled:text-secondary-500 disabled:bg-secondary-300 text-base font-medium text-white bg-secondary hover:bg-gray-800"
                 onClick={() => {
                   openModal();
                   handleSubmit();
                 }}
+                disabled={selectedColor.variants[0].size && !selectedSize}
               >
                 Add to cart
               </button>
