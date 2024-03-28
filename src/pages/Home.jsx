@@ -4,13 +4,14 @@ import ProductCard from "../components/ProductCard";
 import useGetAllProducts from "../hooks/products/useGetAllProducts";
 import Cookies from "../components/Cookies";
 
+const sort = { sort: "ratings:desc" };
+
 export default function HomePage() {
   const { collections, loading } = useGetAllCollections();
-
-  const { allProducts, loading: loading2 } = useGetAllProducts();
-
-  // const checkSize = useMediaQuery({ query: "(max-width: 1441px)" });
-  // const featureProductNumber = 4 - checkSize;
+  const { allProducts, loading: loading2 } = useGetAllProducts(
+    "products",
+    sort
+  );
 
   console.log(allProducts);
   if (loading2) {
@@ -51,14 +52,7 @@ export default function HomePage() {
         <p className="text-[32px] font-bold">Featured Product</p>
         <div className="flex justify-wrap space-x-[40px] dx:space-x-[21.8px] mobile:flex-col mobile:space-y-[40px] mobile:space-x-0">
           {allProducts.slice(0, 4).map((product, index) => (
-            <ProductCard
-              key={index}
-              imageUrl={product.imageUrls[0]}
-              title={product.name}
-              description={product.description}
-              rating={4} // Ensure this is dynamic if possible
-              price={product.promotionalPrice}
-            />
+            <ProductCard key={index} product={product} />
           ))}
         </div>
       </div>

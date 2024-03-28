@@ -385,6 +385,159 @@ function HamburgerMenuIcon() {
   );
 }
 
+function SortIcon() {
+  return (
+    <svg
+      width="40"
+      height="40"
+      viewBox="0 0 40 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M28 16L32 16"
+        stroke="#222222"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M9 16H22"
+        stroke="#222222"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M9 24H14"
+        stroke="#222222"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M20 24L32 24"
+        stroke="#222222"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <circle cx="17" cy="24" r="3" stroke="#222222" strokeWidth="2" />
+      <circle cx="25" cy="16" r="3" stroke="#222222" strokeWidth="2" />
+    </svg>
+  );
+}
+
+function ChoiceActive() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect
+        x="1"
+        y="1"
+        width="22"
+        height="22"
+        rx="11"
+        fill="white"
+        stroke="#C1CD00"
+        strokeWidth="2"
+      />
+      <circle cx="12" cy="12" r="5.5" fill="#C1CD00" stroke="#C1CD00" />
+    </svg>
+  );
+}
+
+function ChoiceHover() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect
+        x="1"
+        y="1"
+        width="22"
+        height="22"
+        rx="11"
+        fill="white"
+        stroke="#C1CD00"
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}
+
+function ChoiceDefault() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect
+        x="1"
+        y="1"
+        width="22"
+        height="22"
+        rx="11"
+        fill="white"
+        stroke="#E1E1E1"
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg
+      width="40"
+      height="40"
+      viewBox="0 0 40 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 12L28 28"
+        stroke="#222222"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M28 12L12 28"
+        stroke="#222222"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function ArrowX() {
+  return (
+    <svg
+      width="40"
+      height="40"
+      viewBox="0 0 40 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M23.3995 20.5655L17.5562 26.4085C17.1965 26.7683 17.196 27.3502 17.5546 27.7089C17.9158 28.0701 18.4955 28.0669 18.8551 27.7073L25.3458 21.2166C25.3462 21.2163 25.3464 21.216 25.3466 21.2158C25.3469 21.2154 25.3472 21.2152 25.3475 21.215C25.5278 21.0346 25.6173 20.7998 25.617 20.5652C25.6161 20.3299 25.5265 20.0953 25.3475 19.9161C25.3472 19.9159 25.3469 19.9156 25.3466 19.9153C25.3464 19.915 25.3462 19.9148 25.3458 19.9145L18.8551 13.4235C18.4954 13.0638 17.9133 13.0632 17.5546 13.4219C17.1935 13.7831 17.1967 14.3629 17.5562 14.7223L23.3995 20.5655Z"
+        fill="#222222"
+      />
+    </svg>
+  );
+}
+
 export {
   LogoIcon,
   ComponyLogoIcon,
@@ -396,4 +549,10 @@ export {
   ArrowRightIcon,
   BinIcon,
   HamburgerMenuIcon,
+  SortIcon,
+  ChoiceActive,
+  ChoiceDefault,
+  ChoiceHover,
+  CloseIcon,
+  ArrowX
 };

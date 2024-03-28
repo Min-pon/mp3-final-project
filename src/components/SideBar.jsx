@@ -2,21 +2,33 @@ import React, { useState, useEffect } from "react";
 import Accordion from "./Accordion";
 import useGetAllCategorie from "../hooks/categories/useGetAllCategories";
 import { useParams, useLocation, useSearchParams } from "react-router-dom";
+import useGetAllColllections from "../hooks/collections/useGetAllColllections";
 
 function SideBar() {
   const { type } = useParams();
   const [accordionOpen, setAccordionOpen] = useState("");
   const { data, loading, error } = useGetAllCategorie();
+  const { collections } = useGetAllColllections();
   const [menu, setMenu] = useState([]);
   const { search } = useLocation();
   const queryParams = new URLSearchParams(search);
   const paramValue = queryParams.get("filter");
   const [params, setParams] = useSearchParams();
+  const [collectionsState, setCollectionsState] = useState({
+    title: { name: "Collection", permalink: "collection" },
+    listItem: [],
+  });
 
+  const setListArray = (array) => {
+    setCollectionsState((prevState) => ({
+      ...prevState,
+      listItem: array,
+    }));
+  };
 
   useEffect(() => {
-    setAccordionOpen(type)
-    console.log(type)
+    setAccordionOpen(type);
+    // console.log(type);
     // console.log(params.get('param'))
   }, [type]);
 
@@ -49,6 +61,10 @@ function SideBar() {
     }
   }, [data]);
 
+  useEffect(() => {
+    setListArray(collections);
+  }, [collections]);
+
   return (
     <div className=" w-[280px]">
       {menu.map((data, idx) => (
@@ -59,6 +75,11 @@ function SideBar() {
           setAccordionOpen={setAccordionOpen}
         />
       ))}
+      <Accordion
+        data={collectionsState}
+        accordionOpen={accordionOpen}
+        setAccordionOpen={setAccordionOpen}
+      />
     </div>
   );
 }

@@ -13,7 +13,7 @@ import {
 import useGetAllCategories from "../hooks/categories/useGetAllCategories";
 import { Link, useParams } from "react-router-dom";
 import HamburgerMenu from "./HamburgerMenu";
-
+import useGetAllCollections from "../hooks/collections/useGetAllColllections";
 export default function NavBar() {
   const isMobile = useMediaQuery({ query: "(max-width: 431px)" });
 
@@ -23,6 +23,7 @@ export default function NavBar() {
     cartId: state.cartId,
   }));
   const { data, loading, error } = useGetAllCategories();
+  const { collections } = useGetAllCollections();
   const { type } = useParams();
   const [open, setOpen] = useState(false);
 
@@ -39,7 +40,12 @@ export default function NavBar() {
               <button onClick={toggleDrawer}>
                 <HamburgerMenuIcon />
               </button>
-              <HamburgerMenu open={open} data={data} onClose={toggleDrawer} />
+              <HamburgerMenu
+                open={open}
+                data={data}
+                collections={collections}
+                onClose={toggleDrawer}
+              />
             </div>
             <Link
               className="flex items-center space-x-[10px] mr-[40px]"
@@ -75,9 +81,9 @@ export default function NavBar() {
                 <Fragment key={idx}>
                   {!category.parentId && (
                     <Link
-                      to={`/item-product-list/${category.name.toLowerCase()}`}
+                      to={`/item-product-list/${category.permalink.toLowerCase()}`}
                       className={`text-body font-normal hover:text-primary-300 active:text-primary ${
-                        type === category.name.toLowerCase()
+                        type === category.permalink.toLowerCase()
                           ? "text-body font-normal text-primary"
                           : ""
                       }`}
