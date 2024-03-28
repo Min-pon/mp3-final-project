@@ -2,6 +2,7 @@ import AdvertisingCard from "../components/AdvertisingCard";
 import useGetAllCollections from "../hooks/collections/useGetAllColllections";
 import ProductCard from "../components/ProductCard";
 import useGetAllProducts from "../hooks/products/useGetAllProducts";
+import Cookies from "../components/Cookies";
 
 export default function HomePage() {
   const { collections, loading } = useGetAllCollections();
@@ -61,6 +62,7 @@ export default function HomePage() {
           ))}
         </div>
       </div>
+      <Cookies />
     </div>
   );
 }
