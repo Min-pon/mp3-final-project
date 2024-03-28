@@ -37,8 +37,8 @@ function SelectMenu({
   // console.log(selectedValue);
   // console.log(product);
 
+  // console.log("test");
   useEffect(() => {
-    // console.log("test");
     let currentColor;
     let currentSize = "-";
     let variant;
@@ -48,12 +48,16 @@ function SelectMenu({
     console.log(skuCode);
     let itemOption = itemOptions.filter((item) => item.id == itemId)[0];
     console.log(itemOption);
-    if (menu == "color")
-      newSkuCode = itemOption.color.find(
-        (item) => item.label === value
-      ).skuCode;
-    if (menu == "size")
-      newSkuCode = itemOption.size.find((item) => item.label === value).skuCode;
+    if (itemOption) {
+      if (menu == "color")
+        newSkuCode = itemOption.color.find(
+          (item) => item.label === value
+        ).skuCode;
+      if (menu == "size")
+        newSkuCode = itemOption.size.find(
+          (item) => item.label === value
+        ).skuCode;
+    }
     console.log(newSkuCode);
 
     // let checkedSkuCode = skuCode;
@@ -67,6 +71,8 @@ function SelectMenu({
     if (product != null) {
       variant = product.variants.find((item) => item.skuCode === newSkuCode);
     }
+
+    // console.log(variant);
 
     if (variant) {
       currentColor = variant.color;
@@ -181,6 +187,7 @@ function SelectMenu({
           quantity: quantityList,
           number: menu === "quantity" ? value : 1,
           skuCode: menu !== "quantity" ? newSkuCode : skuCode,
+          selectedSize: menu === "size" ? value : currentSize,
         },
       ];
 
@@ -197,6 +204,7 @@ function SelectMenu({
           quantity: quantityList,
           number: menu === "quantity" ? value : 1,
           skuCode: menu !== "quantity" ? newSkuCode : skuCode,
+          selectedSize: menu === "size" ? value : currentSize,
         },
       ];
       console.log("2", updatedItemOption);
@@ -367,7 +375,7 @@ function SelectMenu({
 
   // const [options, setOptions] = useState([]);
   let options;
-  // console.log(itemOptions);
+  console.log(itemOptions);
   let itemWithId = itemOptions.find((item) => item.id === itemId);
 
   // console.log(itemWithId);
@@ -413,7 +421,11 @@ function SelectMenu({
               selectedValue == "-" ? "text-secondary-300" : ""
             }`}
           >
-            {menu == "quantity" ? itemWithId.number : value}
+            {menu == "quantity"
+              ? itemWithId.number
+              : menu == "size"
+              ? itemWithId.selectedSize
+              : value}
             {/* {menu == "quantity" ? value : value} */}
           </span>
           <span
