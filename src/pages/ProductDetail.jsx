@@ -23,6 +23,10 @@ export default function ProductDetail() {
   const [productDetail, setProductDetail] = React.useState(false);
   const [quantities, setQuantities] = React.useState([]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const convertData = () => {
     const colorVariantsMap = {};
     product.variants.forEach((variant) => {

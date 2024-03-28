@@ -26,6 +26,10 @@ function ItemProductList() {
   const [loadingDataProduct, setLoadingDataProduct] = useState(true);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     if (loading && loadingProduct) {
       const timeoutId = setTimeout(() => {
         setLoadingData(false);

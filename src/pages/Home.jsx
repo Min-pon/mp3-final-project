@@ -3,6 +3,7 @@ import useGetAllCollections from "../hooks/collections/useGetAllColllections";
 import ProductCard from "../components/ProductCard";
 import useGetAllProducts from "../hooks/products/useGetAllProducts";
 import Loading from "./Loading";
+import { useEffect } from "react";
 
 const sort = { sort: "ratings:desc" };
 
@@ -12,6 +13,10 @@ export default function HomePage() {
     "products",
     sort
   );
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   if (loading || loading2) {
     return <Loading />;

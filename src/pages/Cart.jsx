@@ -3,12 +3,17 @@ import EmptyCard from "../components/EmptyCard";
 import SummaryCard from "../components/SummaryCard";
 import ProductCardAlsoLike from "../components/ProductCardAlsoLike";
 import { useStore } from "../hooks/useStore";
+import { useEffect } from "react";
 import useGetCartByID from "../hooks/carts/useGetCartByID";
 
 export default function Cart() {
   const { cartId } = useStore((state) => ({
     cartId: state.cartId,
   }));
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   // can use cartId when set on product detail page
 
