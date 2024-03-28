@@ -1,4 +1,4 @@
-import { ArrowRightIcon } from "../assets/iconList";
+import { ArrowRightIcon, ComponyLogoIcon } from "../assets/iconList";
 
 export default function Footer() {
   return (
@@ -54,12 +54,13 @@ export default function Footer() {
           Copyright © 2024 All rights reserved for all contents.
         </p>
         <div className="flex items-center">
-          <p className="text-caption text-[#9F9F9F]">Powered By</p>
-          <img
+          <p className="text-caption text-[#9F9F9F] mr-[8px]">Powered By</p>
+          <ComponyLogoIcon />
+          {/* <img
             src="https://cdn.discordapp.com/attachments/1120391488484933705/1216800270709686374/image.png?ex=6601b48f&is=65ef3f8f&hm=50d4316bacc41b6208149879b62010ab8692068b69ba361a7dde7ad4dedb9fb2&"
             alt="logo2"
             className="h-[27px] ml-[8px] mobile:h-[17px]"
-          />
+          /> */}
         </div>
       </div>
     </div>

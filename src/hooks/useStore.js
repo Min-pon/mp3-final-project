@@ -1,12 +1,12 @@
 import { persist } from "zustand/middleware";
 import create from "zustand";
-
 const store = persist(
   (set) => ({
     currentType: "",
     userId: "",
     cartId: "0HrVDEPgTeJhswT42VHs",
     currentProductPermalink: "",
+    clickCookie: false,
     totalItems: 0,
     cartItems: [],
     isUpdatedCart: false,
@@ -18,6 +18,7 @@ const store = persist(
     setCartId: (cartId) => set(() => ({ cartId })),
     setCurrentProductPermalink: (currentProductPermalink) =>
       set(() => currentProductPermalink),
+    setClickCookie: (clickCookie) => set(() => ({ clickCookie })),
     setTotalItems: (totalItems) => set(() => ({ totalItems })),
     setCartItems: (cartItems) => set(() => ({ cartItems })),
     setIsUpdatedCart: (isUpdatedCart) => set(() => ({ isUpdatedCart })),

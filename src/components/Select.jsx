@@ -191,7 +191,7 @@ function SelectMenu({
           </span>
         </button>
         <div
-          className={`absolute top-[58px] bg-white flex transition-opacity duration-500 ease-in-out ${
+          className={`absolute top-[58px] bg-white flex transition-opacity duration-500 ease-in-out z-10 ${
             open ? " opacity-100" : " opacity-0"
           }`}
         >

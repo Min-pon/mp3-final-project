@@ -4,6 +4,7 @@ import SummaryCard from "../components/SummaryCard";
 // import ProductCardAlsoLike from "../components/ProductCardAlsoLike";
 import { useStore } from "../hooks/useStore";
 import useGetCartByID from "../hooks/carts/useGetCartByID";
+import CampaignBar from "../components/CampaignBar";
 import ProductCard from "../components/ProductCard";
 import useGetAllProducts from "../hooks/products/useGetAllProducts";
 import useGetProductByPermalink from "../hooks/products/useGetProductByPermalink";
@@ -25,7 +26,7 @@ export default function Cart() {
   );
   const { cart, loading } = useGetCartByID(cartId);
 
-  if (loading || loading2) {
+  if (loading) {
     return <div>loading..</div>;
   }
 
