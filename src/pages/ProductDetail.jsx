@@ -7,6 +7,7 @@ import axios from "axios";
 import { useStore } from "../hooks/useStore";
 import ShoppingCartModal from "../components/ShoppingCartModal";
 import ShowImageProduct from "../components/ShowImageProduct";
+import Loading from "./Loading";
 // const cartId = "beprGHU79EAunyT3eLJM";
 
 export default function ProductDetail() {
@@ -88,10 +89,6 @@ export default function ProductDetail() {
     }
   }, [product]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-  // if (!data) return <div///////////////////////>No product data found</div>;
-
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -142,9 +139,9 @@ export default function ProductDetail() {
     postDataApi(data);
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-  if (!product || data === null) return <div>No product data found</div>;
+  if (loading) {return <Loading/>};
+  if (error) return <Loading/>;
+  if (!product || data === null) return <Loading/>;
 
   return (
     <div className="bg-white py-24 md:py-24 px-4 xl:px-20 lg:px-20 md:px-20 2xl:px-[160px]">

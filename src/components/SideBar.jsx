@@ -4,10 +4,10 @@ import useGetAllCategorie from "../hooks/categories/useGetAllCategories";
 import { useParams, useLocation, useSearchParams } from "react-router-dom";
 import useGetAllColllections from "../hooks/collections/useGetAllColllections";
 
-function SideBar() {
+function SideBar({data}) {
   const { type } = useParams();
   const [accordionOpen, setAccordionOpen] = useState("");
-  const { data, loading, error } = useGetAllCategorie();
+  // const { data, loading, error } = useGetAllCategorie();
   const { collections } = useGetAllColllections();
   const [menu, setMenu] = useState([]);
   const { search } = useLocation();

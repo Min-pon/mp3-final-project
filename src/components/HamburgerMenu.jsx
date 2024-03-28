@@ -64,6 +64,10 @@ function HamburgerMenu({ open, onClose, data, collections }) {
     navigate("/");
   };
 
+  const handleClickMenu = () => {
+    onClose();
+  };
+
   const setListArray = (array) => {
     setCollectionsState((prevState) => ({
       ...prevState,
@@ -108,7 +112,11 @@ function HamburgerMenu({ open, onClose, data, collections }) {
               </p>
             </div>
             {selectedMenu.listItem.map((selected, idx) => (
-              <Link key={selected.id} to={generateLinkUrl(selected)}>
+              <Link
+                key={selected.id}
+                onClick={handleClickMenu}
+                to={generateLinkUrl(selected)}
+              >
                 <div
                   className={`flex justify-between h-[48px] items-center transition-colors duration-300 ease-in-out ${
                     selectedMenu.title?.permalink === type

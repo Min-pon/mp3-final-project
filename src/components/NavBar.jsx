@@ -1,5 +1,5 @@
 import { useMediaQuery } from "react-responsive";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { useStore } from "../hooks/useStore";
 import {
   CartWithItemIcon,
@@ -15,6 +15,14 @@ import HamburgerMenu from "./HamburgerMenu";
 import useGetAllCollections from "../hooks/collections/useGetAllColllections";
 export default function NavBar() {
   const isMobile = useMediaQuery({ query: "(max-width: 376px)" });
+  const [scroll, setScroll] = useState(0);
+
+  const handleScroll = () => setScroll(document.documentElement.scrollTop);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const { currentType, setCurrentType, cartId } = useStore((state) => ({
     currentType: state.currentType,
@@ -22,7 +30,7 @@ export default function NavBar() {
     cartId: state.cartId,
   }));
   const { data, loading, error } = useGetAllCategories();
-  const { collections } = useGetAllCollections()
+  const { collections } = useGetAllCollections();
   const { type } = useParams();
   const [open, setOpen] = useState(false);
 
@@ -33,13 +41,18 @@ export default function NavBar() {
   return (
     <div>
       {isMobile ? (
-        <div className="flex flex-row bg-secondary text-white py-[8px] justify-between h-[56px] pl-[16px] pr-[8px] w-full top-0 fixed z-10">
+        <div className={` flex flex-row bg-secondary text-white py-[8px] justify-between h-[56px] pl-[16px] pr-[8px] w-full top-0 fixed transition-all duration-300 ease-in-out top-0 z-10 ${scroll > 50 ? " bg-opacity-85 backdrop-blur-sm" : ""}`}>
           <div className="flex space-x-[8px]">
             <div>
               <button onClick={toggleDrawer}>
                 <HamburgerMenuIcon />
               </button>
-              <HamburgerMenu open={open} data={data} collections={collections} onClose={toggleDrawer} />
+              <HamburgerMenu
+                open={open}
+                data={data}
+                collections={collections}
+                onClose={toggleDrawer}
+              />
             </div>
             <Link
               className="flex items-center space-x-[10px] mr-[40px]"
@@ -62,7 +75,7 @@ export default function NavBar() {
           </a>
         </div>
       ) : (
-        <div className="flex flex-row bg-secondary text-white py-[10px] items-center justify-between h-[60px] px-[160px] w-full fixed top-0 z-10">
+        <nav className={`flex flex-row bg-secondary text-white py-[10px] items-center justify-between h-[60px] px-[160px] w-full fixed transition-all duration-300 ease-in-out top-0 z-10 ${scroll > 50 ? " bg-opacity-85 backdrop-blur-sm" : ""}`}>
           <div className="flex space-x-0 items-center">
             <Link
               className="flex items-center space-x-[10px] mr-[40px]"
@@ -114,7 +127,7 @@ export default function NavBar() {
               {cartId.length == 0 ? <EmptyCartIcon /> : <CartWithItemIcon />}
             </a>
           </div>
-        </div>
+        </nav>
       )}
     </div>
   );

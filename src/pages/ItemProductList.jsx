@@ -6,6 +6,8 @@ import Filter from "../components/Filter";
 import SideBar from "../components/SideBar";
 import { useMediaQuery } from "react-responsive";
 import useGetAllProducts from "../hooks/products/useGetAllProducts";
+import useGetAllCategories from "../hooks/categories/useGetAllCategories";
+import Loading from "./Loading";
 
 function ItemProductList() {
   const isMobile = useMediaQuery({ query: "(max-width: 376px)" });
@@ -15,69 +17,100 @@ function ItemProductList() {
   const queryParams = new URLSearchParams(search);
   const paramValue = queryParams.get("filter");
   const [urlParams, setUrlParams] = useState({});
-  const { allProducts, loading } = useGetAllProducts("/products", urlParams);
+  const { allProducts, loadingProduct } = useGetAllProducts(
+    "/products",
+    urlParams
+  );
+  const { data, loading, error } = useGetAllCategories();
+  const [loadingData, setLoadingData] = useState(true);
+  const [loadingDataProduct, setLoadingDataProduct] = useState(true);
+
+  useEffect(() => {
+    if (loading && loadingProduct) {
+      const timeoutId = setTimeout(() => {
+        setLoadingData(false);
+        clearTimeout(timeoutId);
+      }, 1000);
+    }
+    setLoadingDataProduct(true)
+    const timeoutId = setTimeout(() => {
+      setLoadingDataProduct(false);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [loading, loadingProduct]);
 
   useEffect(() => {
     const newParamsQuery = new URLSearchParams(search);
     newParamsQuery.delete("filter");
     const objectQueryParams = Object.fromEntries(newParamsQuery);
+
+    const baseParams = {
+      ...urlParams,
+      sort: "promotionalPrice:asc",
+      ...objectQueryParams,
+      collection: "",
+      categories: "",
+    };
+
     if (type === "collection") {
       setUrlParams({
-        ...urlParams,
-        sort: "promotionalPrice:asc",
-        ...objectQueryParams,
+        ...baseParams,
         collection: paramValue,
-        categories: "",
       });
     } else if (paramValue) {
       setUrlParams({
-        ...urlParams,
-        sort: "promotionalPrice:asc",
-        ...objectQueryParams,
-        collection: "",
+        ...baseParams,
         categories: paramValue,
       });
     } else {
       setUrlParams({
-        ...urlParams,
-        sort: "promotionalPrice:asc",
-        ...objectQueryParams,
-        collection: "",
+        ...baseParams,
         categories: type,
       });
     }
   }, [search, type]);
 
+  if (loadingData) {
+    return <Loading />;
+  }
+
   return (
-    <div className="flex justify-between mt-[93px] mb-[188px] container mx-auto  2xl:min-w-[1601px] xl:max-w-[1191px] ">
+    <div className="flex flex-grow justify-between mt-[93px] mb-[188px] container mx-auto  2xl:min-w-[1601px] xl:max-w-[1191px] ">
       {isMobile ? (
         <></>
       ) : (
         <div className=" mt-2">
-          <SideBar />
+          <SideBar data={data} />
         </div>
       )}
 
-      <div className="flex-1 max-w-fit">
-        <div className={`flex items-center mb-8 ${isMobile ? " flex-col justify-normal":"justify-between "}`}>
-          <h1 className="text-2xl font-bold">
-            {paramValue ? paramValue.toUpperCase() : type.toUpperCase()}
-          </h1>
-          <div className={`${isMobile ? "flex w-full justify-end": "" }`}>
-            <Filter />
+      {loadingProduct ? (
+        <Loading />
+      ) : (
+        <div className="flex-1 max-w-fit ">
+          <div
+            className={`flex items-center mb-8 ${
+              isMobile ? " flex-col justify-normal" : "justify-between "
+            }`}
+          >
+            <h1 className="text-2xl font-bold">
+              {paramValue ? paramValue.toUpperCase() : type.toUpperCase()}
+            </h1>
+            <div className={`${isMobile ? "flex w-full justify-end" : ""}`}>
+              <Filter />
+            </div>
+          </div>
+
+          <div className="grid 2xl:grid-cols-3 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-10">
+            {allProducts.slice(0, 20).map((product, index) => (
+              <ProductCard key={index} product={product} />
+            ))}
           </div>
         </div>
-
-        <div className="grid 2xl:grid-cols-3 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-10">
-          {!loading && (
-            <>
-              {allProducts.slice(0, 20).map((product, index) => (
-                <ProductCard key={index} product={product} />
-              ))}
-            </>
-          )}
-        </div>
-      </div>
+      )}
     </div>
   );
 }
