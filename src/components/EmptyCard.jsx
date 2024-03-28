@@ -18,7 +18,7 @@ export default function EmptyCard() {
       <button
         className="bg-secondary text-white text-[16px] font-normal w-[173px] h-[54px] px-[7px] py-[10px] mt-[24px]"
         onClick={() => {
-          navigate("/item-product-list/men");
+          navigate("/item-product-list/all-men");
         }}
       >
         Continue shopping
