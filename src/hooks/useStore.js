@@ -4,7 +4,7 @@ const store = persist(
   (set) => ({
     currentType: "",
     userId: "",
-    cartId: "0HrVDEPgTeJhswT42VHs",
+    cartId: "",
     currentProductPermalink: "",
     clickCookie: false,
     totalItems: 0,
