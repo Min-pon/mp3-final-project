@@ -23,6 +23,7 @@ function SelectMenu({
   product,
 }) {
   const [value, setValue] = useState(selectedValue);
+  const [isFirst, setIsFirst] = useState(true);
   const [open, setOpen] = useState(false);
 
   // console.log(product);
@@ -381,17 +382,31 @@ function SelectMenu({
   // console.log(itemWithId);
   switch (menu) {
     case "color":
-      // options = itemWithId.color;
+      // if (isFirst) {
+      //   options = colorList;
+      // } else {
+      options = itemWithId.color;
+      // }
       // setOptions([...colorList]);
-      options = colorList;
+      // options = colorList;
       break;
     case "size":
+      // if (isFirst) {
+      //   options = sizeList;
+      // } else {
       options = itemWithId.size;
+      // }
+
       // setOptions([...sizeList]);
       // options = sizeList;
       break;
     case "quantity":
+      // if (isFirst) {
+      //   options = quantityList;
+      // } else {
       options = itemWithId.quantity;
+      // }
+      // options = itemWithId.quantity;
       // setOptions([...quantityList]);
       // options = quantityList;
       break;
@@ -426,7 +441,7 @@ function SelectMenu({
               : menu == "size"
               ? itemWithId.selectedSize
               : value}
-            {/* {menu == "quantity" ? value : value} */}
+            {/* {value} */}
           </span>
           <span
             className={` w-10 h-10 flex items-center justify-center transition-all duration-300 ease-in-out ${
@@ -457,6 +472,7 @@ function SelectMenu({
                     // update item in existing cart
                     setOpen(false);
                     setValue(option.label);
+                    setIsFirst(false);
                     updateItem(option, menu, currentQuantity);
                   }}
                   key={option.id}
