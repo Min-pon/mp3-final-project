@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_BASE_API;
+console.log(BASE_URL);
 
 export default function useGetAllCollections() {
   const [collections, setCollections] = useState([]);
