@@ -22,7 +22,7 @@ export default function Cart() {
 
   // can use cartId when set on product detail page
 
-  const { cart, loading } = useGetCartByID("GrvEVBtmeCO8KCg7Gpy1");
+  const { cart, loading } = useGetCartByID(cartId);
 
   useEffect(() => {
     if (cart) {

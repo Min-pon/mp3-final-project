@@ -94,26 +94,62 @@ function ItemProductList() {
       {loadingProduct ? (
         <Loading />
       ) : (
-        <div className="flex-1 max-w-fit ">
-          <div
-            className={`flex items-center mb-8 ${
-              isMobile ? " flex-col justify-normal" : "justify-between "
-            }`}
-          >
-            <h1 className="text-2xl font-bold">
-              {paramValue ? paramValue.toUpperCase() : type.toUpperCase()}
-            </h1>
-            <div className={`${isMobile ? "flex w-full justify-end" : ""}`}>
-              <Filter />
-            </div>
-          </div>
+        <>
+          {allProducts.length > 0 ? (
+            <>
+              {" "}
+              <div className="flex-1 max-w-fit ">
+                <div
+                  className={`flex items-center mb-8 ${
+                    isMobile ? " flex-col justify-normal" : "justify-between "
+                  }`}
+                >
+                  <h1 className="text-2xl font-bold">
+                    {paramValue ? paramValue.toUpperCase() : type.toUpperCase()}
+                  </h1>
+                  <div
+                    className={`${isMobile ? "flex w-full justify-end" : ""}`}
+                  >
+                    <Filter />
+                  </div>
+                </div>
 
-          <div className="grid 2xl:grid-cols-3 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-10">
-            {allProducts.slice(0, 20).map((product, index) => (
-              <ProductCard key={index} product={product} />
-            ))}
-          </div>
-        </div>
+                <div className="grid 2xl:grid-cols-3 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-10">
+                  {allProducts.slice(0, 20).map((product, index) => (
+                    <ProductCard key={index} product={product} />
+                  ))}
+
+                  <div className=" flex mt-10 bg-primary w-full h-full">
+                    don't have product
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex flex-1 flex-col items-center justify-center  bg-white text-gray-800">
+                <div className="max-w-md mx-auto text-center">
+                  <div className="relative mb-12">
+                    <div className="absolute inset-0 flex items-center justify-center z-0">
+                      <div className="w-48 h-48 rounded-full bg-[#DEF81C] blur-3xl animate-pulse"></div>
+                    </div>
+                    <h1 className=" text-5xl font-bold text-gray-800 relative z-10 drop-shadow-lg">
+                    Product Not Available
+                    </h1>
+                  </div>
+                  {/* <h2 className="text-4xl font-semibold mb-6 text-gray-800">
+                    <span className="text-gray-500">Oops!</span> Page not found
+                  </h2>
+                  <p className="text-lg text-gray-600 mb-10">
+                    It seems the page you're looking for has gone astray in our
+                    online store. We apologize for the inconvenience.
+                  </p>
+                 */}
+                </div>
+              </div>
+            </>
+          )}
+        </>
       )}
     </div>
   );
