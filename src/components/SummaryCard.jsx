@@ -12,6 +12,7 @@ export default function SummaryCard({ cart, allProducts }) {
     isUpdatedCart,
     setIsUpdatedCart,
     cartItemFromUpdateAPI,
+    setItemOptions,
   } = useStore((state) => ({
     cartId: state.cartId,
     cartItems: state.cartItems,
@@ -19,10 +20,11 @@ export default function SummaryCard({ cart, allProducts }) {
     isUpdatedCart: state.isUpdatedCart,
     setIsUpdatedCart: state.setIsUpdatedCart,
     cartItemFromUpdateAPI: state.cartItemFromUpdateAPI,
+    setItemOptions: state.setItemOptions,
   }));
 
   useEffect(() => {
-    // console.log(cart.items);
+    // setCartItems([1, 2, 3]);
     let updatedCartItem = [...cartItems];
     const checkedState = JSON.parse(localStorage.getItem("wdb-state"));
     // console.log(checkedState.state.cartItems);

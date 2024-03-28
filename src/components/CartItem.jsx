@@ -10,23 +10,317 @@ import { useStore } from "../hooks/useStore";
 const BASE_URL = import.meta.env.VITE_BASE_API;
 
 function SelectMenu({
-  productPermalink,
+  // productPermalink,
   menu,
   // skuCode,
   selectedValue,
   // currentColor,
   currentQuantity,
+  skuCode,
   // cartId,
-  // itemId,
-  options,
+  itemId,
   updateItem,
+  product,
 }) {
   const [value, setValue] = useState(selectedValue);
   const [open, setOpen] = useState(false);
 
+  // console.log(product);
   const filterRef = useRef();
 
+  const { itemOptions, setItemOptions } = useStore((state) => ({
+    itemOptions: state.itemOptions,
+    setItemOptions: state.setItemOptions,
+  }));
+
+  // console.log(itemOptions);
+  // console.log(selectedValue);
+  // console.log(product);
+
   useEffect(() => {
+    console.log("test");
+    let currentColor;
+    let currentSize = "-";
+    let variant;
+
+    console.log(product);
+
+    if (product != null) {
+      variant = product.variants.find((item) => item.skuCode === skuCode);
+    }
+
+    if (variant) {
+      currentColor = variant.color;
+    }
+
+    if (variant.size) {
+      currentSize = variant.size;
+    }
+    // find color, size, and remains
+
+    const uniqueColors = new Set();
+    let currentRemains;
+
+    if (product != null) {
+      product.variants.forEach((item) => {
+        if (item.skuCode == skuCode) {
+          currentColor = item.color;
+          currentRemains = item.remains;
+        }
+        uniqueColors.add(item.color);
+      });
+    }
+
+    let uniqueColorsWithSkuCode = new Array();
+
+    const sizes = ["S", "M", "L", "XL"];
+
+    uniqueColors.forEach((color) => {
+      if (product != null) {
+        let size;
+        let code;
+        product.variants.forEach((item) => {
+          if (
+            item.color == color &&
+            ((item.size > size && !sizes.includes(item.size)) ||
+              (sizes.indexOf(item.size) > sizes.indexOf(size) &&
+                sizes.includes(item.size)))
+          ) {
+            size = item.size;
+            code = item.skuCode;
+          }
+        });
+        uniqueColorsWithSkuCode.push({ skuCode: code, color: color });
+
+        size = "";
+        code = "";
+      }
+    });
+
+    // console.log(uniqueColorsWithSkuCode);
+
+    // color with max size of this item
+    const colorList = Array.from(uniqueColorsWithSkuCode).map(
+      (item, index) => ({
+        id: index + 1,
+        label: item.color,
+        skuCode: item.skuCode,
+      })
+    );
+
+    // size with skuCode (same color)
+    const sizeList = new Array();
+
+    if (product != null) {
+      product.variants.forEach((item, index) => {
+        if (item.color == currentColor && item.remains != 0) {
+          sizeList.push({
+            id: index + 1,
+            label: item.size,
+            skuCode: item.skuCode,
+          });
+        }
+      });
+    }
+
+    if (!isNaN(parseInt(product.variants[0].size))) {
+      sizeList.sort((a, b) => parseInt(a.label) - parseInt(b.label));
+    } else {
+      sizeList.sort((a, b) => sizes.indexOf(a.label) - sizes.indexOf(b.label));
+    }
+
+    // console.log(sizeList);
+
+    // quantity option
+    const quantityList = new Array();
+    let maxQuantity = currentRemains > 4 ? 4 : currentRemains;
+    for (let id = 1; id <= maxQuantity; id++) {
+      quantityList.push({ id, label: id });
+    }
+
+    let hasId = false;
+    for (let i = 0; i < itemOptions.length; i++) {
+      if (itemOptions[i].id === itemId) {
+        hasId = true;
+        break; // No need to continue searching once found
+      }
+    }
+
+    if (hasId) {
+      let Otheritems = itemOptions.filter((item) => item.id !== itemId);
+      let updatedItemOption = [
+        ...Otheritems,
+        {
+          id: itemId,
+          color: colorList,
+          size: sizeList,
+          quantity: quantityList,
+          number: menu === "quantity" ? value : 1,
+        },
+      ];
+
+      console.log("1", updatedItemOption);
+
+      setItemOptions(updatedItemOption);
+    } else {
+      let updatedItemOption = [
+        ...itemOptions,
+        {
+          id: itemId,
+          color: colorList,
+          size: sizeList,
+          quantity: quantityList,
+          number: menu === "quantity" ? value : 1,
+        },
+      ];
+      console.log("2", updatedItemOption);
+
+      setItemOptions(updatedItemOption);
+    }
+  }, [value]);
+  // useEffect(() => {
+  // console.log("test");
+  // // findOptions(skuCode, product);
+  // let currentColor;
+  // let currentSize = "-";
+  // let variant;
+
+  // console.log(product);
+
+  // if (product != null) {
+  //   variant = product.variants.find((item) => item.skuCode === skuCode);
+  // }
+
+  // if (variant) {
+  //   currentColor = variant.color;
+  // }
+
+  // if (variant.size) {
+  //   currentSize = variant.size;
+  // }
+  // // find color, size, and remains
+
+  // const uniqueColors = new Set();
+  // let currentRemains;
+
+  // if (product != null) {
+  //   product.variants.forEach((item) => {
+  //     if (item.skuCode == skuCode) {
+  //       currentColor = item.color;
+  //       currentRemains = item.remains;
+  //     }
+  //     uniqueColors.add(item.color);
+  //   });
+  // }
+
+  // let uniqueColorsWithSkuCode = new Array();
+
+  // const sizes = ["S", "M", "L", "XL"];
+
+  // uniqueColors.forEach((color) => {
+  //   if (product != null) {
+  //     let size;
+  //     let code;
+  //     product.variants.forEach((item) => {
+  //       if (
+  //         item.color == color &&
+  //         ((item.size > size && !sizes.includes(item.size)) ||
+  //           (sizes.indexOf(item.size) > sizes.indexOf(size) &&
+  //             sizes.includes(item.size)))
+  //       ) {
+  //         size = item.size;
+  //         code = item.skuCode;
+  //       }
+  //     });
+  //     uniqueColorsWithSkuCode.push({ skuCode: code, color: color });
+
+  //     size = "";
+  //     code = "";
+  //   }
+  // });
+
+  // // console.log(uniqueColorsWithSkuCode);
+
+  // // color with max size of this item
+  // const colorList = Array.from(uniqueColorsWithSkuCode).map((item, index) => ({
+  //   id: index + 1,
+  //   label: item.color,
+  //   skuCode: item.skuCode,
+  // }));
+
+  // // size with skuCode (same color)
+  // const sizeList = new Array();
+
+  // if (product != null) {
+  //   product.variants.forEach((item, index) => {
+  //     if (item.color == currentColor && item.remains != 0) {
+  //       sizeList.push({
+  //         id: index + 1,
+  //         label: item.size,
+  //         skuCode: item.skuCode,
+  //       });
+  //     }
+  //   });
+  // }
+
+  // if (!isNaN(parseInt(product.variants[0].size))) {
+  //   sizeList.sort((a, b) => parseInt(a.label) - parseInt(b.label));
+  // } else {
+  //   sizeList.sort((a, b) => sizes.indexOf(a.label) - sizes.indexOf(b.label));
+  // }
+
+  // // console.log(sizeList);
+
+  // // quantity option
+  // const quantityList = new Array();
+  // let maxQuantity = currentRemains > 4 ? 4 : currentRemains;
+  // for (let id = 1; id <= maxQuantity; id++) {
+  //   quantityList.push({ id, label: id });
+  // }
+
+  // let hasId = false;
+  // for (let i = 0; i < itemOptions.length; i++) {
+  //   if (itemOptions[i].id === itemId) {
+  //     hasId = true;
+  //     break; // No need to continue searching once found
+  //   }
+  // }
+
+  // if (hasId) {
+  //   let Otheritems = itemOptions.filter((item) => item.id !== itemId);
+  //   let updatedItemOption = [
+  //     ...Otheritems,
+  //     {
+  //       id: itemId,
+  //       color: colorList,
+  //       size: sizeList,
+  //       quantity: quantityList,
+  //       number: menu === "quantity" ? value : 1,
+  //     },
+  //   ];
+
+  //   console.log("1", updatedItemOption);
+
+  //   setItemOptions(updatedItemOption);
+  // } else {
+  //   let updatedItemOption = [
+  //     ...itemOptions,
+  //     {
+  //       id: itemId,
+  //       color: colorList,
+  //       size: sizeList,
+  //       quantity: quantityList,
+  //       number: menu === "quantity" ? value : 1,
+  //     },
+  //   ];
+  //   console.log("2", updatedItemOption);
+
+  //   setItemOptions(updatedItemOption);
+  // }
+  // });
+
+  useEffect(() => {
+    console.log("s");
     const handleOutsideClick = (event) => {
       if (!filterRef.current.contains(event.target)) {
         setOpen(false);
@@ -49,25 +343,32 @@ function SelectMenu({
   };
 
   // const [options, setOptions] = useState([]);
-  // let options;
+  let options;
+  console.log(itemOptions);
+  let itemWithId = itemOptions.find((item) => item.id === itemId);
 
-  // switch (menu) {
-  //   case "color":
-  //     // options = [...colorList];
-  //     setOptions([...colorList]);
-  //     break;
-  //   case "size":
-  //     // options = [...sizeList];
-  //     setOptions([...sizeList]);
-  //     break;
-  //   case "quantity":
-  //     // options = [...quantityList];
-  //     setOptions([...quantityList]);
-  //     break;
-  //   default:
-  //     break;
-  // }
+  console.log(itemWithId);
+  switch (menu) {
+    case "color":
+      options = itemWithId.color;
+      // setOptions([...colorList]);
+      // options = colorList;
+      break;
+    case "size":
+      options = itemWithId.size;
+      // setOptions([...sizeList]);
+      // options = sizeList;
+      break;
+    case "quantity":
+      options = itemWithId.quantity;
+      // setOptions([...quantityList]);
+      // options = quantityList;
+      break;
+    default:
+      break;
+  }
 
+  console.log(itemOptions);
   // if (loading) {
   //   return <div>loading...</div>;
   // }
@@ -89,7 +390,7 @@ function SelectMenu({
               selectedValue == "-" ? "text-secondary-300" : ""
             }`}
           >
-            {value}
+            {menu == "quantity" ? itemWithId.number : value}
           </span>
           <span
             className={` w-10 h-10 flex items-center justify-center transition-all duration-300 ease-in-out ${
@@ -108,10 +409,10 @@ function SelectMenu({
           }`}
         >
           {open && (
-            <div className="flex flex-col w-[139px] border ">
+            <div className="flex flex-col w-[139px] border z-10">
               {options.map((option) => (
                 <div
-                  className={`flex p-4 gap-4 items-center text-[16px] font-normal cursor-pointer hover:bg-secondary-300 transition-all duration-300 ease-in-out ${
+                  className={`flex p-4 gap-4 items-center text-[16px] font-normal cursor-pointer bg-white hover:bg-secondary-300 transition-all duration-300 ease-in-out ${
                     value === option.label
                       ? " bg-primary-400 hover:bg-primary-700"
                       : ""
@@ -144,114 +445,157 @@ export default function CartItem({
 }) {
   const { product, loading } = useGetProductByPermalink(productPermalink);
 
-  const { setIsUpdatedCart } = useStore((state) => ({
-    setIsUpdatedCart: state.setIsUpdatedCart,
-  }));
-
+  const { setIsUpdatedCart, setCartItemFromUpdateAPI, itemOptions } = useStore(
+    (state) => ({
+      setIsUpdatedCart: state.setIsUpdatedCart,
+      setCartItemFromUpdateAPI: state.setCartItemFromUpdateAPI,
+      itemOptions: state.itemOptions,
+    })
+  );
   const [isDeleted, setIsDeleted] = useState(false);
+
+  useEffect(() => {
+    console.log("test");
+  });
 
   if (loading) {
     return <div>loading...</div>;
   }
 
-  let currentColor;
-  let currentSize = "-";
-  let variant;
+  console.log(quantity);
+  console.log(skuCode);
+  console.log(itemId);
 
-  if (product != null) {
-    variant = product.variants.find((item) => item.skuCode === skuCode);
-  }
+  function findOptions(skuCode, productItem) {
+    let currentColor;
+    let currentSize = "-";
+    let variant;
 
-  if (variant) {
-    currentColor = variant.color;
-  }
+    if (productItem != null) {
+      variant = productItem.variants.find((item) => item.skuCode === skuCode);
+    }
 
-  if (variant.size) {
-    currentSize = variant.size;
-  }
-  // find color, size, and remains
+    if (variant) {
+      currentColor = variant.color;
+    }
 
-  const uniqueColors = new Set();
-  let currentRemains;
+    if (variant.size) {
+      currentSize = variant.size;
+    }
+    // find color, size, and remains
 
-  if (product != null) {
-    product.variants.forEach((item) => {
-      if (item.skuCode == skuCode) {
-        currentColor = item.color;
-        currentRemains = item.remains;
+    const uniqueColors = new Set();
+    let currentRemains;
+
+    if (productItem != null) {
+      productItem.variants.forEach((item) => {
+        if (item.skuCode == skuCode) {
+          currentColor = item.color;
+          currentRemains = item.remains;
+        }
+        uniqueColors.add(item.color);
+      });
+    }
+
+    let uniqueColorsWithSkuCode = new Array();
+
+    const sizes = ["S", "M", "L", "XL"];
+
+    uniqueColors.forEach((color) => {
+      if (productItem != null) {
+        let size;
+        let code;
+        productItem.variants.forEach((item) => {
+          if (
+            item.color == color &&
+            ((item.size > size && !sizes.includes(item.size)) ||
+              (sizes.indexOf(item.size) > sizes.indexOf(size) &&
+                sizes.includes(item.size)))
+          ) {
+            size = item.size;
+            code = item.skuCode;
+          }
+        });
+        uniqueColorsWithSkuCode.push({ skuCode: code, color: color });
+
+        size = "";
+        code = "";
       }
-      uniqueColors.add(item.color);
     });
-  }
 
-  let uniqueColorsWithSkuCode = new Array();
+    // console.log(uniqueColorsWithSkuCode);
 
-  const sizes = ["S", "M", "L", "XL"];
+    // color with max size of this item
+    const colorList = Array.from(uniqueColorsWithSkuCode).map(
+      (item, index) => ({
+        id: index + 1,
+        label: item.color,
+        skuCode: item.skuCode,
+      })
+    );
 
-  uniqueColors.forEach((color) => {
-    if (product != null) {
-      let size;
-      let code;
+    // size with skuCode (same color)
+    const sizeList = new Array();
 
-      product.variants.forEach((item) => {
-        if (
-          item.color == color &&
-          ((item.size > size && !sizes.includes(item.size)) ||
-            (sizes.indexOf(item.size) > sizes.indexOf(size) &&
-              sizes.includes(item.size)))
-        ) {
-          size = item.size;
-          code = item.skuCode;
+    if (productItem != null) {
+      productItem.variants.forEach((item, index) => {
+        if (item.color == currentColor && item.remains != 0) {
+          sizeList.push({
+            id: index + 1,
+            label: item.size,
+            skuCode: item.skuCode,
+          });
         }
       });
-      uniqueColorsWithSkuCode.push({ skuCode: code, color: color });
-
-      size = "";
-      code = "";
     }
-  });
 
-  // console.log(uniqueColorsWithSkuCode);
+    if (!isNaN(parseInt(productItem.variants[0].size))) {
+      sizeList.sort((a, b) => parseInt(a.label) - parseInt(b.label));
+    } else {
+      sizeList.sort((a, b) => sizes.indexOf(a.label) - sizes.indexOf(b.label));
+    }
 
-  // color with max size of this item
-  const colorList = Array.from(uniqueColorsWithSkuCode).map((item, index) => ({
-    id: index + 1,
-    label: item.color,
-    skuCode: item.skuCode,
-  }));
+    // console.log(sizeList);
 
-  // size with skuCode (same color)
-  const sizeList = new Array();
+    // quantity option
+    const quantityList = new Array();
+    let maxQuantity = currentRemains > 4 ? 4 : currentRemains;
+    for (let id = 1; id <= maxQuantity; id++) {
+      quantityList.push({ id, label: id });
+    }
 
-  if (product != null) {
-    product.variants.forEach((item, index) => {
-      if (item.color == currentColor && item.remains != 0) {
-        sizeList.push({
-          id: index + 1,
-          label: item.size,
-          skuCode: item.skuCode,
-        });
-      }
-    });
+    return {
+      colorList,
+      sizeList,
+      quantity,
+      maxQuantity,
+      currentColor,
+      currentSize,
+    };
   }
 
-  // quantity option
-  const quantityList = new Array();
-  let maxQuantity = currentRemains > 4 ? 4 : currentRemains;
-  for (let id = 1; id <= maxQuantity; id++) {
-    quantityList.push({ id, label: id });
-  }
-
-  // console.log(quantity);
-  // console.log(skuCode, itemId);
+  const {
+    colorList,
+    sizeList,
+    quantityList,
+    currentColor,
+    maxQuantity,
+    currentSize,
+  } = findOptions(skuCode, product);
 
   async function deleteItem(cartId, itemId) {
     try {
-      const response = await axios.delete(
+      const deleteResponse = await axios.delete(
         `${BASE_URL}/carts/${cartId}/items/${itemId}`
       );
 
-      console.log(response);
+      console.log(deleteResponse);
+
+      const getCartResponse = await axios.get(`${BASE_URL}/carts/${cartId}`);
+
+      console.log(getCartResponse);
+      setCartItemFromUpdateAPI(getCartResponse.data.items);
+      setIsUpdatedCart(false);
     } catch (error) {
       console.error("Error delete item:", error);
     }
@@ -260,19 +604,17 @@ export default function CartItem({
   async function updateItem(option, menu, currentQuantity) {
     try {
       // console.log(option);
-      // console.log(option.skuCode, maxQuantity, currentQuantity);
+      console.log("test", option.skuCode, maxQuantity, currentQuantity);
       const response = await axios.patch(
         `${BASE_URL}/carts/${cartId}/items/${itemId}`,
         {
           skuCode:
             menu === "color" || menu === "size" ? option.skuCode : skuCode,
-          quantity:
-            menu === "quantity"
-              ? option.label
-              : Math.min(maxQuantity, currentQuantity),
+          quantity: menu === "quantity" ? option.label : 1,
         }
       );
       setIsUpdatedCart(false);
+      setCartItemFromUpdateAPI(response.data.items);
       // location.reload();
 
       console.log(response);
@@ -281,10 +623,17 @@ export default function CartItem({
     }
   }
 
+  let updatedItemOption = [
+    ...itemOptions,
+    { id: itemId, color: colorList, size: sizeList, quantity: quantityList },
+  ];
+  console.log(updatedItemOption);
+  // setItemOptions(updatedItemOption);
+
   return (
     <>
       {isDeleted ? (
-        <div></div>
+        <></>
       ) : (
         <div className="w-full">
           <div className="flex gap-10 mobile:flex-col">
@@ -321,10 +670,10 @@ export default function CartItem({
                         quantity={quantity}
                         cartId={cartId}
                         itemId={itemId}
-                        currentColor={"Black"}
                         currentQuantity={quantity}
-                        options={colorList}
                         updateItem={updateItem}
+                        findOptions={findOptions}
+                        product={product}
                       />
                     </div>
                   </div>
@@ -335,14 +684,13 @@ export default function CartItem({
                         <SelectMenu
                           productPermalink={productPermalink}
                           menu={"size"}
-                          skuCode={skuCode}
                           selectedValue={currentSize}
                           cartId={"0HrVDEPgTeJhswT42VHs"}
                           itemId={itemId}
-                          options={sizeList}
-                          currentColor={"Black"}
+                          skuCode={skuCode}
                           currentQuantity={quantity}
                           updateItem={updateItem}
+                          product={product}
                         />
                       </div>
                     </div>
@@ -352,22 +700,25 @@ export default function CartItem({
                         <SelectMenu
                           productPermalink={productPermalink}
                           menu={"quantity"}
-                          skuCode={skuCode}
                           selectedValue={quantity}
                           quantity={quantity}
                           cartId={"0HrVDEPgTeJhswT42VHs"}
                           itemId={itemId}
-                          options={quantityList}
-                          currentColor={"Black"}
+                          skuCode={skuCode}
                           currentQuantity={quantity}
                           updateItem={updateItem}
+                          product={product}
                         />
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="text-[24px] font-bold self-end mobile:mt-[24px]">
-                  THB {(product.promotionalPrice * quantity).toFixed(2)}
+                  THB{" "}
+                  {new Intl.NumberFormat("en-US", {
+                    style: "decimal",
+                    minimumFractionDigits: 2,
+                  }).format(product.promotionalPrice * quantity)}
                 </div>
               </div>
             </div>
