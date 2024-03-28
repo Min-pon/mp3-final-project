@@ -38,9 +38,13 @@ export default function ProductDetail() {
     const sizeOrder = ["XS", "S", "M", "L", "XL"];
 
     Object.values(colorVariantsMap).forEach((colorVariant) => {
-      colorVariant.variants.sort(
-        (a, b) => sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size)
-      );
+      colorVariant.variants.sort((a, b) => {
+        if (sizeOrder.includes(a.size) && sizeOrder.includes(b.size)) {
+          return sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size);
+        } else {
+          return Number(a.size) - Number(b.size);
+        }
+      });
     });
     setProductDetail(Object.values(colorVariantsMap));
     setSelectedColor(Object.values(colorVariantsMap)[0]);
@@ -164,7 +168,10 @@ export default function ProductDetail() {
               <p className="text-lg font-semibold mb-2">Color</p>
               <div className="flex space-x-7">
                 {productDetail.map((color, idx) => (
-                  <div key={idx} className=" flex w-[100px] flex-col justify-center items-center text-center gap-2">
+                  <div
+                    key={idx}
+                    className=" flex w-[100px] flex-col justify-center items-center text-center gap-2"
+                  >
                     <button
                       className={` w-[54px] aspect-square rounded-full transition-all duration-200 ease-out  ${
                         selectedColor === color
