@@ -18,12 +18,18 @@ export default function Cart() {
     })
   );
 
-  const { allProducts, loading: loading2 } = useGetAllProducts();
+  const sort = { sortd: "ratings:desc" };
+  const { allProducts, loading: loading2 } = useGetAllProducts(
+    "products",
+    sort
+  );
   const { cart, loading } = useGetCartByID(cartId);
 
   if (loading || loading2) {
     return <div>loading..</div>;
   }
+
+  // console.log(allProducts);
 
   // setCartItems(cart.items);
 

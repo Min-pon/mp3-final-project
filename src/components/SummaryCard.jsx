@@ -25,7 +25,10 @@ export default function SummaryCard({ cart, allProducts }) {
 
   useEffect(() => {
     // setCartItems([1, 2, 3]);
+    // console.log(allProducts);
+    // console.log(cart);
     let updatedCartItem = [...cartItems];
+    console.log(cartItems);
     const checkedState = JSON.parse(localStorage.getItem("wdb-state"));
     // console.log(checkedState.state.cartItems);
 
@@ -38,7 +41,12 @@ export default function SummaryCard({ cart, allProducts }) {
           (product) => product.permalink == item.productPermalink
         );
         // console.log(productItem[0]);
-        updatedCartItem.push({ ...productItem[0], quantity: item.quantity });
+        console.log(productItem[0]);
+        updatedCartItem.push({
+          ...productItem[0],
+          quantity: item.quantity,
+          itemId: item.id,
+        });
       });
       setCartItems(updatedCartItem);
       setIsUpdatedCart(true);
@@ -52,7 +60,11 @@ export default function SummaryCard({ cart, allProducts }) {
         let productItem = allProducts.filter(
           (product) => product.permalink == item.productPermalink
         );
-        updatedCartItem.push({ ...productItem[0], quantity: item.quantity });
+        updatedCartItem.push({
+          ...productItem[0],
+          quantity: item.quantity,
+          itemId: item.id,
+        });
         setCartItems(updatedCartItem);
         setIsUpdatedCart(true);
       });

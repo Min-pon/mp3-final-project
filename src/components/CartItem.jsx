@@ -29,10 +29,13 @@ function SelectMenu({
   // console.log(product);
   const filterRef = useRef();
 
-  const { itemOptions, setItemOptions } = useStore((state) => ({
-    itemOptions: state.itemOptions,
-    setItemOptions: state.setItemOptions,
-  }));
+  const { itemOptions, setItemOptions, setIsUpdatedOptions, isUpdatedOptions } =
+    useStore((state) => ({
+      itemOptions: state.itemOptions,
+      setItemOptions: state.setItemOptions,
+      setIsUpdatedOptions: state.setIsUpdatedOptions,
+      isUpdatedOptions: state.isUpdatedOptions,
+    }));
 
   // console.log(itemOptions);
   // console.log(selectedValue);
@@ -216,110 +219,179 @@ function SelectMenu({
   // useEffect(() => {
   // console.log("test");
   // // findOptions(skuCode, product);
-  let currentColor;
-  let currentSize = "-";
-  let variant;
 
-  // console.log(product);
-
-  if (product != null) {
-    variant = product.variants.find((item) => item.skuCode === skuCode);
-  }
-
-  if (variant) {
-    currentColor = variant.color;
-  }
-
-  if (variant.size) {
-    currentSize = variant.size;
-  }
-  // find color, size, and remains
-
-  const uniqueColors = new Set();
-  let currentRemains;
-
-  if (product != null) {
-    product.variants.forEach((item) => {
-      if (item.skuCode == skuCode) {
-        currentColor = item.color;
-        currentRemains = item.remains;
+  useEffect(() => {
+    if (!isUpdatedOptions) {
+      let newSkuCode = skuCode;
+      console.log(skuCode);
+      let itemOption = itemOptions.filter((item) => item.id == itemId)[0];
+      console.log(itemOption);
+      if (itemOption) {
+        if (menu == "color")
+          newSkuCode = itemOption.color.find(
+            (item) => item.label === value
+          ).skuCode;
+        if (menu == "size")
+          newSkuCode = itemOption.size.find(
+            (item) => item.label === value
+          ).skuCode;
       }
-      uniqueColors.add(item.color);
-    });
-  }
 
-  let uniqueColorsWithSkuCode = new Array();
+      let currentColor;
+      let currentSize = "-";
+      let variant;
 
-  const sizes = ["S", "M", "L", "XL"];
+      // console.log(product);
 
-  uniqueColors.forEach((color) => {
-    if (product != null) {
-      let size;
-      let code;
-      product.variants.forEach((item) => {
-        if (
-          item.color == color &&
-          ((item.size > size && !sizes.includes(item.size)) ||
-            (sizes.indexOf(item.size) > sizes.indexOf(size) &&
-              sizes.includes(item.size)))
-        ) {
-          size = item.size;
-          code = item.skuCode;
-        }
-      });
-      uniqueColorsWithSkuCode.push({ skuCode: code, color: color });
+      if (product != null) {
+        variant = product.variants.find((item) => item.skuCode === skuCode);
+      }
 
-      size = "";
-      code = "";
-    }
-  });
+      if (variant) {
+        currentColor = variant.color;
+      }
 
-  // console.log(uniqueColorsWithSkuCode);
+      if (variant.size) {
+        currentSize = variant.size;
+      }
+      // find color, size, and remains
 
-  // color with max size of this item
-  const colorList = Array.from(uniqueColorsWithSkuCode).map((item, index) => ({
-    id: index + 1,
-    label: item.color,
-    skuCode: item.skuCode,
-  }));
+      const uniqueColors = new Set();
+      let currentRemains;
 
-  // size with skuCode (same color)
-  const sizeList = new Array();
-
-  if (product != null) {
-    product.variants.forEach((item, index) => {
-      if (item.color == currentColor && item.remains != 0) {
-        sizeList.push({
-          id: index + 1,
-          label: item.size,
-          skuCode: item.skuCode,
+      if (product != null) {
+        product.variants.forEach((item) => {
+          if (item.skuCode == skuCode) {
+            currentColor = item.color;
+            currentRemains = item.remains;
+          }
+          uniqueColors.add(item.color);
         });
       }
-    });
-  }
 
-  if (!isNaN(parseInt(product.variants[0].size))) {
-    sizeList.sort((a, b) => parseInt(a.label) - parseInt(b.label));
-  } else {
-    sizeList.sort((a, b) => sizes.indexOf(a.label) - sizes.indexOf(b.label));
-  }
+      let uniqueColorsWithSkuCode = new Array();
 
-  // console.log(sizeList);
+      const sizes = ["S", "M", "L", "XL"];
 
-  // quantity option
-  const quantityList = new Array();
-  let maxQuantity = currentRemains > 4 ? 4 : currentRemains;
-  for (let id = 1; id <= maxQuantity; id++) {
-    quantityList.push({ id, label: id });
-  }
+      uniqueColors.forEach((color) => {
+        if (product != null) {
+          let size;
+          let code;
+          product.variants.forEach((item) => {
+            if (
+              item.color == color &&
+              ((item.size > size && !sizes.includes(item.size)) ||
+                (sizes.indexOf(item.size) > sizes.indexOf(size) &&
+                  sizes.includes(item.size)))
+            ) {
+              size = item.size;
+              code = item.skuCode;
+            }
+          });
+          uniqueColorsWithSkuCode.push({ skuCode: code, color: color });
 
-  let hasId = false;
-  for (let i = 0; i < itemOptions.length; i++) {
-    if (itemOptions[i].id === itemId) {
-      hasId = true;
-      break; // No need to continue searching once found
+          size = "";
+          code = "";
+        }
+      });
+
+      // console.log(uniqueColorsWithSkuCode);
+
+      // color with max size of this item
+      const colorList = Array.from(uniqueColorsWithSkuCode).map(
+        (item, index) => ({
+          id: index + 1,
+          label: item.color,
+          skuCode: item.skuCode,
+        })
+      );
+
+      // size with skuCode (same color)
+      const sizeList = new Array();
+
+      if (product != null) {
+        product.variants.forEach((item, index) => {
+          if (item.color == currentColor && item.remains != 0) {
+            sizeList.push({
+              id: index + 1,
+              label: item.size,
+              skuCode: item.skuCode,
+            });
+          }
+        });
+      }
+
+      if (!isNaN(parseInt(product.variants[0].size))) {
+        sizeList.sort((a, b) => parseInt(a.label) - parseInt(b.label));
+      } else {
+        sizeList.sort(
+          (a, b) => sizes.indexOf(a.label) - sizes.indexOf(b.label)
+        );
+      }
+
+      // console.log(sizeList);
+
+      // quantity option
+      const quantityList = new Array();
+      let maxQuantity = currentRemains > 4 ? 4 : currentRemains;
+      for (let id = 1; id <= maxQuantity; id++) {
+        quantityList.push({ id, label: id });
+      }
+
+      let hasId = false;
+      for (let i = 0; i < itemOptions.length; i++) {
+        if (itemOptions[i].id === itemId) {
+          hasId = true;
+          break; // No need to continue searching once found
+        }
+      }
+
+      if (hasId) {
+        let Otheritems = itemOptions.filter((item) => item.id !== itemId);
+        let updatedItemOption = [
+          ...Otheritems,
+          {
+            id: itemId,
+            color: colorList,
+            size: sizeList,
+            quantity: quantityList,
+            number: menu === "quantity" ? value : 1,
+            skuCode: menu !== "quantity" ? newSkuCode : skuCode,
+            selectedSize: menu === "size" ? value : currentSize,
+          },
+        ];
+
+        console.log("1", updatedItemOption);
+
+        setItemOptions(updatedItemOption);
+      } else {
+        let updatedItemOption = [
+          ...itemOptions,
+          {
+            id: itemId,
+            color: colorList,
+            size: sizeList,
+            quantity: quantityList,
+            number: menu === "quantity" ? value : 1,
+            skuCode: menu !== "quantity" ? newSkuCode : skuCode,
+            selectedSize: menu === "size" ? value : currentSize,
+          },
+        ];
+        console.log("2", updatedItemOption);
+
+        setItemOptions(updatedItemOption);
+      }
+      setIsUpdatedOptions(true);
     }
-  }
+  }, []);
+
+  // let hasId = false;
+  // for (let i = 0; i < itemOptions.length; i++) {
+  //   if (itemOptions[i].id === itemId) {
+  //     hasId = true;
+  //     break; // No need to continue searching once found
+  //   }
+  // }
 
   // if (hasId) {
   //   let Otheritems = itemOptions.filter((item) => item.id !== itemId);
@@ -376,14 +448,14 @@ function SelectMenu({
 
   // const [options, setOptions] = useState([]);
   let options;
-  console.log(itemOptions);
+  // console.log(itemOptions);
   let itemWithId = itemOptions.find((item) => item.id === itemId);
 
   // console.log(itemWithId);
   switch (menu) {
     case "color":
       // if (isFirst) {
-      //   options = colorList;
+      // options = colorList;
       // } else {
       options = itemWithId.color;
       // }
@@ -392,7 +464,7 @@ function SelectMenu({
       break;
     case "size":
       // if (isFirst) {
-      //   options = sizeList;
+      // options = sizeList;
       // } else {
       options = itemWithId.size;
       // }
@@ -402,7 +474,7 @@ function SelectMenu({
       break;
     case "quantity":
       // if (isFirst) {
-      //   options = quantityList;
+      // options = quantityList;
       // } else {
       options = itemWithId.quantity;
       // }
@@ -496,19 +568,22 @@ export default function CartItem({
   itemId,
 }) {
   const { product, loading } = useGetProductByPermalink(productPermalink);
-
-  const { setIsUpdatedCart, setCartItemFromUpdateAPI, itemOptions } = useStore(
+  const { setCartItemFromUpdateAPI, setIsUpdatedCart, cartItems } = useStore(
     (state) => ({
-      setIsUpdatedCart: state.setIsUpdatedCart,
       setCartItemFromUpdateAPI: state.setCartItemFromUpdateAPI,
-      itemOptions: state.itemOptions,
+      setIsUpdatedCart: state.setIsUpdatedCart,
+      cartItems: state.cartItems,
     })
   );
   const [isDeleted, setIsDeleted] = useState(false);
 
+  // const item = cartItems.filter((item) => item)
   if (loading) {
     return <div>loading...</div>;
   }
+
+  let item = cartItems.filter((item) => item.itemId == itemId)[0];
+  console.log(cartItems);
 
   // console.log(quantity);
   // console.log(skuCode);
@@ -766,7 +841,7 @@ export default function CartItem({
                   {new Intl.NumberFormat("en-US", {
                     style: "decimal",
                     minimumFractionDigits: 2,
-                  }).format(product.promotionalPrice * quantity)}
+                  }).format(product.promotionalPrice * item.quantity)}
                 </div>
               </div>
             </div>
