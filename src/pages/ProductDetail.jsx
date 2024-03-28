@@ -7,10 +7,12 @@ import axios from "axios";
 import { useStore } from "../hooks/useStore";
 import ShoppingCartModal from "../components/ShoppingCartModal";
 import ShowImageProduct from "../components/ShowImageProduct";
+import ProductCardAlsoLike from "../components/ProductCardAlsoLike";
 // const cartId = "beprGHU79EAunyT3eLJM";
 
 export default function ProductDetail() {
-  const { cartId, setCartId } = useStore();
+  const { cartId, setCartId, setIsUpdatedCart, setCartItemFromUpdateAPI } =
+    useStore();
   const { permalink } = useParams();
   const { product, loading, error } = useGetProductByPermalink(permalink);
   const [data, setData] = React.useState(null);
@@ -111,6 +113,8 @@ export default function ProductDetail() {
       const response = await axios.post(apiUrl, data);
       console.log("response ====> ", response.data.id);
       setCartId(response.data.id);
+      setIsUpdatedCart(false);
+      setCartItemFromUpdateAPI(response.data.items);
     } catch (error) {
       console.error(error);
     }
@@ -267,21 +271,10 @@ export default function ProductDetail() {
             />
           </div>
         </div>
-        <div className="flex flex-col space-y-[64px] mb-[168px] mobile:px-[16px]">
-          <p className="text-[32px] font-bold">People also like these</p>
-          <div className="flex justify-wrap space-x-[40px] dx:space-x-[21.8px] mobile:flex-col mobile:space-y-[40px] mobile:space-x-0">
-            {allProducts.slice(0, 4).map((product, index) => (
-              <ProductCard
-                key={index}
-                imageUrl={product.imageUrls[0]}
-                title={product.name}
-                description={product.description}
-                rating={4} // Ensure this is dynamic if possible
-                price={product.promotionalPrice}
-              />
-            ))}
-          </div>
-        </div>
+      </div>
+      <div className="flex flex-col space-y-[64px] mb-[168px] mt-[50px] mobile:px-[16px]">
+        <p className="text-[32px] font-bold">People also like these</p>
+        <ProductCardAlsoLike />
       </div>
     </div>
   );
