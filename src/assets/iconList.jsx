@@ -316,6 +316,115 @@ function HamburgerMenuIcon() {
   );
 }
 
+function SortIcon() {
+  return (
+    <svg
+      width="40"
+      height="40"
+      viewBox="0 0 40 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M28 16L32 16"
+        stroke="#222222"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M9 16H22"
+        stroke="#222222"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M9 24H14"
+        stroke="#222222"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M20 24L32 24"
+        stroke="#222222"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <circle cx="17" cy="24" r="3" stroke="#222222" strokeWidth="2" />
+      <circle cx="25" cy="16" r="3" stroke="#222222" strokeWidth="2" />
+    </svg>
+  );
+}
+
+function ChoiceActive() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect
+        x="1"
+        y="1"
+        width="22"
+        height="22"
+        rx="11"
+        fill="white"
+        stroke="#C1CD00"
+        strokeWidth="2"
+      />
+      <circle cx="12" cy="12" r="5.5" fill="#C1CD00" stroke="#C1CD00" />
+    </svg>
+  );
+}
+
+function ChoiceHover() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect
+        x="1"
+        y="1"
+        width="22"
+        height="22"
+        rx="11"
+        fill="white"
+        stroke="#C1CD00"
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}
+
+function ChoiceDefault() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect
+        x="1"
+        y="1"
+        width="22"
+        height="22"
+        rx="11"
+        fill="white"
+        stroke="#E1E1E1"
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}
+
 export {
   LogoIcon,
   EmptyCartIcon,
@@ -326,4 +435,8 @@ export {
   ArrowRightIcon,
   BinIcon,
   HamburgerMenuIcon,
+  SortIcon,
+  ChoiceActive,
+  ChoiceDefault,
+  ChoiceHover,
 };
