@@ -1,4 +1,3 @@
-
 import React from "react";
 
 function ShowImageProduct({ product }) {
@@ -10,7 +9,7 @@ function ShowImageProduct({ product }) {
     const lastImageIndex = imageUrls.length - 1;
     const newImageUrls = [
       imageUrls[lastImageIndex],
-      ...imageUrls.slice(0, lastImageIndex)
+      ...imageUrls.slice(0, lastImageIndex),
     ];
     setImageUrls(newImageUrls);
     setSelectedImageIndex(0);
@@ -18,26 +17,22 @@ function ShowImageProduct({ product }) {
 
   // Function to change the main image to the next one
   const nextImage = () => {
-    const newImageUrls = [
-      ...imageUrls.slice(1),
-      imageUrls[0],
-    ];
+    const newImageUrls = [...imageUrls.slice(1), imageUrls[0]];
     setImageUrls(newImageUrls);
     setSelectedImageIndex(0);
   };
 
   return (
-    <div className="flex flex-col w-full  gap-2">
-      <div className="relative w-[780px] aspect-square overflow-hidden">
+    <div className="flex flex-col w-fit gap-2 md:gap-4 lg:gap-6 xl:gap-9">
+      <div className="relative w-[343px] md:w-[450px] lg:w-[580px] xl:w-[780px] aspect-square overflow-hidden">
         <img
           src={imageUrls[selectedImageIndex]}
           alt="Product"
-          className={`w-full h-full object-cover  `}
-  
+          className={`w-full aspect-square object-cover  `}
         />
         <button
           onClick={previousImage}
-          className="absolute left-4 top-1/2 rounded-full w-[70px] aspect-square transform -translate-y-1/2 bg-white backdrop-blur-sm transition-all duration-300 ease-in-out hover:bg-opacity-20 bg-opacity-10"
+          className="absolute left-4 top-1/2 rounded-full w-8 lg:w-14 xl:w-[70px] aspect-square transform -translate-y-1/2 bg-white backdrop-blur-sm transition-all duration-300 ease-in-out hover:bg-opacity-20 bg-opacity-10"
         >
           <div className="flex w-full justify-center">
             <svg
@@ -58,7 +53,7 @@ function ShowImageProduct({ product }) {
         </button>
         <button
           onClick={nextImage}
-          className="absolute right-4 top-1/2 rounded-full w-[70px] aspect-square transform -translate-y-1/2 backdrop-blur-sm transition-all duration-300 ease-in-out bg-white bg-opacity-10 hover:bg-opacity-20"
+          className="absolute right-4 top-1/2 rounded-full w-8 lg:w-14 xl:w-[70px] aspect-square transform -translate-y-1/2 backdrop-blur-sm transition-all duration-300 ease-in-out bg-white bg-opacity-10 hover:bg-opacity-20"
         >
           <div className="flex w-full justify-center">
             <svg
@@ -77,18 +72,22 @@ function ShowImageProduct({ product }) {
             </svg>
           </div>
         </button>
+        {product.price != product.promotionalPrice && (
+          <div className=" absolute bg-danger right-0 z-1 text-white top-8 text-lg lg:text-2xl px-2 lg:px-4 py-1 lg:py-3">
+            sale
+          </div>
+        )}
       </div>
-      <div className="flex justify-between w-full mt-8">
+      <div className="flex justify-between w-full">
         {imageUrls.map((url, index) => {
           if (index === selectedImageIndex) return null; // Skip rendering the thumbnail if it's the currently selected image
 
           return (
-      
-              <img
-                src={url}
-                alt={`Thumbnail ${index}`}
-                className="object-cover w-[168px] aspect-square"
-              />
+            <img
+              src={url}
+              alt={`Thumbnail ${index}`}
+              className="object-cover w-20 md:w-24 lg:w-32 xl:w-[168px] aspect-square"
+            />
           );
         })}
       </div>

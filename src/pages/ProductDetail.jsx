@@ -147,13 +147,13 @@ export default function ProductDetail() {
   if (!product || data === null) return <div>No product data found</div>;
 
   return (
-    <div className="bg-white mt-[93px] px-40">
-      <div className="flex flex-row justify-between">
+    <div className="bg-white py-24 md:py-24 px-4 xl:px-20 lg:px-20 md:px-20 2xl:px-[160px]">
+      <div className="flex flex-col xl:flex-row items-center xl:items-start xl:justify-between gap-[40px]">
         <div className="">
           <ShowImageProduct product={product} />
         </div>
 
-        <div className="mt-2 px-4 max-w-[780px] sm:px-0 sm:mt-16 lg:mt-0 w-1/2 flex flex-col gap-20">
+        <div className="mt-2 px-4 w-full max-w-[780px] sm:px-0 sm:mt-16 lg:mt-0 flex flex-col gap-14 xl:gap-[54px]">
           <ProductInformation
             id={product.id}
             productName={product.name}
@@ -162,9 +162,9 @@ export default function ProductDetail() {
             promotionalPrice={product.promotionalPrice}
             ratings={product.ratings}
           />
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-6">
             {/* Color of item */}
-            <div className="mb-4">
+            <div className="">
               <p className="text-lg font-semibold mb-2">Color</p>
               <div className="flex space-x-7">
                 {productDetail.map((color, idx) => (
@@ -196,32 +196,32 @@ export default function ProductDetail() {
 
             {/* size of item */}
             {selectedColor.variants[0].size && (
-              <div className="mb-4">
-                <div className="text-lg font-semibold mb-2">Size</div>
-                <div className="flex flex-row space-x-2">
-                  {selectedColor.variants.map((size, idx) => (
-                    <button
-                      key={idx}
-                      className={`grow px-4 py-2 border disabled:border-gray-100 disabled:text-gray-300 disabled:bg-gray-100 border-gray-300 focus:outline-none ${
-                        selectedSize === size ? "ring-2 ring-[#DEF81C]" : ""
-                      }`}
-                      onClick={() => {
-                        if (size !== selectedSize) {
-                          setSelectedSize(size);
-                          setSelectQuantity(1);
-                        }
-                      }}
-                      disabled={size.remains < 1}
-                    >
-                      {size.size}
-                    </button>
-                  ))}
-                </div>
+              <div className="">
+              <div className="text-lg font-semibold mb-2">Size</div>
+              <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
+                {selectedColor.variants.map((size, idx) => (
+                  <button
+                    key={idx}
+                    className={`grow px-4 py-2 border h-[54px] disabled:border-gray-100 disabled:text-gray-300 disabled:bg-gray-100 border-gray-300 focus:outline-none ${
+                      selectedSize === size ? "ring-2 ring-[#DEF81C]" : ""
+                    }`}
+                    onClick={() => {
+                      if (size !== selectedSize) {
+                        setSelectedSize(size);
+                        setSelectQuantity(1);
+                      }
+                    }}
+                    disabled={size.remains < 1}
+                  >
+                    {size.size}
+                  </button>
+                ))}
               </div>
+            </div>
             )}
 
             {/* Quantity of item */}
-            <div className="mb-4">
+            <div className="">
               <label
                 htmlFor="quantity"
                 className="text-lg font-semibold mb-2 block"
@@ -245,10 +245,10 @@ export default function ProductDetail() {
             </div>
 
             {/* Add to cart button */}
-            <div className="mt-10 flex flex-col gap-4">
+            <div className="mt-10 w-full">
               <button
                 type="submit"
-                className="flex justify-center items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-black hover:bg-gray-800"
+                className="flex justify-center w-full h-[54px] items-center px-8 py-3 border border-transparent text-base font-medium text-white bg-secondary hover:bg-gray-800"
                 onClick={() => {
                   openModal();
                   handleSubmit();

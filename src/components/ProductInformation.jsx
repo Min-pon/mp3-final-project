@@ -17,41 +17,51 @@ export default function ProductInformation(props) {
   }, []);
 
   return (
-    <div className=" font-bold text-secondary">
-      <div className=" text-2xl tracking-tight  ">ID : {id}</div>
-      <h1 className=" text-5xl tracking-normal ">{productName}</h1>
-      <div className=" text-2xl tracking-tight">{description}</div>
-      <div className="mt-3 flex flex-col">
+    <div className=" font-semibold xl:font-bold text-secondary">
+      <div className=" text-lg xl:text-2xl tracking-tight font-bold  ">
+        ID : {id}
+      </div>
+      <h1 className=" text-h4 xl:text-5xl tracking-normal mt-1 xl:mt-4">
+        {productName}
+      </h1>
+      <div className=" text-lg xl:text-2xl text-secondary-700 tracking-tight mt-1 xl:mt-4">
+        {description}
+      </div>
+      <div className=" mt-6 flex flex-col">
         {discount ? (
           <>
-            <div className=" px-2 py-1 w-fit bg-red-500">
-              <p className="text-h4 font-bold text-white">
-                THB {promotionalPrice.toLocaleString()}
+            <div className=" px-[10px] py-2 w-fit bg-danger mb-2">
+              <p className="text-h5 xl:text-h4 font-bold text-white">
+                THB {promotionalPrice.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
               </p>
             </div>
             <div>
-              <span className="ml-2 text-lg ">From</span>
+              <span className="text-lg ">From</span>
               <span className="ml-2 text-lg line-through ">
-                THB {price.toLocaleString()}
+                THB {price.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
               </span>
             </div>
           </>
         ) : (
           <>
-            <div className=" py-1 w-fit ">
-              <p className=" text-h4 font-bold text-black">
-                THB {promotionalPrice.toLocaleString()}
-              </p>
-            </div>
+            <p className=" text-h5 xl:text-h4 font-bold text-black">
+              THB
+              {promotionalPrice.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </p>
           </>
         )}
       </div>
-      <div className="flex flex-col gap-3">
-        <div className="mt-6">
-          <div className="flex items-center">
-            <RatingStar rating={ratingMath} />
-          </div>
-        </div>
+      <div className="mt-6">
+        <RatingStar rating={ratingMath} />
       </div>
     </div>
   );
