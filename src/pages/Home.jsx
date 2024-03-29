@@ -39,7 +39,7 @@ export default function HomePage() {
         />
         <AdvertisingCard
           imgUrl={"./images/card2.jpg"}
-          header={collections[2].items[1].title}
+          header={collections[2].items[0].title}
           detail={collections[2].items[0].description}
         />
       </div>

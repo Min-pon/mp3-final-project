@@ -112,6 +112,8 @@ export default function ProductDetail() {
     try {
       const response = await axios.post(apiUrl, data);
       console.log("response ====> ", response.data.id);
+
+      console.log(response.data);
       setCartId(response.data.id);
       setIsUpdatedCart(false);
       setCartItemFromUpdateAPI(response.data.items);
@@ -128,7 +130,7 @@ export default function ProductDetail() {
         items: [
           {
             skuCode: selectedSize.skuCode,
-            quantity: selectquantity,
+            quantity: Number(selectquantity),
           },
         ],
       };
@@ -137,7 +139,7 @@ export default function ProductDetail() {
         items: [
           {
             skuCode: selectedColor.variants[0].skuCode,
-            quantity: selectquantity,
+            quantity: Number(selectquantity),
           },
         ],
       };
@@ -230,7 +232,7 @@ export default function ProductDetail() {
                 htmlFor="quantity"
                 className="text-lg font-semibold mb-2 block"
               >
-                Qty
+                Qty.
               </label>
               <div className=" flex">
                 <select

@@ -5,8 +5,6 @@ import SummaryCard from "../components/SummaryCard";
 import { useStore } from "../hooks/useStore";
 import ProductCardAlsoLike from "../components/ProductCardAlsoLike";
 import useGetCartByID from "../hooks/carts/useGetCartByID";
-import CampaignBar from "../components/CampaignBar";
-import ProductCard from "../components/ProductCard";
 import useGetAllProducts from "../hooks/products/useGetAllProducts";
 import useGetProductByPermalink from "../hooks/products/useGetProductByPermalink";
 
@@ -28,7 +26,7 @@ export default function Cart() {
   // console.log(allProducts);
 
   // setCartItems(cart.items);
-  console.log(cart);
+  // console.log(cart);
 
   return (
     <div className="bg-secondary-50 px-[160px] mobile:px-[16px] pt-[91px]">
@@ -38,7 +36,7 @@ export default function Cart() {
           <div className="p-[24px] text-[24px] font-bold bg-white ">
             {cartId.length !== 0 ? (
               <div className="w-[860px] mobile:w-full">
-                <p>Items</p>
+                <p className="mb-[24px]">Items</p>
                 <div className="flex flex-col space-y-[24px]">
                   {cart.items.map((item, index) => (
                     <CartItem
