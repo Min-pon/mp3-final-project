@@ -5,9 +5,10 @@ const BASE_URL = import.meta.env.VITE_BASE_API;
 
 export default function useGetAllProducts(path, paramsq = {}) {
   const [allProducts, setAllProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loadingProduct, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     const fetchAllProducts = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/products`, {
@@ -26,5 +27,5 @@ export default function useGetAllProducts(path, paramsq = {}) {
     }
   }, [paramsq]);
 
-  return { allProducts, loading };
+  return { allProducts, loadingProduct };
 }

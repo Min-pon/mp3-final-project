@@ -4,10 +4,10 @@ import useGetAllCategorie from "../hooks/categories/useGetAllCategories";
 import { useParams, useLocation, useSearchParams } from "react-router-dom";
 import useGetAllColllections from "../hooks/collections/useGetAllColllections";
 
-function SideBar() {
+function SideBar({data}) {
   const { type } = useParams();
   const [accordionOpen, setAccordionOpen] = useState("");
-  const { data, loading, error } = useGetAllCategorie();
+  // const { data, loading, error } = useGetAllCategorie();
   const { collections } = useGetAllColllections();
   const [menu, setMenu] = useState([]);
   const { search } = useLocation();
@@ -28,8 +28,6 @@ function SideBar() {
 
   useEffect(() => {
     setAccordionOpen(type);
-    // console.log(type);
-    // console.log(params.get('param'))
   }, [type]);
 
   useEffect(() => {
@@ -66,7 +64,7 @@ function SideBar() {
   }, [collections]);
 
   return (
-    <div className=" w-[280px]">
+    <div className=" w-[200px] xl:w-[280px]">
       {menu.map((data, idx) => (
         <Accordion
           key={idx}

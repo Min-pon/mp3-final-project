@@ -1,5 +1,5 @@
 import ProductInformation from "../components/ProductInformation";
-import FormControl from "@mui/material/FormControl";
+// import FormControl from "@mui/material/FormControl";
 import useGetProductByPermalink from "../hooks/products/useGetProductByPermalink";
 import React, { useEffect } from "react";
 import { useParams } from "react-router";
@@ -8,7 +8,7 @@ import { useStore } from "../hooks/useStore";
 import ShoppingCartModal from "../components/ShoppingCartModal";
 import ShowImageProduct from "../components/ShowImageProduct";
 import ProductCardAlsoLike from "../components/ProductCardAlsoLike";
-// const cartId = "beprGHU79EAunyT3eLJM";
+import Loading from "./Loading";
 
 export default function ProductDetail() {
   const { cartId, setCartId, setIsUpdatedCart, setCartItemFromUpdateAPI } =
@@ -21,8 +21,12 @@ export default function ProductDetail() {
   const [selectedSize, setSelectedSize] = React.useState(null);
   const [selectquantity, setSelectQuantity] = React.useState(1);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [productDetail, setProductDetail] = React.useState(false);
+  const [productDetail, setProductDetail] = React.useState(null);
   const [quantities, setQuantities] = React.useState([]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const convertData = () => {
     const colorVariantsMap = {};
@@ -58,7 +62,6 @@ export default function ProductDetail() {
   };
 
   useEffect(() => {
-    console.log(selectedColor);
     const handleConvertArray = () => {
       const variant = getSelectedVariant(selectedColor, selectedSize);
       if (variant) {
@@ -85,14 +88,9 @@ export default function ProductDetail() {
   useEffect(() => {
     if (product) {
       setData(product);
-      console.log(product);
       convertData();
     }
   }, [product]);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-  // if (!data) return <div///////////////////////>No product data found</div>;
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -103,7 +101,6 @@ export default function ProductDetail() {
   };
 
   const postDataApi = async (data) => {
-    console.log("CartID : ", cartId);
     let apiUrl = `https://api.storefront.wdb.skooldio.dev/carts/`;
     if (cartId) {
       apiUrl += `${cartId}/items`;
@@ -111,9 +108,9 @@ export default function ProductDetail() {
 
     try {
       const response = await axios.post(apiUrl, data);
-      console.log("response ====> ", response.data.id);
+      // console.log("response ====> ", response.data.id);
 
-      console.log(response.data);
+      // console.log(response.data);
       setCartId(response.data.id);
       setIsUpdatedCart(false);
       setCartItemFromUpdateAPI(response.data.items);
@@ -148,9 +145,11 @@ export default function ProductDetail() {
     postDataApi(data);
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-  if (!product || data === null) return <div>No product data found</div>;
+  if (loading) {
+    return <Loading />;
+  }
+  if (error) return <Loading />;
+  if (!product || data === null) return <Loading />;
 
   return (
     <div className="bg-white py-24 md:py-24 px-4 xl:px-20 lg:px-20 md:px-20 2xl:px-[160px]">

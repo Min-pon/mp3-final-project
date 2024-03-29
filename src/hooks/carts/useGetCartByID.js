@@ -5,7 +5,7 @@ import { useStore } from "../useStore";
 const BASE_URL = import.meta.env.VITE_BASE_API;
 
 export default function useGetCartByID(id) {
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const { setTotalItems, setCartItems } = useStore((state) => ({
@@ -15,10 +15,12 @@ export default function useGetCartByID(id) {
 
   useEffect(() => {
     const fetchCartByID = async () => {
+      if (!id) {
+        return setLoading(false);
+      }
       try {
         const response = await axios.get(`${BASE_URL}/carts/${id}`);
         setCart(response.data);
-        console.log(response.data);
         setLoading(false);
         // setCartItems(response.data.items);
       } catch (error) {
@@ -28,7 +30,7 @@ export default function useGetCartByID(id) {
       }
     };
 
-    if (!cart.length) {
+    if (!cart) {
       fetchCartByID();
     }
   }, []);

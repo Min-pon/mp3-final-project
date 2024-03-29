@@ -2,25 +2,8 @@
 import { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleUp } from "@fortawesome/free-solid-svg-icons";
-import useGetProductByPermalink from "../hooks/products/useGetProductByPermalink";
-import axios from "axios";
 
-const BASE_URL = import.meta.env.VITE_BASE_API;
-
-function SelectMenu({
-  productPermalink,
-  menu,
-  skuCode,
-  selectedValue,
-  currentSize,
-  currentColor,
-  currentQuantity,
-  cartId,
-  itemId,
-}) {
-  const { product, loading } = useGetProductByPermalink(productPermalink);
-
-  const [value, setValue] = useState(selectedValue);
+function SelectMenu({ items, values, handleColorChange }) {
   const [open, setOpen] = useState(false);
 
   const filterRef = useRef();
@@ -172,13 +155,7 @@ function SelectMenu({
             open && selectedValue != "-" ? " border-[#C1CD00]" : ""
           }`}
         >
-          <span
-            className={`text-base ${
-              selectedValue == "-" ? "text-secondary-300" : ""
-            }`}
-          >
-            {value}
-          </span>
+          <span className=" text-base">{values?.color}</span>
           <span
             className={` w-10 h-10 flex items-center justify-center transition-all duration-300 ease-in-out ${
               open ? "" : " rotate-180"
@@ -197,23 +174,24 @@ function SelectMenu({
         >
           {open && (
             <div className="flex flex-col w-[139px] border ">
-              {options.map((option) => (
+              {items.map((item) => (
                 <div
-                  className={`flex p-4 gap-4 items-center text-[16px] font-normal cursor-pointer hover:bg-secondary-300 transition-all duration-300 ease-in-out ${
-                    value === option.label
+                  className={`flex p-4 gap-4 items-center text-[16px] font-normal cursor-pointer  transition-all duration-300 ease-in-out ${
+                    values === item
                       ? " bg-primary-400 hover:bg-primary-700"
-                      : ""
+                      : "hover:bg-secondary-300"
                   }`}
                   onClick={() => {
-                    // update item in existing cart
+                    // setSelectMenu(option.by);
+                    handleColorChange(item);
                     setOpen(false);
                     setValue(option.label);
 
                     updateItem(option);
                   }}
-                  key={option.id}
+                  key={item.colorCode}
                 >
-                  <h1 className={`leading-5 text-nowrap`}>{option.label}</h1>
+                  <h1 className={`leading-5 text-nowrap `}>{item.color}</h1>
                 </div>
               ))}
             </div>

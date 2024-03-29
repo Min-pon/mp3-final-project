@@ -68,7 +68,7 @@ function Filter() {
   const [params, setParams] = useSearchParams();
   const [selectMenu, setSelectMenu] = useState({});
   const [selectMenuMobile, setSelectMenuMobile] = useState({});
-  const isMobile = useMediaQuery({ query: "(max-width: 376px)" });
+  const isMobile = useMediaQuery({ query: "(max-width: 1025px)" });
 
   const filterRef = useRef();
 
@@ -83,7 +83,6 @@ function Filter() {
   }, [type, paramValue, paramSort]);
 
   useEffect(() => {
-    // console.log(paramSort)
     if (paramSort) {
       setSelectMenu(options.find((option) => paramSort === option.sort));
     }

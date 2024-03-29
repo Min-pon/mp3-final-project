@@ -3,6 +3,8 @@ import useGetAllCollections from "../hooks/collections/useGetAllColllections";
 import ProductCard from "../components/ProductCard";
 import useGetAllProducts from "../hooks/products/useGetAllProducts";
 import Cookies from "../components/Cookies";
+import Loading from "./Loading";
+import { useEffect } from "react";
 
 const sort = { sort: "ratings:desc" };
 
@@ -10,11 +12,15 @@ export default function HomePage() {
   const { collections, loading } = useGetAllCollections();
   const { allProducts, loading: loading2 } = useGetAllProducts(
     "products",
+
     sort
   );
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   if (loading || loading2) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (

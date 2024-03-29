@@ -11,15 +11,13 @@ export default function useGetProductByPermalink(permalink) {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        console.log("permalink", permalink);
+        setLoading(true);
         const response = await axios.get(`${BASE_URL}/${permalink}`);
         setProduct(response.data);
-        console.log("product", product);
+        setLoading(false);
       } catch (err) {
         setError(err);
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
 
     fetchProduct();

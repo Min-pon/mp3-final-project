@@ -7,6 +7,7 @@ import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import ItemProductList from "./pages/ItemProductList";
 import Rootlayout from "./layouts/RootLayout";
+import Notfound from "./pages/Notfound";
 
 const router = createBrowserRouter([
   {
@@ -28,8 +29,13 @@ const router = createBrowserRouter([
         path: "/cart",
         element: <Cart />,
       },
+      
     ],
   },
+  {
+    path: "*",
+    element: <Notfound />,
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

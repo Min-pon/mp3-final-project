@@ -44,6 +44,7 @@ export default {
       screens: {
         mobile: { max: "431px" },
         dx: { max: "1552px" },
+        "3xl": { min: "1720px" },
       },
     },
   },

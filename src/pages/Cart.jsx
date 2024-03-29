@@ -1,10 +1,14 @@
 import CartItem from "../components/CartItem";
 import EmptyCard from "../components/EmptyCard";
 import SummaryCard from "../components/SummaryCard";
-// import ProductCardAlsoLike from "../components/ProductCardAlsoLike";
 import { useStore } from "../hooks/useStore";
 import ProductCardAlsoLike from "../components/ProductCardAlsoLike";
+import { useEffect, useState } from "react";
 import useGetCartByID from "../hooks/carts/useGetCartByID";
+import useGetAllProducts from "../hooks/products/useGetAllProducts";
+import Loading from "./Loading";
+
+const sort = { sorts: "ratings:desc" };
 import useGetAllProducts from "../hooks/products/useGetAllProducts";
 import useGetProductByPermalink from "../hooks/products/useGetProductByPermalink";
 
@@ -18,9 +22,34 @@ export default function Cart() {
     sort
   );
   const { cart, loading } = useGetCartByID(cartId);
+  const { allProducts, loadingProduct } = useGetAllProducts("products", sort);
+  const { cartId } = useStore((state) => ({
+    cartId: state.cartId,
+  }));
+  const [dataCart, setDataCart] = useState(null);
 
-  if (loading || loading2) {
-    return <div>loading..</div>;
+  const handleDeleteCartItem = (itemId) => {
+    const updatedItems = dataCart.items.filter((item) => item !== itemId);
+    setDataCart({ ...dataCart, items: updatedItems });
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const { cart, loading } = useGetCartByID(cartId);
+
+  useEffect(() => {
+    if (cart) {
+      const arrNew = cart.items.sort((a, b) =>
+        a.skuCode.localeCompare(b.skuCode)
+      );
+      setDataCart({ id: cart.id, items: [...arrNew] });
+    }
+  }, [cart]);
+
+  if (loading || loadingProduct) {
+    return <Loading />;
   }
 
   // console.log(allProducts);
