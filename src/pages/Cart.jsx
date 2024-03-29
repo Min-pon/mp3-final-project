@@ -6,6 +6,7 @@ import { useStore } from "../hooks/useStore";
 import { useEffect, useState } from "react";
 import useGetCartByID from "../hooks/carts/useGetCartByID";
 import useGetAllProducts from "../hooks/products/useGetAllProducts";
+import Loading from "./Loading";
 
 const sort = { sorts: "ratings:desc" };
 
@@ -16,22 +17,28 @@ export default function Cart() {
   }));
   const [dataCart, setDataCart] = useState(null);
 
+  const handleDeleteCartItem = (itemId) => {
+    const updatedItems = dataCart.items.filter((item) => item !== itemId);
+    setDataCart({ ...dataCart, items: updatedItems });
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  // can use cartId when set on product detail page
 
   const { cart, loading } = useGetCartByID(cartId);
 
   useEffect(() => {
     if (cart) {
-      setDataCart(cart);
+      const arrNew = cart.items.sort((a, b) =>
+        a.skuCode.localeCompare(b.skuCode)
+      );
+      setDataCart({ id: cart.id, items: [...arrNew] });
     }
   }, [cart]);
 
   if (loading || loadingProduct) {
-    return <div>loading..</div>;
+    return <Loading />;
   }
   return (
     <div className="bg-secondary-50 overflow-hidden">
@@ -44,7 +51,11 @@ export default function Cart() {
                 <p>Items</p>
                 {dataCart.items.map((itemCart, idx) => (
                   <div key={idx} className="">
-                    <CartItem itemCart={itemCart} allProducts={allProducts}/>
+                    <CartItem
+                      CartId={dataCart.id}
+                      itemCart={itemCart}
+                      onDelete={() => handleDeleteCartItem(itemCart)}
+                    />
                   </div>
                 ))}
               </div>

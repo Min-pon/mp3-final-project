@@ -61,7 +61,6 @@ export default function ProductDetail() {
   };
 
   useEffect(() => {
-    console.log(selectedColor);
     const handleConvertArray = () => {
       const variant = getSelectedVariant(selectedColor, selectedSize);
       if (variant) {
@@ -88,7 +87,6 @@ export default function ProductDetail() {
   useEffect(() => {
     if (product) {
       setData(product);
-      console.log(product);
       convertData();
     }
   }, [product]);
@@ -102,7 +100,6 @@ export default function ProductDetail() {
   };
 
   const postDataApi = async (data) => {
-    console.log("CartID : ", cartId);
     let apiUrl = `https://api.storefront.wdb.skooldio.dev/carts/`;
     if (cartId) {
       apiUrl += `${cartId}/items`;
@@ -110,7 +107,6 @@ export default function ProductDetail() {
 
     try {
       const response = await axios.post(apiUrl, data);
-      console.log("response ====> ", response.data.id);
       setCartId(response.data.id);
     } catch (error) {
       console.error(error);

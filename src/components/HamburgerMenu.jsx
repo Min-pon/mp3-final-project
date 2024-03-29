@@ -76,7 +76,6 @@ function HamburgerMenu({ open, onClose, data, collections }) {
   };
 
   useEffect(() => {
-    console.log(params.get("filter"));
     setParamFilter(params.get("filter"));
   }, [params]);
 

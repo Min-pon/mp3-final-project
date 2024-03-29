@@ -118,10 +118,6 @@ function ItemProductList() {
                   {allProducts.slice(0, 20).map((product, index) => (
                     <ProductCard key={index} product={product} />
                   ))}
-
-                  <div className=" flex mt-10 bg-primary w-full h-full">
-                    don't have product
-                  </div>
                 </div>
               </div>
             </>
@@ -134,7 +130,7 @@ function ItemProductList() {
                       <div className="w-48 h-48 rounded-full bg-[#DEF81C] blur-3xl animate-pulse"></div>
                     </div>
                     <h1 className=" text-5xl font-bold text-gray-800 relative z-10 drop-shadow-lg">
-                    Product Not Available
+                      Product Not Available
                     </h1>
                   </div>
                   {/* <h2 className="text-4xl font-semibold mb-6 text-gray-800">

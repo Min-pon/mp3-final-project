@@ -4,8 +4,16 @@ import { useEffect, useState } from "react";
 import useGetProductByPermalink from "../hooks/products/useGetProductByPermalink";
 import SelectQty from "./SelectQty";
 import SelectSize from "./SelectSize";
-export default function CartItem({ itemCart, allProducts }) {
+import axios from "axios";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+
+export default function CartItem({ itemCart, onDelete, CartId }) {
   const [productItem, setProductItem] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const { product, loading, error } = useGetProductByPermalink(
     itemCart.productPermalink
   );
@@ -41,6 +49,7 @@ export default function CartItem({ itemCart, allProducts }) {
         }
       });
     });
+
     setProductDetail(Object.values(colorVariantsMap));
     let colorIndex = -1;
     let variantIndex = -1;
@@ -96,6 +105,15 @@ export default function CartItem({ itemCart, allProducts }) {
     }
   }, [selectedColor, selectedSize]);
 
+  const updateDataCart = async (dataUpdate) => {
+    try {
+      const url = `https://api.storefront.wdb.skooldio.dev/carts/${CartId}/items/${itemCart.id}`;
+      const response = await axios.patch(url, dataUpdate);
+    } catch (error) {
+      console.error("Error updating data:", error);
+    }
+  };
+
   const handleColorChange = (item) => {
     setSelectedColor(item);
     const findVa = item.variants.find(
@@ -104,6 +122,14 @@ export default function CartItem({ itemCart, allProducts }) {
     if (findVa.remains < selectquantity) {
       setSelectQuantity(1);
       setSelectedSize(item.variants[0]);
+      const updateData = { quantity: 1, skuCode: item.variants[0].skuCode };
+      updateDataCart(updateData);
+    } else {
+      const updateData = {
+        quantity: selectquantity,
+        skuCode: findVa.skuCode,
+      };
+      updateDataCart(updateData);
     }
   };
 
@@ -111,11 +137,37 @@ export default function CartItem({ itemCart, allProducts }) {
     setSelectedSize(item);
     if (item.remains < selectquantity) {
       setSelectQuantity(1);
+      const updateData = { quantity: 1, skuCode: item.skuCode };
+      updateDataCart(updateData);
+    } else {
+      const updateData = { quantity: selectquantity, skuCode: item.skuCode };
+      updateDataCart(updateData);
     }
   };
 
   const handleQtyChange = (item) => {
     setSelectQuantity(item);
+    const updateData = { quantity: item, skuCode: selectedSize.skuCode };
+    updateDataCart(updateData);
+  };
+
+  const handleDelete = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      const url = `https://api.storefront.wdb.skooldio.dev/carts/${CartId}/items/${itemCart.id}`;
+      const response = await axios.delete(url);
+      onDelete();
+      setShowModal(false);
+    } catch (error) {
+      console.error("Error deleting:", error);
+    }
   };
 
   return (
@@ -127,7 +179,7 @@ export default function CartItem({ itemCart, allProducts }) {
         <div className="flex flex-col w-full justify-between">
           <div className="flex flex-row w-full justify-between">
             <div className="text-[24px] font-bold">{productItem?.name}</div>
-            <div>
+            <div onClick={handleDelete} className=" cursor-pointer">
               <BinIcon />
             </div>
           </div>
@@ -169,12 +221,47 @@ export default function CartItem({ itemCart, allProducts }) {
             </div>
             <div className="text-[24px] font-bold self-end">
               THB{" "}
-              {Number(productItem?.promotionalPrice) *
-                Number(selectquantity)}
+              {Number(productItem?.promotionalPrice) * Number(selectquantity)}
             </div>
           </div>
         </div>
       </div>
+      <Dialog open={showModal} onClose={closeModal}>
+        <DialogTitle>
+          {" "}
+          <h4 className=" font-semibold">Delete Item</h4>
+        </DialogTitle>
+        <DialogContent>
+          <p>
+            Are you sure you want to delete{" "}
+            <span className=" font-semibold ">{productItem?.name}</span> ?
+          </p>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={closeModal}
+            style={{
+              backgroundColor: "#000",
+              border: "1px solid #000",
+              borderRadius: "0px",
+              color: "#FFFFFF",
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={confirmDelete}
+            style={{
+              backgroundColor: "#fff",
+              border: "1px solid #000",
+              borderRadius: "0px",
+              color: "#000",
+            }}
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

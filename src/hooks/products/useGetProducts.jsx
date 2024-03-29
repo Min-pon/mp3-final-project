@@ -11,8 +11,7 @@
 import React from "react";
 
 function useGetProducts(path, filter={}) {
-    console.log( filter)
-//   return <div>useGetProducts</div>;
+
 }
 
 export default useGetProducts;

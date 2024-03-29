@@ -28,8 +28,6 @@ function SideBar({data}) {
 
   useEffect(() => {
     setAccordionOpen(type);
-    // console.log(type);
-    // console.log(params.get('param'))
   }, [type]);
 
   useEffect(() => {

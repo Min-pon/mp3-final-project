@@ -83,7 +83,6 @@ function Filter() {
   }, [type, paramValue, paramSort]);
 
   useEffect(() => {
-    // console.log(paramSort)
     if (paramSort) {
       setSelectMenu(options.find((option) => paramSort === option.sort));
     }
