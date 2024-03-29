@@ -14,7 +14,6 @@ export default function useGetProductByPermalink(permalink) {
         console.log("permalink", permalink);
         const response = await axios.get(`${BASE_URL}/${permalink}`);
         setProduct(response.data);
-        console.log("product", product);
       } catch (err) {
         setError(err);
       } finally {

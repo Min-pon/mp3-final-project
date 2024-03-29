@@ -21,7 +21,7 @@ export default function NavBar() {
   const isMobile = useMediaQuery({ query: "(max-width: 431px)" });
 
   let location = useLocation();
-  console.log(location);
+  // console.log(location);
 
   const { currentType, setCurrentType, cartId } = useStore((state) => ({
     currentType: state.currentType,
@@ -37,27 +37,15 @@ export default function NavBar() {
     setOpen((prev) => !prev);
   };
 
-  // var prevScrollpos = window.pageYOffset;
-  // window.onscroll = function () {
-  //   var currentScrollPos = window.pageYOffset;
-  //   console.log(prevScrollpos, currentScrollPos);
-  //   if (prevScrollpos > currentScrollPos) {
-  //     document.getElementById("bar").style = { marginBottom: "0" };
-  //   } else {
-  //     document.getElementById("bar").style = { marginBottom: "-50px" };
-  //   }
-  //   prevScrollpos = currentScrollPos;
-  // };
-
   const [prevScrollPos, setPrevScrollPos] = useState(window.pageYOffset);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollPos = window.pageYOffset;
-      console.log(prevScrollPos, currentScrollPos);
+      // console.log(prevScrollPos, currentScrollPos);
       if (prevScrollPos > currentScrollPos) {
         setBarMargin(0);
-        console.log(barMargin);
+        // console.log(barMargin);
       } else {
         setBarMargin(-60);
       }

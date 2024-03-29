@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <div
       className="bg-secondary
-     flex flex-col px-[160px] py-[24px] text-white space-y-[16px] mobile:px-[18px] mobile:py-[24px]"
+     flex flex-col px-[160px] py-[24px] text-white space-y-[16px] mobile:px-[18px] mobile:py-[24px]  bottom-0 w-full"
     >
       <div className="flex justify-between gap-x-[45px] mobile:flex-col">
         <div className="mobile:flex mobile:flex-col mobile:items-center mobile:mb-[56px]">

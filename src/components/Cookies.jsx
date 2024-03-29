@@ -52,6 +52,7 @@ export default function Cookies() {
   }, []);
 
   let checkedCookie = getCookie("cookie_consent");
+  console.log(clickCookie);
 
   return (
     <>
