@@ -1,8 +1,9 @@
-import React, { useCallback } from "react";
+/* eslint-disable react/no-unescaped-entities */
+import { useCallback } from "react";
 import { useStore } from "../hooks/useStore";
 
 export default function Cookies() {
-  const { declineCookie, setClickCookie } = useStore((state) => ({
+  const { clickCookie, setClickCookie } = useStore((state) => ({
     clickCookie: state.clickCookie,
     setClickCookie: state.setClickCookie,
   }));
@@ -54,7 +55,7 @@ export default function Cookies() {
 
   return (
     <>
-      {checkedCookie == "accepted" || declineCookie ? (
+      {checkedCookie == "accepted" || clickCookie ? (
         <></>
       ) : (
         <div className="fixed inset-x-0 bottom-0">

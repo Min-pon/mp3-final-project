@@ -2,6 +2,7 @@ import AdvertisingCard from "../components/AdvertisingCard";
 import useGetAllCollections from "../hooks/collections/useGetAllColllections";
 import ProductCard from "../components/ProductCard";
 import useGetAllProducts from "../hooks/products/useGetAllProducts";
+import Cookies from "../components/Cookies";
 
 const sort = { sort: "ratings:desc" };
 
@@ -81,6 +82,7 @@ export default function HomePage() {
           ))}
         </div>
       </div>
+      <Cookies />
     </div>
   );
 }
