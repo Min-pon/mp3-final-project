@@ -1,5 +1,4 @@
 import ProductInformation from "../components/ProductInformation";
-// import FormControl from "@mui/material/FormControl";
 import useGetProductByPermalink from "../hooks/products/useGetProductByPermalink";
 import React, { useEffect } from "react";
 import { useParams } from "react-router";
@@ -7,8 +6,12 @@ import axios from "axios";
 import { useStore } from "../hooks/useStore";
 import ShoppingCartModal from "../components/ShoppingCartModal";
 import ShowImageProduct from "../components/ShowImageProduct";
-import ProductCardAlsoLike from "../components/ProductCardAlsoLike";
 import Loading from "./Loading";
+import useGetAllProducts from "../hooks/products/useGetAllProducts";
+import ProductCard from "../components/ProductCard";
+import ProductCardAlsoLike from "../components/ProductCardAlsoLike";
+
+const BASE_URL = import.meta.env.VITE_BASE_API;
 
 export default function ProductDetail() {
   const { cartId, setCartId, setIsUpdatedCart, setCartItemFromUpdateAPI } =
@@ -23,10 +26,29 @@ export default function ProductDetail() {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [productDetail, setProductDetail] = React.useState(null);
   const [quantities, setQuantities] = React.useState([]);
+  const [sort, setSort] = React.useState({
+    sort: "ratings:desc",
+  });
+  const { allProducts, loading: loading2 } = useGetAllProducts(
+    "products",
+    sort
+  );
+  const [productShow, setProductShow] = React.useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  function getRandomArbitrary() {
+    return Math.random() - 0.5;
+  }
+
+  useEffect(() => {
+    const newArrProduct = allProducts.filter((item) => item.id !== product.id);
+
+    setProductShow(newArrProduct.sort(() => getRandomArbitrary()));
+    console.log(newArrProduct.sort(() => getRandomArbitrary()));
+  }, [allProducts]);
 
   const convertData = () => {
     const colorVariantsMap = {};
@@ -88,6 +110,8 @@ export default function ProductDetail() {
   useEffect(() => {
     if (product) {
       setData(product);
+      // console.log(product);
+      setSort({ ...sort, categories: product.categories[1] });
       convertData();
     }
   }, [product]);
@@ -101,16 +125,13 @@ export default function ProductDetail() {
   };
 
   const postDataApi = async (data) => {
-    let apiUrl = `https://api.storefront.wdb.skooldio.dev/carts/`;
+    let apiUrl = `${BASE_URL}/carts/`;
     if (cartId) {
       apiUrl += `${cartId}/items`;
     }
 
     try {
       const response = await axios.post(apiUrl, data);
-      // console.log("response ====> ", response.data.id);
-
-      // console.log(response.data);
       setCartId(response.data.id);
       setIsUpdatedCart(false);
       setCartItemFromUpdateAPI(response.data.items);
@@ -145,7 +166,7 @@ export default function ProductDetail() {
     postDataApi(data);
   };
 
-  if (loading) {
+  if (loading || loading2) {
     return <Loading />;
   }
   if (error) return <Loading />;
@@ -232,7 +253,7 @@ export default function ProductDetail() {
                   htmlFor="quantity"
                   className="text-lg font-semibold mb-2 block"
                 >
-                  Qty.
+                  Qty
                 </label>
                 <div className=" flex">
                   <select
@@ -275,6 +296,7 @@ export default function ProductDetail() {
           </div>
         </div>
       </div>
+
       <div className="flex flex-col space-y-[64px] mb-[168px] mt-[50px] px-[100px] ">
         <p className="text-[32px] font-bold">People also like these</p>
         <ProductCardAlsoLike />

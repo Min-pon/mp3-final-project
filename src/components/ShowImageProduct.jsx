@@ -1,8 +1,15 @@
 import React from "react";
+import { useEffect } from "react";
 
 function ShowImageProduct({ product }) {
   const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);
   const [imageUrls, setImageUrls] = React.useState(product.imageUrls);
+
+  useEffect(() => {
+    setImageUrls(product.imageUrls);
+  }, [product]);
+
+  // console.log(imageUrl);
 
   // Function to change the main image to the previous one
   const previousImage = () => {
@@ -85,6 +92,7 @@ function ShowImageProduct({ product }) {
           return (
             <img
               src={url}
+              key={index}
               alt={`Thumbnail ${index}`}
               className="object-cover w-20 md:w-24 lg:w-32 xl:w-[168px] aspect-square"
             />

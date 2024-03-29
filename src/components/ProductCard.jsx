@@ -2,12 +2,14 @@ import RatingStar from "./RatingStar";
 import { useState, useEffect } from "react";
 import CarouselPage from "./CarouselPage";
 import { useNavigate } from "react-router";
+import { useStore } from "../hooks/useStore";
 
 function ProductCard({ product }) {
   const ratingMath = Math.round(Number(product.ratings));
   const [discount, setDiscount] = useState(0);
   const [isHover, setIsHover] = useState(false);
   const navigate = useNavigate();
+  const { currentType, setCurrentType } = useStore();
 
   useEffect(() => {
     if (product.promotionalPrice < product.price) {
@@ -18,6 +20,12 @@ function ProductCard({ product }) {
   }, []);
 
   const handleClick = () => {
+    navigate("/");
+    if (product.categories[0] == "all-ladies") {
+      setCurrentType("ladies");
+    } else {
+      setCurrentType("men");
+    }
     navigate(`/product-detail/${product.permalink}`);
   };
 

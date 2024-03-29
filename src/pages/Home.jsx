@@ -51,7 +51,7 @@ export default function HomePage() {
       </div>
       <div className="flex flex-col items-center space-y-[64px] mb-[168px]">
         <p className="text-[32px] font-bold">Featured Product</p>
-        <div className="flex space-x-[40px] mobile:flex-col mobile:space-y-[40px] mobile:space-x-0">
+        <div className="flex justify-wrap space-x-[40px]  mobile:flex-col mobile:space-y-[40px] mobile:space-x-0">
           {allProducts.slice(0, 4).map((product, index) => (
             <ProductCard key={index} product={product} />
           ))}

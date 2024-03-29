@@ -8,8 +8,9 @@ import useGetCartByID from "../hooks/carts/useGetCartByID";
 import useGetAllProducts from "../hooks/products/useGetAllProducts";
 import Loading from "./Loading";
 import useGetProductByPermalink from "../hooks/products/useGetProductByPermalink";
+import ProductCard from "../components/ProductCard";
 
-const sort = { sortd: "ratings:desc" };
+const sort = { sort: "ratings:desc" };
 
 export default function Cart() {
   const { cartId, totalItems, setTotalItems, setCartItems } = useStore();
@@ -81,8 +82,10 @@ export default function Cart() {
       ) : (
         <div className="flex flex-col space-y-[64px] pb-[168px]  mobile:px-[16px]">
           <p className="text-[32px] font-bold">People also like these</p>
-          <div className="flex justify-wrap space-x-[40px] dx:space-x-[21.8px] mobile:flex-col mobile:space-y-[40px] mobile:space-x-0">
-            <ProductCardAlsoLike />
+          <div className="flex justify-wrap space-x-[40px]  mobile:flex-col mobile:space-y-[40px] mobile:space-x-0">
+            {allProducts.slice(0, 4).map((product, index) => (
+              <ProductCard key={index} product={product} />
+            ))}
           </div>
         </div>
       )}

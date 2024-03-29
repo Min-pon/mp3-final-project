@@ -13,15 +13,8 @@ export default function SummaryCard({ cart, allProducts }) {
     isUpdatedCart,
     setIsUpdatedCart,
     cartItemFromUpdateAPI,
-  } = useStore((state) => ({
-    cartId: state.cartId,
-    setCartId: state.setCartId,
-    cartItems: state.cartItems,
-    setCartItems: state.setCartItems,
-    isUpdatedCart: state.isUpdatedCart,
-    setIsUpdatedCart: state.setIsUpdatedCart,
-    cartItemFromUpdateAPI: state.cartItemFromUpdateAPI,
-  }));
+    currentType,
+  } = useStore();
 
   useEffect(() => {
     if (cartId.length > 0) {
@@ -177,7 +170,7 @@ export default function SummaryCard({ cart, allProducts }) {
         }`}
         disabled={cartId.length == 0}
         onClick={() => {
-          navigate("/item-product-list/all-men");
+          navigate(`/item-product-list/all-${currentType}`);
         }}
       >
         Continue shopping

@@ -33,7 +33,7 @@ export default function Footer() {
             </button>
           </div>
         </div> */}
-        <div className="w-[500px] mobile:w-auto mobile:flex-col mobile:items-center">
+        <div className="w-auto mobile:w-auto mobile:flex-col mobile:items-center pr-[128px] mobile:pr-0">
           <p className="text-h5 font-bold mobile:text-h6 mb-[24px] mobile:text-center">
             Customer services
           </p>
