@@ -152,131 +152,133 @@ export default function ProductDetail() {
   if (!product || data === null) return <Loading />;
 
   return (
-    <div className="bg-white py-24 md:py-24 px-4 xl:px-20 lg:px-20 md:px-20 2xl:px-[160px]">
-      <div className="flex flex-col xl:flex-row items-center xl:items-start xl:justify-between gap-[40px]">
-        <div className="">
-          <ShowImageProduct product={product} />
-        </div>
+    <>
+      <div className="bg-white py-24 md:py-24 px-4 xl:px-20 lg:px-20 md:px-20 2xl:px-[160px]">
+        <div className="flex flex-col xl:flex-row items-center xl:items-start xl:justify-between gap-[40px]">
+          <div className="">
+            <ShowImageProduct product={product} />
+          </div>
 
-        <div className="mt-2 px-4 w-full max-w-[780px] sm:px-0 sm:mt-16 lg:mt-0 flex flex-col gap-14 xl:gap-[54px]">
-          <ProductInformation
-            id={product.id}
-            productName={product.name}
-            description={product.description}
-            price={product.price}
-            promotionalPrice={product.promotionalPrice}
-            ratings={product.ratings}
-          />
-          <div className="flex flex-col gap-6">
-            {/* Color of item */}
-            <div className="">
-              <p className="text-lg font-semibold mb-2">Color</p>
-              <div className="flex space-x-7">
-                {productDetail.map((color, idx) => (
-                  <div
-                    key={idx}
-                    className=" flex w-[100px] flex-col justify-center items-center text-center gap-2"
-                  >
-                    <button
-                      className={` w-[54px] aspect-square rounded-full transition duration-300 ease-out  ${
-                        selectedColor === color
-                          ? " ring-2 ring-primary"
-                          : " border"
-                      }`}
-                      style={{ backgroundColor: color.colorCode }}
-                      onClick={() => {
-                        if (color !== selectedColor) {
-                          setSelectedColor(color);
-                          setSelectedSize(null);
-                          setSelectQuantity(1);
-                        }
-                      }}
-                      aria-label={`Select ${color.name}`}
-                    />
-                    <p>{color.color}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* size of item */}
-            {selectedColor.variants[0].size && (
+          <div className="mt-2 px-4 w-full max-w-[780px] sm:px-0 sm:mt-16 lg:mt-0 flex flex-col gap-14 xl:gap-[54px]">
+            <ProductInformation
+              id={product.id}
+              productName={product.name}
+              description={product.description}
+              price={product.price}
+              promotionalPrice={product.promotionalPrice}
+              ratings={product.ratings}
+            />
+            <div className="flex flex-col gap-6">
+              {/* Color of item */}
               <div className="">
-                <div className="text-lg font-semibold mb-2">Size</div>
-                <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
-                  {selectedColor.variants.map((size, idx) => (
-                    <button
+                <p className="text-lg font-semibold mb-2">Color</p>
+                <div className="flex space-x-7">
+                  {productDetail.map((color, idx) => (
+                    <div
                       key={idx}
-                      className={`grow px-4 py-2 border h-[54px] disabled:border-secondary-300 disabled:text-secondary-500 disabled:bg-secondary-300 border-secondary-300 focus:outline-none ${
-                        selectedSize === size ? "ring-2 ring-[#DEF81C]" : ""
-                      }`}
-                      onClick={() => {
-                        if (size !== selectedSize) {
-                          setSelectedSize(size);
-                          setSelectQuantity(1);
-                        }
-                      }}
-                      disabled={size.remains < 1}
+                      className=" flex w-[100px] flex-col justify-center items-center text-center gap-2"
                     >
-                      {size.size}
-                    </button>
+                      <button
+                        className={` w-[54px] aspect-square rounded-full transition duration-300 ease-out  ${
+                          selectedColor === color
+                            ? " ring-2 ring-primary"
+                            : " border"
+                        }`}
+                        style={{ backgroundColor: color.colorCode }}
+                        onClick={() => {
+                          if (color !== selectedColor) {
+                            setSelectedColor(color);
+                            setSelectedSize(null);
+                            setSelectQuantity(1);
+                          }
+                        }}
+                        aria-label={`Select ${color.name}`}
+                      />
+                      <p>{color.color}</p>
+                    </div>
                   ))}
                 </div>
               </div>
-            )}
 
-            {/* Quantity of item */}
-            <div className="">
-              <label
-                htmlFor="quantity"
-                className="text-lg font-semibold mb-2 block"
-              >
-                Qty.
-              </label>
-              <div className=" flex">
-                <select
-                  id="quantity"
-                  className="basis-1/4 block w-full p-2 text-base border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
-                  value={selectquantity}
-                  onChange={(e) => setSelectQuantity(e.target.value)}
+              {/* size of item */}
+              {selectedColor.variants[0].size && (
+                <div className="">
+                  <div className="text-lg font-semibold mb-2">Size</div>
+                  <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
+                    {selectedColor.variants.map((size, idx) => (
+                      <button
+                        key={idx}
+                        className={`grow px-4 py-2 border h-[54px] disabled:border-secondary-300 disabled:text-secondary-500 disabled:bg-secondary-300 border-secondary-300 focus:outline-none ${
+                          selectedSize === size ? "ring-2 ring-[#DEF81C]" : ""
+                        }`}
+                        onClick={() => {
+                          if (size !== selectedSize) {
+                            setSelectedSize(size);
+                            setSelectQuantity(1);
+                          }
+                        }}
+                        disabled={size.remains < 1}
+                      >
+                        {size.size}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Quantity of item */}
+              <div className="">
+                <label
+                  htmlFor="quantity"
+                  className="text-lg font-semibold mb-2 block"
                 >
-                  {quantities.map((q) => (
-                    <option key={q} value={q}>
-                      {q}
-                    </option>
-                  ))}
-                </select>
+                  Qty.
+                </label>
+                <div className=" flex">
+                  <select
+                    id="quantity"
+                    className="basis-1/4 block w-full p-2 text-base border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                    value={selectquantity}
+                    onChange={(e) => setSelectQuantity(e.target.value)}
+                  >
+                    {quantities.map((q) => (
+                      <option key={q} value={q}>
+                        {q}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
-            </div>
 
-            {/* Add to cart button */}
-            <div className="mt-10 w-full">
-              <button
-                type="submit"
-                className="flex justify-center w-full h-[54px] items-center px-8 py-3 border border-transparent disabled:text-secondary-500 disabled:bg-secondary-300 text-base font-medium text-white bg-secondary hover:bg-gray-800"
-                onClick={() => {
-                  openModal();
-                  handleSubmit();
-                }}
-                disabled={selectedColor.variants[0].size && !selectedSize}
-              >
-                Add to cart
-              </button>
-            </div>
+              {/* Add to cart button */}
+              <div className="mt-10 w-full">
+                <button
+                  type="submit"
+                  className="flex justify-center w-full h-[54px] items-center px-8 py-3 border border-transparent disabled:text-secondary-500 disabled:bg-secondary-300 text-base font-medium text-white bg-secondary hover:bg-gray-800"
+                  onClick={() => {
+                    openModal();
+                    handleSubmit();
+                  }}
+                  disabled={selectedColor.variants[0].size && !selectedSize}
+                >
+                  Add to cart
+                </button>
+              </div>
 
-            <ShoppingCartModal
-              isOpen={isModalOpen}
-              onClose={closeModal}
-              item={product}
-              qty={selectquantity}
-            />
+              <ShoppingCartModal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                item={product}
+                qty={selectquantity}
+              />
+            </div>
           </div>
         </div>
       </div>
-      <div className="flex flex-col space-y-[64px] mb-[168px] mt-[50px] mobile:px-[16px]">
+      <div className="flex flex-col space-y-[64px] mb-[168px] mt-[50px] px-[100px] ">
         <p className="text-[32px] font-bold">People also like these</p>
         <ProductCardAlsoLike />
       </div>
-    </div>
+    </>
   );
 }

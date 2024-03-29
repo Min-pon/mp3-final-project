@@ -7,9 +7,6 @@ import { useEffect, useState } from "react";
 import useGetCartByID from "../hooks/carts/useGetCartByID";
 import useGetAllProducts from "../hooks/products/useGetAllProducts";
 import Loading from "./Loading";
-
-const sort = { sorts: "ratings:desc" };
-import useGetAllProducts from "../hooks/products/useGetAllProducts";
 import useGetProductByPermalink from "../hooks/products/useGetProductByPermalink";
 
 const sort = { sortd: "ratings:desc" };
@@ -17,15 +14,9 @@ const sort = { sortd: "ratings:desc" };
 export default function Cart() {
   const { cartId, totalItems, setTotalItems, setCartItems } = useStore();
 
-  const { allProducts, loading: loading2 } = useGetAllProducts(
-    "products",
-    sort
-  );
   const { cart, loading } = useGetCartByID(cartId);
   const { allProducts, loadingProduct } = useGetAllProducts("products", sort);
-  const { cartId } = useStore((state) => ({
-    cartId: state.cartId,
-  }));
+
   const [dataCart, setDataCart] = useState(null);
 
   const handleDeleteCartItem = (itemId) => {
@@ -36,8 +27,6 @@ export default function Cart() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  const { cart, loading } = useGetCartByID(cartId);
 
   useEffect(() => {
     if (cart) {
@@ -74,7 +63,6 @@ export default function Cart() {
                       productPermalink={item.productPermalink}
                       quantity={item.quantity}
                       itemId={item.id}
-                      cartId={"0HrVDEPgTeJhswT42VHs"}
                     />
                   ))}
                 </div>

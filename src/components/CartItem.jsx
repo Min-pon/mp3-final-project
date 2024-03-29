@@ -6,6 +6,11 @@ import useGetProductByPermalink from "../hooks/products/useGetProductByPermalink
 import axios from "axios";
 import { BinIcon } from "../assets/iconList";
 import { useStore } from "../hooks/useStore";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
 
 const BASE_URL = import.meta.env.VITE_BASE_API;
 
@@ -660,20 +665,26 @@ export default function CartItem({
     cartItems,
     cartId,
     setCartId,
+    setCartItems,
   } = useStore();
   const [isDeleted, setIsDeleted] = useState(false);
 
+  const [showModal, setShowModal] = useState(false);
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
   // const item = cartItems.filter((item) => item)
   if (loading) {
-    return <div>loading...</div>;
+    return (
+      <div className="bg-white rounded-lg shadow-md p-4 animate-pulse">
+        <div className="w-1/3 h-10 mobile:h-40 mobile:w-full bg-gray-300 rounded mb-2"></div>
+        <div className="w-full h-16 mobile:h-80 mobile:w-full bg-gray-300 rounded mb-2"></div>
+      </div>
+    );
   }
 
   let item = cartItems.filter((item) => item.itemId == itemId)[0];
-  // console.log(cartItems);
-
-  // console.log(quantity);
-  // console.log(skuCode);
-  // console.log(itemId);
 
   function findOptions(skuCode, productItem) {
     let currentColor;
@@ -808,8 +819,11 @@ export default function CartItem({
 
       if (getCartResponse.data.items.length == 0) {
         setCartId("");
+        setCartItemFromUpdateAPI([]);
+        setCartItems([]);
+      } else {
+        setCartItemFromUpdateAPI(getCartResponse.data.items);
       }
-      setCartItemFromUpdateAPI(getCartResponse.data.items);
       setIsUpdatedCart(false);
     } catch (error) {
       console.error("Error delete item:", error);
@@ -838,6 +852,20 @@ export default function CartItem({
     }
   }
 
+  const confirmDelete = async () => {
+    // try {
+    // const url = `https://api.storefront.wdb.skooldio.dev/carts/${CartId}/items/${itemCart.id}`;
+    // const response = await axios.delete(url);
+    // onDelete();
+    deleteItem(cartId, itemId);
+    setIsDeleted(true);
+    setIsUpdatedCart(false);
+    setShowModal(false);
+    // } catch (error) {
+    // console.error("Error deleting:", error);
+    // }
+  };
+
   // let updatedItemOption = [
   //   ...itemOptions,
   //   { id: itemId, color: colorList, size: sizeList, quantity: quantityList },
@@ -850,95 +878,131 @@ export default function CartItem({
       {isDeleted ? (
         <></>
       ) : (
-        <div className="w-full">
-          <div className="flex gap-5 mobile:flex-col">
-            <div className="w-1/4">
-              <img
-                src={product.imageUrls[0]}
-                alt="Product item"
-                className="w-[160px] h-[160px] object-cover"
-              />
-            </div>
-            <div className="flex flex-col w-full justify-between">
-              <div className="flex flex-row w-full justify-between">
-                <div className="text-[24px] font-bold">{product.name}</div>
-                <button
-                  onClick={() => {
-                    deleteItem(cartId, itemId);
-                    setIsDeleted(true);
-                    setIsUpdatedCart(false);
-                  }}
-                >
-                  <BinIcon />
-                </button>
+        <>
+          <div className="w-full">
+            <div className="flex gap-5 mobile:flex-col">
+              <div className="w-1/4 mobile:w-full">
+                <img
+                  src={product.imageUrls[0]}
+                  alt="Product item"
+                  className="w-[160px] h-[160px] object-cover mobile:w-full mobile:object-"
+                />
               </div>
-              <div className="flex flex-row justify-between align-bottom mobile:flex-col">
-                <div className="flex flex-row text-[16px] font-normal text-secondary-700 mobile:flex-col">
-                  <div className="flex flex-col mr-[16px]">
-                    <span>Color</span>
-                    <div className="mt-[8px]">
-                      <SelectMenu
-                        productPermalink={productPermalink}
-                        menu={"color"}
-                        skuCode={skuCode}
-                        selectedValue={currentColor}
-                        quantity={quantity}
-                        cartId={cartId}
-                        itemId={itemId}
-                        currentQuantity={quantity}
-                        updateItem={updateItem}
-                        findOptions={findOptions}
-                        product={product}
-                      />
-                    </div>
-                  </div>
-                  <div className="flex">
+              <div className="flex flex-col w-full justify-between">
+                <div className="flex flex-row w-full justify-between">
+                  <div className="text-[24px] font-bold">{product.name}</div>
+                  <button
+                    onClick={() => {
+                      setShowModal(true);
+                    }}
+                  >
+                    <BinIcon />
+                  </button>
+                </div>
+                <div className="flex flex-row justify-between align-bottom mobile:flex-col">
+                  <div className="flex flex-row text-[16px] font-normal text-secondary-700 mobile:flex-col">
                     <div className="flex flex-col mr-[16px]">
-                      <span>Size</span>
+                      <span>Color</span>
                       <div className="mt-[8px]">
                         <SelectMenu
                           productPermalink={productPermalink}
-                          menu={"size"}
-                          selectedValue={currentSize}
-                          cartId={cartId}
-                          itemId={itemId}
+                          menu={"color"}
                           skuCode={skuCode}
-                          currentQuantity={quantity}
-                          updateItem={updateItem}
-                          product={product}
-                        />
-                      </div>
-                    </div>
-                    <div className="flex flex-col">
-                      <span>Qty.</span>
-                      <div className="mt-[8px]">
-                        <SelectMenu
-                          productPermalink={productPermalink}
-                          menu={"quantity"}
-                          selectedValue={quantity}
+                          selectedValue={currentColor}
                           quantity={quantity}
                           cartId={cartId}
                           itemId={itemId}
-                          skuCode={skuCode}
                           currentQuantity={quantity}
                           updateItem={updateItem}
+                          findOptions={findOptions}
                           product={product}
                         />
                       </div>
                     </div>
+                    <div className="flex">
+                      <div className="flex flex-col mr-[16px]">
+                        <span>Size</span>
+                        <div className="mt-[8px]">
+                          <SelectMenu
+                            productPermalink={productPermalink}
+                            menu={"size"}
+                            selectedValue={currentSize}
+                            cartId={cartId}
+                            itemId={itemId}
+                            skuCode={skuCode}
+                            currentQuantity={quantity}
+                            updateItem={updateItem}
+                            product={product}
+                          />
+                        </div>
+                      </div>
+                      <div className="flex flex-col">
+                        <span>Qty.</span>
+                        <div className="mt-[8px]">
+                          <SelectMenu
+                            productPermalink={productPermalink}
+                            menu={"quantity"}
+                            selectedValue={quantity}
+                            quantity={quantity}
+                            cartId={cartId}
+                            itemId={itemId}
+                            skuCode={skuCode}
+                            currentQuantity={quantity}
+                            updateItem={updateItem}
+                            product={product}
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="text-[24px] font-bold self-end mobile:mt-[24px]">
-                  THB{" "}
-                  {new Intl.NumberFormat("en-US", {
-                    style: "decimal",
-                    minimumFractionDigits: 2,
-                  }).format(product.promotionalPrice * item.quantity)}
+                  <div className="text-[24px] font-bold self-end mobile:mt-[24px]">
+                    THB{" "}
+                    {new Intl.NumberFormat("en-US", {
+                      style: "decimal",
+                      minimumFractionDigits: 2,
+                    }).format(product.promotionalPrice * item.quantity)}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+          <Dialog open={showModal} onClose={closeModal}>
+            <DialogTitle>
+              {" "}
+              <h4 className=" font-semibold">Delete Item</h4>
+            </DialogTitle>
+            <DialogContent>
+              <p>
+                Are you sure you want to delete{" "}
+                <span className=" font-semibold ">{product?.name}</span> ?
+              </p>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                onClick={closeModal}
+                style={{
+                  backgroundColor: "#000",
+                  border: "1px solid #000",
+                  borderRadius: "0px",
+                  color: "#FFFFFF",
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={confirmDelete}
+                style={{
+                  backgroundColor: "#fff",
+                  border: "1px solid #000",
+                  borderRadius: "0px",
+                  color: "#000",
+                }}
+              >
+                Confirm
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </>
       )}
     </>
   );
