@@ -80,7 +80,7 @@ export default function SummaryCard({ cart, allProducts }) {
     .reduce((acc, curr) => acc + curr, 0);
 
   const subTotal = cartItems
-    .map((item) => item.price * item.quantity)
+    .map((item) => item.promotionalPrice * item.quantity)
     .reduce((acc, curr) => acc + curr, 0);
 
   return (

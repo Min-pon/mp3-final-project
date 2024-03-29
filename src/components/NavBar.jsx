@@ -42,12 +42,12 @@ export default function NavBar() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollPos = window.pageYOffset;
-      // console.log(prevScrollPos, currentScrollPos);
+      console.log(prevScrollPos, currentScrollPos);
       if (prevScrollPos > currentScrollPos) {
         setBarMargin(0);
         // console.log(barMargin);
       } else {
-        setBarMargin(-60);
+        setBarMargin(60);
       }
       setPrevScrollPos(currentScrollPos);
     };
@@ -59,6 +59,8 @@ export default function NavBar() {
   }, [prevScrollPos]);
 
   const [barMargin, setBarMargin] = useState(0);
+
+  console.log(barMargin);
 
   return (
     <div>
@@ -96,7 +98,7 @@ export default function NavBar() {
         <div className="fixed z-10 top-0 w-full">
           {location.pathname == "/" ? (
             <div
-              className={`transition-top duration-300 mb-[${barMargin}px]`}
+              className={`transition-top duration-300 mb-[-${barMargin}px]`}
               id="bar"
             >
               <CampaignBar />
@@ -139,7 +141,7 @@ export default function NavBar() {
               </div>
             </div>
             <div className="flex space-x-[4px]">
-              <div>
+              {/* <div>
                 <SearchIcon />
               </div>
               <div>
@@ -147,7 +149,7 @@ export default function NavBar() {
               </div>
               <div>
                 <UserIcon />
-              </div>
+              </div> */}
               <a href="/cart">
                 {cartId.length == 0 ? <EmptyCartIcon /> : <CartWithItemIcon />}
               </a>

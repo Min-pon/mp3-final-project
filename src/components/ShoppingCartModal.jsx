@@ -51,7 +51,7 @@ function ShoppingCartModal({ isOpen, onClose, item, qty }) {
                   QTY : {qty}
                 </p>
               </div>
-              <p className=" flex justify-end">THB {item.price}</p>
+              <p className=" flex justify-end">THB {item.promotionalPrice}</p>
             </div>
           </div>
           <div className=" flex flex-col lg:flex-row gap-4 mt-6">

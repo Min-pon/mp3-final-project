@@ -18,7 +18,7 @@ export default function Footer() {
             <p className="text-sub font-semibold">Accessories</p>
           </div>
         </div>
-        <div>
+        {/* <div>
           <div className="mobile:flex mobile:flex-col mobile:items-center space-y-[24px] mobile:mb-[56px]">
             <p className="text-h5 font-bold mobile:text-h6">Register with us</p>
 
@@ -32,7 +32,7 @@ export default function Footer() {
               <ArrowRightIcon />
             </button>
           </div>
-        </div>
+        </div> */}
         <div className="w-[500px] mobile:w-auto mobile:flex-col mobile:items-center">
           <p className="text-h5 font-bold mobile:text-h6 mb-[24px] mobile:text-center">
             Customer services
