@@ -106,7 +106,9 @@ export default function NavBar() {
       ) : (
         <div
           className={`fixed z-10 top-0 w-full transition-top transition-all ease-in-out duration-500 ${
-            scroll > 100 ? "translate-y-[-60px]" : ""
+            scroll > 100 && location.pathname == "/"
+              ? "translate-y-[-60px]"
+              : ""
           }`}
         >
           {location.pathname == "/" ? (
